@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 20:20:00 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/07/19 21:56:33 by marvin           ###   ########.fr       */
+/*   Updated: 2023/07/19 22:24:53 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,46 +21,46 @@
 
 typedef enum e_type
 {
-	WORD = 1,
-	COMMAND,
+	WORD,   // argument of command
+	COMMAND, // first word of command
 	HEREDOC,  // <<
 	APPEND,   // >>
 	RED_OUT,      // >
-	RED_IN,
-	FYLE,       // <
+	RED_IN,		// <
+	FYLE,       // argument of redir
 	NOT,      // string
 	END,      // end of cmd
 	ENV,
-	DELIMITER,
+	DELIMITER, // of heredoc
 }   t_type;
 
 typedef enum e_state
 {
-	IN_DQUOTE = 1,
+	IN_DQUOTE,
 	IN_SQUOTE,
 	GENERAL,
 }	t_state;
 
 typedef struct s_redir
 {
-    char* content;
-	t_type type;
-	int *fd;
-	int dollar;
-	char *file;
+    char* content; // < or > or << or >>
+	t_type type;	// check ENUM
+	int *fd;		
+	int dollar;		//
+	char *file;		
 }	t_redir;
 
 typedef struct s_list
 {
-    char** cmd;
-	char *raw_cmd;
-    int index;
-	int len;
-	t_state state;
-	int red_nb;
+    char** cmd;      //  double array of each command
+	char *raw_cmd;	// raw command with no split
+    int index;		// index of the command
+	int len;		// lenght of command
+	t_state state;	// state (Squote or Dquote or none)
+	int red_nb;		// number of total redirection in this command
     struct s_list *next;
-	t_redir *redir;
-	char** final_cmd;
+	t_redir *redir;	// array of all the redir in this command to send to exec
+	char** final_cmd;	// command + arg(if existent) to send to exec
 }           t_list;
 
 int     checker_line(char *line);

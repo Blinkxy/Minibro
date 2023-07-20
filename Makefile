@@ -5,7 +5,7 @@ LRFLAG = -lreadline
 RM = rm -rf
 LIBFT_A = libft/libft.a
 CC = gcc
-SRC = Minishell.c Tokenizer.c linked_list_init.c Lexer.c Lexer_bis.c
+SRC = Minishell.c linked_list_init.c Lexer.c Lexer_bis.c split_redir.c
 OBJ = $(SRC:.c=.o)
 
 all: $(NAME) 	
