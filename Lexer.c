@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 20:29:26 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/07/18 15:52:12 by marvin           ###   ########.fr       */
+/*   Updated: 2023/07/21 18:37:07 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ char** removePipePointers(char** str) {
     i = 0;
     while (str[i]) 
     {
-        if (strlen(str[i]) != 1 || str[i][0] != '|')
+        if (str[i][0] != '|')
             count++;
         i++;
     }
@@ -110,7 +110,7 @@ char** removePipePointers(char** str) {
     j = 0;
     while (str[i]) 
     {
-        if (strlen(str[i]) != 1 || str[i][0] != '|') 
+        if (str[i][0] != '|') 
         {
             result[j] = str[i];
             j++;

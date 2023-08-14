@@ -18,9 +18,10 @@ int checkQuoteIndex(char* str, char* index)
         {
             doubleQuotes++;
             if (doubleQuotes % 2 == 1 && &str[i] <= index)
-                return 2;  // Index is between double quotes
+                return 0;  // Index is between double quotes
         }
         i++;
     }
     return 0;  // Index is not within quotes
 }
+

@@ -66,13 +66,91 @@ int count_cmds(char **str)
     return(i);
 }
 
-// char **split_red(t_list *cmds)
+char *expand_ENV(char *str, char **env)
+{
+    int i;
+    int j;
+    char *result;
+    char *check_env;
+
+    result = ft_calloc(1,1);    
+    i = 0;
+    while(str[i])
+    {
+        if(str[i] == '$' && checkQuoteIndex(str, &str[i]) == 0)
+        {
+            j = i;
+            while(str[i] && (ft_isalnum(str[i]) || str[i] == '_'))
+                i++;
+            if (i > j)
+                check_env = ft_substr(str,j,i);
+            if(get_env_var(env,check_env) == -1 && check_env)
+            {
+                i += ft_strlen(check_env) + 1;
+                free(check_env);
+            }
+            else if(get_env_var(env,check_env) != -1 && check_env)
+            {
+                ft_strjoin(result,env[get_env_var(env,check_env)]);
+                i += ft_strlen(env[get_env_var(env,check_env)]) + 1;
+            }
+        }
+        ft_strjoin(result, &str[i]);
+        i++;
+    }
+    free(str);
+    return(result);
+}
+
+// char    **expand_all(t_list *cmds)
 // {
-//     int i;
+//     int i = 0;
+//     int j;
+//     t_list *tmp;
 
-//     i = 0;
-//     while(str[i])
+//     tmp = cmds;
+//     while(tmp)
 //     {
-
+//         j = 0;
+//         while(tmp->cmd[j])
+//         {
+//             tmp->cmd[j] = Expand_quotes(tmp->cmd[j]);
+//             j++;
+//         }
+//         tmp = tmp->next;
 //     }
+// }
+
+// char    *Expand_quotes(char* str)
+// {
+//     int i = 0;
+//     int j = 0;
+//     int singleQuotes = 0;
+//     int doubleQuotes = 0;
+//     int len = ft_strlen(str);
+//     char* result = (char*)malloc(len + 1);  // Allocate memory for the result string
+//     if (!result)
+//         return(NULL);
+//     while (str[i] != '\0') 
+//     {
+//         // Check for single quotes
+//         if (str[i] == '\'' && (i == 0 || str[i - 1] != '\\') && doubleQuotes % 2 == 0) 
+//             singleQuotes = (singleQuotes + 1) % 2;
+//         // Check for double quotes
+//         else if (str[i] == '"' && (i == 0 || str[i - 1] != '\\') && singleQuotes % 2 == 0) 
+//             doubleQuotes = (doubleQuotes + 1) % 2;
+//         // Remove quotes
+//         else
+//         {
+//             if (!(str[i] == '\'' && singleQuotes) && !(str[i] == '"' && doubleQuotes)) 
+//             {
+//                 result[j] = str[i];
+//                 j++;
+//             }
+//         }
+//         i++;
+//     }
+//     free(str);
+//     result[j] = '\0';  // Add null terminator to the result string
+//     return result;
 // }

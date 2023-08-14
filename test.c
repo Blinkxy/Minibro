@@ -1,66 +1,95 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+int inQuote(char c) 
 {
-    struct s_job    *previous;
-    char            cmd;
-    char            file;
-    int                fd[2];
-    pid_t            pid;
-    struct s_job    next;
-}    t_job;
+    return (c == '\'' || c == '\"');
+}
 
-typedef enum e_type
+int countTokens(char* str, char c) 
 {
-    VOID,
-    PIPE,
-    STRING,
-    REDIR_L,
-    REDIR_R,
-    APPEND,
-    HEREDOC_L,
-}    t_type;
+    int len = strlen(str);
+    int count = 1;
+    int inQuotes = 0;
+    int i = 0;
 
-// Single node of linked list contaning input tokenized as per quotes */
-struct s_qnode {
-    int                length;
-    char            q_type;
-    int                is_spaced;
-    char            *str;
-    struct s_qnode    next;
-};
+    while (i < len) 
+    {
+        if (inQuote(str[i]))
+            inQuotes = !inQuotes;
+        else if (str[i] == c && !inQuotes)
+            count++;
+        i++;
+    }
+    return count;
+}
 
-// Struct containig data related to input tokenized as per quotes */
-typedef struct QuotesData {
-    int                start;
-    int                end;
-    int                d_open;
-    int                s_open;
-    char            *raw_input;
-    char            *delim;
-    char            *after_delim;
-    struct s_qnode    quotes_list;
-}    t_qdata;
-
-/ Struct for every node representing a word token in the linked list */
-struct s_tnode {
-    char            *str;
-    int                len;
-    char            q_type;
-    t_type            type;
-    int                is_spaced;
-    struct s_tnode    *next;
-    struct s_tnode    prev;
-};
-
-/ Highest level struct with data shared by whole program */
-typedef struct CommonData
+void copyToken(char* src, char* dest, int len) 
 {
-    char            envp;
-    char            envp_export;
-    int                exit_status;
-    char            *cmd;
-    int                syntax_error;
-    char            **paths;
-    int                found_here_doc;
-    struct s_tnode    *tokens_list;
-    t_pdata            *t_pdata;
-    t_qdata            *t_qdata;
-}    t_cdata;
+    if (len <= 0)
+        return;
+    ft_strlcpy(dest, src, len + 1);
+}
+
+char** splitString(char* str, char c)
+{
+    int len = strlen(str);
+    int tokenCount = countTokens(str, c);
+    int resultSize = 0;
+    int i = 0;
+    int start = 0;
+    int end = 0;
+    int inQuotes;
+    char** result = (char**)malloc(tokenCount * sizeof(char*));
+
+    if (!result)
+        return(NULL);
+    while (i < len && resultSize < tokenCount) 
+    {
+        start = i;
+        inQuotes = 0;
+        while (i < len) 
+        {
+            if (isQuote(str[i]))
+                inQuotes = !inQuotes;
+            else if (str[i] == c && !inQuotes)
+                break;
+            i++;
+        }
+
+        int end = i, tokenLen = end - start;
+        result[resultSize] = (char*)malloc((tokenLen + 1) * sizeof(char));
+        if (!result[resultSize])
+            return(NULL);
+        copyToken(&str[start], result[resultSize], tokenLen);
+        resultSize++;
+        if (i == len)
+            break;
+        i++; // Skip the separator
+    }
+
+    result[resultSize] = NULL;
+    return result;
+}
+
+void freeTokens(char** tokens) {
+    for (int i = 0; tokens[i] != NULL; i++) {
+        free(tokens[i]);
+    }
+    free(tokens);
+}
+
+int main() {
+    char* input = "apple,banana,'cherry,grape',orange,'pear'";
+    char** tokens = splitString(input, ',');
+
+    int i = 0;
+    while (tokens[i] != NULL) {
+        printf("Token %d: %s\n", i, tokens[i]);
+        i++;
+    }
+
+    freeTokens(tokens);
+    return 0;
+}

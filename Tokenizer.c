@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 20:20:56 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/07/19 18:03:35 by marvin           ###   ########.fr       */
+/*   Updated: 2023/08/07 14:27:28 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,34 +60,6 @@ void    tokenizer(char **str)
         cmds->next = createNode(str[i]);
     }
     free(str);
-}
-
-int    ENV_checker(char *str)
-{
-    int i;
-    int inSquotes;
-    int inDquotes;
-    
-    i = -1;
-    while(str[++i])
-    {
-        if (str[i] == '\"' && inSquotes == 0 && inDquotes == 0)
-            inDquotes = 1;
-        else if (str[i] == '\"' && inDquotes == 1)
-            inDquotes = 0;
-        else if (str[i] == '\'' && inSquotes == 0 && inDquotes == 0)
-            inSquotes = 1;
-        else if (str[i] == '\'' && inSquotes == 1)
-            inSquotes = 0;
-        if (str[i] == '$')
-        {
-            if (inSquotes == 1 && inDquotes == 0)
-                return(0);
-            else if (inDquotes == 1 && inSquotes == 0)
-                return(1);               
-        }
-    }
-    return(0);
 }
 
 int cnt_cmds(char *line)

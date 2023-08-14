@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 20:19:32 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/07/19 21:57:45 by marvin           ###   ########.fr       */
+/*   Updated: 2023/08/10 01:43:08 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ int main()
     char **str;
     char *s;
     char *st;
+    // char **env;
     t_list *cmds = NULL;
     t_list *tmp = NULL;
     while(1)
@@ -50,29 +51,35 @@ int main()
                 st = addnext_pipe(s);
                 str = ft_split(st,'\n');
                 str = removePipePointers(str);
-
+                // i = 0;
+                // while(str[i])
+                //     expand_ENV(str[i++], env);
                 i = 0;
                 if(str[0])
                     cmds = createNode(str[0], i);
                 while( ++i < count_cmds(str))
                     addNodeFront(cmds, str[i],i);
+                cmd_define(cmds);
                 
                 
-                
-                
+
                 
                 tmp = cmds;
-                while(tmp)
-                {
-                    int j = 0;
-                    while (tmp->cmd[j])
+                int j = 0;
+                
+                    while (tmp)
                     {
-                        // printf("node:%d\n",tmp->index);
-                        printf("%s\n", tmp->cmd[j]);
-                        j++;
+                        printf("SIZE OF THIS COMMAND:%d\n",tmp->size_cmd);
+                        j = 0;
+                        while(j < tmp->size_cmd)
+                        {
+                            printf("Content:%s\n",tmp->define[j].content);
+                            printf("Dollar:%d\n",tmp->define[j].dollar);
+                            printf("Type:%d\n",tmp->define[j].state);
+                            j++;
+                        }
+                        tmp = tmp->next;
                     }
-                    tmp = tmp->next;
-                }
                 
                 
                   
