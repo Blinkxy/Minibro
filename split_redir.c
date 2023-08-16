@@ -102,7 +102,7 @@ char *expand_ENV(char *str, char **env)
     return(result);
 }
 
-void    **final_remove_quotes(t_list *cmds)
+void    final_remove_quotes(t_list *cmds)
 {
     int i;
     t_list *tmp;

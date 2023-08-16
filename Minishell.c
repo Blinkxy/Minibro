@@ -21,6 +21,7 @@ int main()
     char **env;  // DOUZI : GIVE IT YOUR DATA
     t_list *cmds = NULL;
  
+
     while(1)
     {
         s = readline("mzoheir$>");

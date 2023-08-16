@@ -1,6 +1,6 @@
 #include "Minishell.h"
 
-t_redir *redir_array(t_list *commands)
+void redir_array(t_list *commands)
 {
     int i;
     int j = 0;

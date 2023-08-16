@@ -91,7 +91,7 @@ void    final_cmd(t_list *cmds)
         j = 0;
         while(i < tmp->size_cmd)
         {
-            if (tmp->define[i].state = WORD)
+            if (tmp->define[i].state == WORD)
                 tmp->final_cmd[j++] = ft_strdup(tmp->define[i].content);
             i++;
         }
