@@ -21,6 +21,7 @@ t_redir *redir_array(t_list *commands)
         }
         if (nb_red > 0)
         {
+            tmp->red_nb = nb_red;
             tmp->redir = malloc(sizeof(t_redir) * nb_red);
             i = 0;
             j = 0;

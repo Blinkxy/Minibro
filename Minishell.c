@@ -47,6 +47,7 @@ int main()
                 final_struct(cmds,env);
                 final_remove_quotes(cmds);
                 redir_array(cmds);
+                final_cmd(cmds);
                 free_define_and_cmd(cmds);
             }
         }

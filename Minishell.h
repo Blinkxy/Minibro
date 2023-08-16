@@ -97,3 +97,4 @@ void 	free_struct(t_define *define);
 void 	*final_struct(t_list *cmds, char **env);
 t_redir *redir_array(t_list *commands);
 void 	free_define_and_cmd(t_list *cmds);
+void    final_cmd(t_list *cmds);
