@@ -56,7 +56,6 @@ typedef struct s_redir
 typedef struct s_list
 {
     char** cmd;     //  double array of EACH command
-	char *raw_cmd;	// raw command with no split
     int index;		// index of the command
 	int size_cmd;	// how many pointers in each command
 	t_define *define; // each pointer of cmd is in a struct for define/expand
@@ -88,7 +87,7 @@ int 	compare_env_var(char *str, char *var);
 int 	get_env_var(char **env, char *var);
 char 	*expand_ENV(char *str, char **env);
 char	*Expand_quotes(char* str);
-char 	**expand_all(t_list *cmds);
+void    **final_remove_quotes(t_list *cmds)
 void 	initialize_define(t_list *cmds);
 int 	countWords(char* str);
 char	**splitWords(char* str, int* wordCount);
@@ -97,3 +96,4 @@ void 	insert_new_struct(t_define *define, t_define *inserted, t_list *cmds, int 
 void 	free_struct(t_define *define);
 void 	*final_struct(t_list *cmds, char **env);
 t_redir *redir_array(t_list *commands);
+void 	free_define_and_cmd(t_list *cmds);

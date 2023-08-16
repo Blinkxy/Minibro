@@ -12,19 +12,6 @@
 
 #include "Minishell.h"
 
-int start_pipe(char *s)
-{
-    int i  = 0;
-    
-    if(s[0] == '|')
-        return(0);
-    while(s[i] == ' ' || s[i] == '\t')
-        i++;
-    if (s[i] == '|')
-        return(0);
-    return(1);    
-}
-
 int main()
 {
     int i;
@@ -58,7 +45,9 @@ int main()
                     addNodeFront(cmds, str[i],i);
                 cmd_define(cmds);
                 final_struct(cmds,env);
+                final_remove_quotes(cmds);
                 redir_array(cmds);
+                free_define_and_cmd(cmds);
             }
         }
     }

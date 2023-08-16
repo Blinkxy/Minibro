@@ -128,7 +128,7 @@ void *final_struct(t_list *cmds, char **env)
                 if (countWords(tmp->define[i].content) > 1 && tmp->define[i].type == FYLE)
                 {
                     printf("ambiguous redirect\n");
-                    return;
+                    return NULL;
                 }
                 else if (countWords(tmp->define[i].content) > 1 && tmp->define[i].type != FYLE)
                 {

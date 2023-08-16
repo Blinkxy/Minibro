@@ -102,55 +102,54 @@ char *expand_ENV(char *str, char **env)
     return(result);
 }
 
-// char    **expand_all(t_list *cmds)
-// {
-//     int i = 0;
-//     int j;
-//     t_list *tmp;
+void    **final_remove_quotes(t_list *cmds)
+{
+    int i;
+    t_list *tmp;
+    
+    tmp = cmds;
+    while(tmp)
+    {
+        i = 0;
+        while(i < tmp->size_cmd)
+        {
+            tmp->define[i].content = Expand_quotes(tmp->define[i].content);
+            i++;
+        }
+        tmp = tmp->next;
+    }
+}
 
-//     tmp = cmds;
-//     while(tmp)
-//     {
-//         j = 0;
-//         while(tmp->cmd[j])
-//         {
-//             tmp->cmd[j] = Expand_quotes(tmp->cmd[j]);
-//             j++;
-//         }
-//         tmp = tmp->next;
-//     }
-// }
-
-// char    *Expand_quotes(char* str)
-// {
-//     int i = 0;
-//     int j = 0;
-//     int singleQuotes = 0;
-//     int doubleQuotes = 0;
-//     int len = ft_strlen(str);
-//     char* result = (char*)malloc(len + 1);  // Allocate memory for the result string
-//     if (!result)
-//         return(NULL);
-//     while (str[i] != '\0') 
-//     {
-//         // Check for single quotes
-//         if (str[i] == '\'' && (i == 0 || str[i - 1] != '\\') && doubleQuotes % 2 == 0) 
-//             singleQuotes = (singleQuotes + 1) % 2;
-//         // Check for double quotes
-//         else if (str[i] == '"' && (i == 0 || str[i - 1] != '\\') && singleQuotes % 2 == 0) 
-//             doubleQuotes = (doubleQuotes + 1) % 2;
-//         // Remove quotes
-//         else
-//         {
-//             if (!(str[i] == '\'' && singleQuotes) && !(str[i] == '"' && doubleQuotes)) 
-//             {
-//                 result[j] = str[i];
-//                 j++;
-//             }
-//         }
-//         i++;
-//     }
-//     free(str);
-//     result[j] = '\0';  // Add null terminator to the result string
-//     return result;
-// }
+char    *Expand_quotes(char* str)
+{
+    int i = 0;
+    int j = 0;
+    int singleQuotes = 0;
+    int doubleQuotes = 0;
+    int len = ft_strlen(str);
+    char* result = (char*)malloc(len + 1);  // Allocate memory for the result string
+    if (!result)
+        return(NULL);
+    while (str[i] != '\0') 
+    {
+        // Check for single quotes
+        if (str[i] == '\'' && (i == 0 || str[i - 1] != '\\') && doubleQuotes % 2 == 0) 
+            singleQuotes = (singleQuotes + 1) % 2;
+        // Check for double quotes
+        else if (str[i] == '"' && (i == 0 || str[i - 1] != '\\') && singleQuotes % 2 == 0) 
+            doubleQuotes = (doubleQuotes + 1) % 2;
+        // Remove quotes
+        else
+        {
+            if (!(str[i] == '\'' && singleQuotes) && !(str[i] == '"' && doubleQuotes)) 
+            {
+                result[j] = str[i];
+                j++;
+            }
+        }
+        i++;
+    }
+    free(str);
+    result[j] = '\0';  // Add null terminator to the result string
+    return result;
+}
