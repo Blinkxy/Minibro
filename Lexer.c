@@ -6,37 +6,11 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 20:29:26 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/07/21 18:37:07 by marvin           ###   ########.fr       */
+/*   Updated: 2023/08/16 14:05:29 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Minishell.h"
-
-int checker_line(char *line)
-{
-    int i;
-    
-    if (checkQuotes(line) == 0)
-    {
-        printf("Invalid command: quotes not closed\n");
-        return(0);
-    }
-    // DOUBLE PIPE or END with PIPE
-    i = 0;
-    while(line[i])
-    {
-        if(line[i] == '|')
-        {
-            if (!line[i + 1] || line[i + 1] == '|')
-            {
-                printf("syntax error near unexpected token '|'\n");
-                return(0);
-            }
-        }
-        i++;
-    }
-    return(1);
-}
 
 int checkQuotes(char *line)
 {
@@ -92,7 +66,8 @@ char* addnext_pipe(char* str)
     return modifiedStr;
 }
 
-char** removePipePointers(char** str) {
+char** removePipePointers(char** str) 
+{
     char** result;
     int count = 0;
     int i;
@@ -120,4 +95,29 @@ char** removePipePointers(char** str) {
     result[j] = NULL;
     free(str);
     return result;
+}
+
+int checkQuoteIndex(char* str, char* index) 
+{
+    int singleQuotes = 0;
+    int doubleQuotes = 0;
+    int i = 0;
+
+    while (str[i] != '\0')
+    {
+        if (str[i] == '\'' && (i == 0 || str[i - 1] != '\\') && doubleQuotes % 2 == 0) 
+        {
+            singleQuotes++;
+            if (singleQuotes % 2 == 1 && &str[i] <= index)
+                return 1;  // Index is between single quotes
+        } 
+        else if (str[i] == '"' && (i == 0 || str[i - 1] != '\\') && singleQuotes % 2 == 0)
+        {
+            doubleQuotes++;
+            if (doubleQuotes % 2 == 1 && &str[i] <= index)
+                return 0;  // Index is between double quotes
+        }
+        i++;
+    }
+    return 0;  // Index is not within quotes
 }

@@ -57,7 +57,6 @@ char** splitWords(char* str, int* wordCount)
         }
         i++;
     }
-
     if (wordStart == 1) 
 	{
         words[wordIndex] = ft_strdup(word);
@@ -79,22 +78,22 @@ char** splitWords(char* str, int* wordCount)
     return words;
 }
 
-int main() {
-    char input[] = "This 'is a test' string with 'multiple words' in single quotes.";
-    int wordCount;
-    char** words = splitWords(input, &wordCount);
+// int main() {
+//     char input[] = "This 'is a test' string with 'multiple words' in single quotes.";
+//     int wordCount;
+//     char** words = splitWords(input, &wordCount);
 
-    if (words == NULL) {
-        return 1;  // Error exit code
-    }
+//     if (words == NULL) {
+//         return 1;  // Error exit code
+//     }
 
-    printf("Total words: %d\n", wordCount);
-    for (int i = 0; i < wordCount; i++) {
-        printf("Word %d: %s\n", i + 1, words[i]);
-        free(words[i]);
-    }
+//     printf("Total words: %d\n", wordCount);
+//     for (int i = 0; i < wordCount; i++) {
+//         printf("Word %d: %s\n", i + 1, words[i]);
+//         free(words[i]);
+//     }
 
-    free(words);
+//     free(words);
 
-    return 0;
-}
+//     return 0;
+// }
