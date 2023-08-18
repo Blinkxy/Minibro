@@ -12,16 +12,35 @@
 
 #include "Minishell.h"
 
-int main()
+void init_env_data(t_general *sa, char **envp)
 {
+    int i;
+
+    i  = 0;
+    sa->env = malloc(sizeof(char *) * (ft_size(envp) + 1));
+    while(envp[i])
+    {
+        sa->env[i] = ft_strdup(envp[i]);
+        i++;
+    }
+    sa->env[i] = NULL;
+}
+
+int main(int argc, char **argv, char **env)
+{
+    (void)argc;
+    (void)argv;
     int i;
     char **str;
     char *s;
     char *st;
-    char **env;  // DOUZI : GIVE IT YOUR DATA
     t_list *cmds = NULL;
- 
+    t_general *sa = malloc(sizeof(t_general));
+    sa->cmds = malloc(sizeof(t_list));
+    memset(sa, 0, sizeof(t_general));
 
+    init_env_data(sa, env);
+    get_export_env(sa);
     while(1)
     {
         s = readline("mzoheir$>");
@@ -50,6 +69,7 @@ int main()
                 redir_array(cmds);
                 final_cmd(cmds);
                 free_define_and_cmd(cmds);
+                if_builtin(sa->cmds->final_cmd, sa, 1);
             }
         }
     }

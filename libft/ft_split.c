@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 15:14:36 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/07/04 12:40:45 by marvin           ###   ########.fr       */
+/*   Updated: 2023/08/14 14:29:41 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,11 @@ static int	count_strings(char *s, char c)
 
 	count = 0;
 	i = 0;
-	while (s[i] != '\0')
+	while (s[i])
 	{
 		while (s[i] && s[i] == c)
 			i++;
-		if (s[i] != '\0')
+		if (s[i])
 			count++;
 		while (s[i] && s[i] != c)
 			i++;

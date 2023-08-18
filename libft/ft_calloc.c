@@ -3,19 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   ft_calloc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 13:53:05 by mzoheir           #+#    #+#             */
-/*   Updated: 2022/10/20 13:32:20 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/08/08 23:22:10 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	*ft_calloc(size_t count, size_t size)
+void	*ft_calloc(int count, int size)
 {
 	char	*str;
-	size_t	t;
+	int	t;
 
 	t = count * size;
 	str = (char *)malloc(t);

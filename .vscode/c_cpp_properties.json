@@ -4,8 +4,8 @@
             "name": "Win32",
             "includePath": [
                 "${workspaceFolder}/**",
-                "D:\\w64devkit\\x86_64-w64-mingw32\\include",
-                "D:\\PROJETS 1337\\readline-master"
+                "D:/PROJETS 1337/",
+                "D:/w64devkit/x86_64-w64-mingw32/include"
             ],
             "defines": [
                 "_DEBUG",
