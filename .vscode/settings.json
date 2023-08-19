@@ -4,6 +4,7 @@
         "history.h": "c",
         "minishell.h": "c",
         "signal.h": "c",
-        "stdlib.h": "c"
+        "stdlib.h": "c",
+        "libft.h": "c"
     }
 }

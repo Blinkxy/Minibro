@@ -84,7 +84,7 @@ void insert_new_struct(t_define *define, t_define *inserted, t_list *cmds, int i
     
     final_define = (t_define *)malloc(sizeof(t_define) * cmds->size_cmd);
     i = 0;
-    while( i < index - 1)
+    while( i < index)
     {
         final_define[i] = define[i];
         i++;
