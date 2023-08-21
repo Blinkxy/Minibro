@@ -69,7 +69,17 @@ int main(int argc, char **argv, char **env)
                 final_remove_quotes(cmds);
                 redir_array(cmds);
                 final_cmd(cmds);
-
+                tmp = cmds;
+                while(tmp)
+                {
+                    i = 0;
+                    while(tmp->final_cmd[i])
+                    {    
+                        printf("%s\n", tmp->final_cmd[i]);
+                        i++;
+                    }
+                    tmp= tmp->next;
+                }
                 // free_define_and_cmd(cmds);
                 
                 

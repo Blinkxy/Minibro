@@ -131,7 +131,9 @@ void final_struct(t_list *cmds, char **env)
         {
             if (tmp->define[i].dollar == 1)
             {
-                tmp->define[i].content = expand_ENV(tmp->define->content, env);
+                tmp->define[i].content = Expand_quotes(tmp->define[i].content);
+                tmp->define[i].content = ft_strtrim(tmp->define[i].content, " ");
+                tmp->define[i].content = expand_ENV(tmp->define[i].content, env);
                 if (countWords(tmp->define[i].content) > 1 && tmp->define[i].type == FYLE)
                 {
                     printf("ambiguous redirect\n");

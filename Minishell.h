@@ -113,6 +113,10 @@ void    redir_array(t_list *commands);
 void 	free_define_and_cmd(t_list *cmds);
 void    final_cmd(t_list *cmds);
 
+// TEST
+char *extract_ENV(char *str);
+
+
 //general functions
 int ft_size(char **str);
 int ft_strcmp(char *s1, char *s2);
