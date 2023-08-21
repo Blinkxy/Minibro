@@ -4,7 +4,7 @@
             "name": "Win32",
             "includePath": [
                 "${workspaceFolder}/**",
-                "D:/PROJETS 1337/",
+                "D:/PROJETS_1337/",
                 "D:/w64devkit/x86_64-w64-mingw32/include"
             ],
             "defines": [

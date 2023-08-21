@@ -16,6 +16,7 @@ void free_struct(t_define *define)
 void initialize_define(t_define *define, int size)
 {
     int j = 0;
+
     while (j < size) 
     {
     define[j].state = 0;
@@ -74,6 +75,15 @@ void fill_new_struct(char *str, t_define *new_struct)
         new_struct[i].size_struct_inserted = count_words;
         i++;
     }
+    i = 0;
+    while(split_words[i])
+    {
+        free(split_words[i]);
+        i++;
+    }
+    if(split_words)
+        free(split_words);
+
 }
 
 void insert_new_struct(t_define *define, t_define *inserted, t_list *cmds, int index)
@@ -133,7 +143,7 @@ void final_struct(t_list *cmds, char **env)
                     if(!new_struct)
                         return;
                     initialize_define(new_struct, tmp->size_cmd);
-                    fill_new_struct(tmp->define->content,new_struct);
+                    fill_new_struct(tmp->define[i].content,new_struct);
                     insert_new_struct(tmp->define, new_struct, cmds, i);
                 }
             }

@@ -29,8 +29,8 @@ char	*ft_strjoin(char *s1, char *s2)
 		str[i] = s1[i];
 	while (s2[++j] && i < ft_strlen(s2) + ft_strlen(s1) && j < ft_strlen(s2))
 		str[i + j] = s2[j];
-	str[i + j] = ' ';
-	free(s1);
+	str[i + j] = '\0';
+	// free(s1);
 	return (str);
 }
 

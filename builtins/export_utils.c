@@ -70,7 +70,9 @@ void get_export_env(t_general *sa)
     int i;
 
     i = 0;
-    sa->env_export = (char **)malloc(sizeof(char *) * ft_size(sa->env) + 1);
+    sa->env_export = (char **)malloc(sizeof(char *) * ft_size(sa->env)+ 1);
+    if(!sa->env_export)
+        return;
     while(i < ft_size(sa->env))
     {
         sa->env_export[i] = ft_strdup(sa->env[i]);

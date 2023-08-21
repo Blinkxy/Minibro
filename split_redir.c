@@ -66,6 +66,28 @@ int count_cmds(char **str)
     return(i);
 }
 
+char *get_ENV(char **env, char *check)
+{
+    int i;
+    int j;
+    char *str;
+
+    i = 0;
+    while(env[i])
+    {
+        if(compare_env_var(env[i], check) == 1)
+        {
+            j = 0;
+            while(env[i][j] && env[i][j] != '=')
+                j++;
+            str = ft_substr(env[i], j, ft_strlen(env[i]) - j);
+            return(str);
+        }
+        i++;     
+    }
+    return(0);
+}
+
 char *expand_ENV(char *str, char **env)
 {
     int i;
@@ -80,22 +102,24 @@ char *expand_ENV(char *str, char **env)
         if(str[i] == '$' && checkQuoteIndex(str, &str[i]) == 0)
         {
             j = i;
-            while(str[i] && (ft_isalnum(str[i]) || str[i] == '_'))
+            while(str[i] && (ft_isalpha(str[i]) || str[i] == '_'))
                 i++;
             if (i > j)
                 check_env = ft_substr(str,j,i);
             if(get_env_var(env,check_env) == -1 && check_env)
             {
                 i += ft_strlen(check_env) + 1;
-                free(check_env);
+                if(check_env)
+                    free(check_env);
             }
             else if(get_env_var(env,check_env) != -1 && check_env)
             {
-                ft_strjoin(result,env[get_env_var(env,check_env)]);
-                i += ft_strlen(env[get_env_var(env,check_env)]) + 1;
+                result = ft_strjoin(result,get_ENV(env, check_env));
+                i += ft_strlen(get_ENV(env, check_env));
+                free(check_env);
             }
         }
-        ft_strjoin(result, &str[i]);
+        result = ft_strjoin(result, &str[i]);
         i++;
     }
     free(str);

@@ -13,7 +13,7 @@
 #include "Minishell.h"
 
 
-t_list *createNode(char* cmd, int i) 
+t_list *createNode(char* cmd, int i)
 {
     t_list *newNode;
     int j;

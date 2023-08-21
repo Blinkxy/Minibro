@@ -99,6 +99,7 @@ int 	count_cmds(char **str);
 int 	sizeof_cmd(t_list *cmds);
 void 	cmd_define(t_list *cmds);
 char 	*expand_ENV(char *str, char **env);
+char 	*get_ENV(char **env, char *check);
 char	*Expand_quotes(char* str);
 void    final_remove_quotes(t_list *cmds);
 void 	initialize_define(t_define *new_struct, int size);

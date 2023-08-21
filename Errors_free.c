@@ -16,15 +16,12 @@ void free_define_and_cmd(t_list *cmds)
             i++;
         }
         i = 0;
-        if(cmds->cmd)
+        while(cmds->cmd[i])
         {
-            while(cmds->cmd[i])
-            {
-                free(cmds->cmd[i]);
-                i++;
-            }
-            free(cmds->cmd);
+            free(cmds->cmd[i]);
+            i++;
         }
+        free(cmds->cmd);
         tmp = tmp->next;
     }
 }
