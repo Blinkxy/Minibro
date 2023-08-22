@@ -74,19 +74,3 @@ char	**ft_split(char *s, char c)
 	free(s);
 	return (str);
 }
-
-// #include <stdio.h>
-// int	main(void)
-// {
-// 	char		*str;
-// 	char		c;
-
-// 	char		**s;
-// 	str = "Hello, si;o, marouane";
-// 	c = ',';
-
-// 	s = ft_split(str, c);
-// 	for(int i = 0; i<4;i++)
-// 		printf("%s\n",s[i]);
-// 	return (0);
-// }

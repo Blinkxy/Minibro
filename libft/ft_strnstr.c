@@ -12,7 +12,7 @@
 
 #include "libft.h"
 
-char	*ft_strnstr(char *haystack, char *needle, int len)
+char	*ft_strnstr(const char *haystack, const char *needle, int len)
 {
 	int		j;
 	int	i;

@@ -97,7 +97,25 @@ char** removePipePointers(char** str)
     return result;
 }
 
-int checkQuoteIndex(char* str, char* index) 
+char* concatenate_char(char* str, char c) 
+{
+    int len;
+    char* new_str; 
+    
+    len = ft_strlen(str);
+    new_str = (char*)malloc(len + 2);
+    if(!new_str)
+        return(NULL);
+    if (new_str) 
+    {
+        ft_memcpy(new_str, str, len); 
+        new_str[len] = c;           
+        new_str[len + 1] = '\0';
+    }
+    return new_str;
+}
+
+int checkQuoteIndex(char* str, int index) 
 {
     int singleQuotes = 0;
     int doubleQuotes = 0;
@@ -108,16 +126,17 @@ int checkQuoteIndex(char* str, char* index)
         if (str[i] == '\'' && (i == 0 || str[i - 1] != '\\') && doubleQuotes % 2 == 0) 
         {
             singleQuotes++;
-            if (singleQuotes % 2 == 1 && &str[i] <= index)
+            if (singleQuotes % 2 == 1 && i <= index)
                 return 1;  // Index is between single quotes
         } 
         else if (str[i] == '"' && (i == 0 || str[i - 1] != '\\') && singleQuotes % 2 == 0)
         {
             doubleQuotes++;
-            if (doubleQuotes % 2 == 1 && &str[i] <= index)
+            if (doubleQuotes % 2 == 1 && i <= index)
                 return 0;  // Index is between double quotes
         }
         i++;
     }
+    
     return 0;  // Index is not within quotes
 }

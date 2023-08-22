@@ -25,7 +25,6 @@ int compare_env_var(char *str, char *var)
     return(-1);
 }
 
-
 int get_env_var(char **env, char *var)
 {
     int i = 0;
@@ -33,7 +32,9 @@ int get_env_var(char **env, char *var)
     {
         if(compare_env_var(env[i], var) == 1)
             return(i);
+
         i++;        
     }
     return(-1);
 }
+

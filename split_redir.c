@@ -65,29 +65,6 @@ int count_cmds(char **str)
         i++;
     return(i);
 }
-
-char *get_ENV(char **env, char *check)
-{
-    int i;
-    int j;
-    char *str;
-
-    i = 0;
-    while(env[i])
-    {
-        if(compare_env_var(env[i], check) == 1)
-        {
-            j = 0;
-            while(env[i][j] && env[i][j] != '=')
-                j++;
-            str = ft_substr(env[i], j, ft_strlen(env[i]) - j);
-            return(str);
-        }
-        i++;     
-    }
-    return(0);
-}
-
 char *extract_ENV(char *str)
 {
     int i;
@@ -108,72 +85,42 @@ char *expand_ENV(char *str, char **env)
     char *check_env;
     char *extract;
 
-    result = ft_calloc(1, 1);
+    result = ft_calloc(1, 1); // Allocate memory for result string
     if (!result)
         return NULL;
     i = 0;
     while (str[i])
     {
-        if (str[i] == '$' && checkQuoteIndex(str, &str[i]) == 0)
+        if (str[i] == '$' && checkQuoteIndex(str, i) == 0)
         {
+            if ( str[i + 1] == '?')
+            {
+                i++;
+            }
             j = i + 1;
             while (str[j] && (ft_isalnum(str[j]) || str[j] == '_'))
                 j++;
             if (j > i + 1)
-                check_env = ft_substr(str, i + 1, j - i);
-            if (get_env_var(env, check_env) == -1 && check_env)
-                i += ft_strlen(check_env);
-            else if (get_env_var(env, check_env) != -1 && check_env)
             {
-                extract = extract_ENV(env[get_env_var(env, check_env)]);
-                result = ft_strjoin(result, extract);
-                i += ft_strlen(extract);
+                check_env = ft_substr(str, i + 1, j - i - 1);
+                if (get_env_var(env, check_env) == -1 && check_env)
+                    i += ft_strlen(check_env);
+                else if (get_env_var(env, check_env) != -1 && check_env)
+                {
+                    extract = extract_ENV(env[get_env_var(env, check_env)]);
+                    result = ft_strjoin(result, extract);
+                    i += ft_strlen(extract) - 2;
+                    free(extract);
+                    free(check_env);
+                }
             }
         }
         else
-            result = ft_strjoin(result, &str[i]);
+            result = concatenate_char(result, str[i]);
         i++;
     }
-    result[i] = '\0';
     return result;
 }
-// char *expand_ENV(char *str, char **env)
-// {
-//     int i;
-//     int j;
-//     char *result;
-//     char *check_env;
-
-//     result = ft_calloc(1,1);    
-//     i = 0;
-//     while(str[i])
-//     {
-//         if(str[i] == '$' && checkQuoteIndex(str, &str[i]) == 0)
-//         {
-//             j = i;
-//             while(str[i] && (ft_isalpha(str[i]) || str[i] == '_'))
-//                 i++;
-//             if (i > j)
-//                 check_env = ft_substr(str,j,i);
-//             if(get_env_var(env,check_env) == -1 && check_env)
-//             {
-//                 i += ft_strlen(check_env) + 1;
-//                 if(check_env)
-//                     free(check_env);
-//             }
-//             else if(get_env_var(env,check_env) != -1 && check_env)
-//             {
-//                 result = ft_strjoin(result,get_ENV(env, check_env));
-//                 i += ft_strlen(get_ENV(env, check_env));
-//                 free(check_env);
-//             }
-//         }
-//         result = ft_strjoin(result, &str[i]);
-//         i++;
-//     }
-//     free(str);
-//     return(result);
-// }
 
 void    final_remove_quotes(t_list *cmds)
 {

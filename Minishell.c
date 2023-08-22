@@ -35,7 +35,7 @@ int main(int argc, char **argv, char **env)
     char *s;
     char *st;
     t_list *cmds = NULL;
-    // t_list *tmp;
+    t_list *tmp;
     t_general *sa = malloc(sizeof(t_general));
     sa->cmds = malloc(sizeof(t_list));
     memset(sa, 0, sizeof(t_general));
@@ -64,15 +64,25 @@ int main(int argc, char **argv, char **env)
                     cmds = createNode(str[0], i);
                 while( ++i < count_cmds(str))
                     addNodeFront(cmds, str[i],i);
+
                 cmd_define(cmds);
                 final_struct(cmds,env);
                 final_remove_quotes(cmds);
-                redir_array(cmds);
                 final_cmd(cmds);
+                redir_array(cmds);
                 // free_define_and_cmd(cmds);
-                
-                
                 // if_builtin(sa->cmds->final_cmd, sa, 1);
+                tmp = cmds;
+                while(tmp)
+                {
+                    i = 0;
+                    while(tmp->final_cmd[i])
+                    {
+                        printf("finished:%s\n", tmp->final_cmd[i]);
+                        i++;
+                    }
+                    tmp = tmp->next;
+                }
             }
         }
     }

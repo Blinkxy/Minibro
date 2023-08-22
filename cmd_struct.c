@@ -16,16 +16,15 @@ void free_struct(t_define *define)
 void initialize_define(t_define *define, int size)
 {
     int j = 0;
-
-    while (j < size) 
+    while (j < size)
     {
     define[j].state = 0;
     define[j].type = 0;
     define[j].dollar = 0;
     define[j].content = 0;
     define[j].index = 0;
-    define[j].size_struct = size;
-    define[j].size_struct_inserted = 0;
+    define[j].size_struct = 0;
+    define[j].size_struct_inserted = size;
     j++;
     }
 }
@@ -62,17 +61,14 @@ void fill_new_struct(char *str, t_define *new_struct)
 {
     int i;
     char **split_words;
-    int count_words;
-
-    count_words = countWords(str);
+    
     i = 0;
-    split_words = splitWords(str, &count_words);
+    split_words = ft_split(str, ' ');
     while(split_words[i])
     {
         new_struct[i].content = ft_strdup(split_words[i]);
         new_struct[i].state = WORD;
         new_struct[i].type = new_struct[i].state;
-        new_struct[i].size_struct_inserted = count_words;
         i++;
     }
     i = 0;
@@ -83,7 +79,6 @@ void fill_new_struct(char *str, t_define *new_struct)
     }
     if(split_words)
         free(split_words);
-
 }
 
 void insert_new_struct(t_define *define, t_define *inserted, t_list *cmds, int index)
@@ -111,8 +106,6 @@ void insert_new_struct(t_define *define, t_define *inserted, t_list *cmds, int i
         i++;
     }
     cmds->size_cmd = i + j;
-    free_struct(define);
-    free_struct(inserted);
     define = final_define;
 }
 
@@ -131,9 +124,11 @@ void final_struct(t_list *cmds, char **env)
         {
             if (tmp->define[i].dollar == 1)
             {
-                tmp->define[i].content = Expand_quotes(tmp->define[i].content);
-                tmp->define[i].content = ft_strtrim(tmp->define[i].content, " ");
+                // tmp->define[i].content = Expand_quotes(tmp->define[i].content);
+                // tmp->define[i].content = ft_strtrim(tmp->define[i].content, " ");
+                printf("%s\n", tmp->define[i].content);
                 tmp->define[i].content = expand_ENV(tmp->define[i].content, env);
+                printf("Expended:%s\n", tmp->define[i].content);
                 if (countWords(tmp->define[i].content) > 1 && tmp->define[i].type == FYLE)
                 {
                     printf("ambiguous redirect\n");
@@ -141,10 +136,11 @@ void final_struct(t_list *cmds, char **env)
                 }
                 else if (countWords(tmp->define[i].content) > 1 && tmp->define[i].type != FYLE)
                 {
+                    printf("BUG!");
                     new_struct = malloc(sizeof(t_define) * countWords(tmp->define[i].content));
                     if(!new_struct)
                         return;
-                    initialize_define(new_struct, tmp->size_cmd);
+                    initialize_define(new_struct, countWords(tmp->define[i].content));
                     fill_new_struct(tmp->define[i].content,new_struct);
                     insert_new_struct(tmp->define, new_struct, cmds, i);
                 }
@@ -221,7 +217,7 @@ void cmd_define(t_list *cmds)
                 tmp->define[i].index = i;
             }
             if (ft_strchr(tmp->cmd[i], '$') && tmp->define[i].state != DELIMITER
-            && checkQuoteIndex(tmp->cmd[i], ft_strchr(tmp->cmd[i], '$')) == 0)
+            && checkQuoteIndex(tmp->cmd[i], ft_indexchr(tmp->cmd[i], i)) == 0)
                 tmp->define[i].dollar = 1;
             i++;
         }

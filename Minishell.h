@@ -91,16 +91,17 @@ void	removeExtraNewlines(char* str);
 void    tokenizer(char **str);
 t_list *createNode(char* cmd, int i);
 void 	addNodeFront(t_list *head, char* str, int i);
-int 	checkQuoteIndex(char* str, char* charPtr);
+int 	checkQuoteIndex(char* str, int index);
 char 	**removePipePointers(char** str);
 char** 	split_cmd(char* str);
 int 	isWhitespace(char c);
 int 	count_cmds(char **str);
 int 	sizeof_cmd(t_list *cmds);
 void 	cmd_define(t_list *cmds);
+char 	*extract_ENV(char *str);
 char 	*expand_ENV(char *str, char **env);
-char 	*get_ENV(char **env, char *check);
 char	*Expand_quotes(char* str);
+char* 	concatenate_char(char* str, char c);
 void    final_remove_quotes(t_list *cmds);
 void 	initialize_define(t_define *new_struct, int size);
 int 	countWords(char* str);
@@ -113,9 +114,7 @@ void    redir_array(t_list *commands);
 void 	free_define_and_cmd(t_list *cmds);
 void    final_cmd(t_list *cmds);
 
-// TEST
-char *extract_ENV(char *str);
-
+void free_words(char** words, int count);
 
 //general functions
 int ft_size(char **str);
