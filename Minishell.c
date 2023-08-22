@@ -35,7 +35,7 @@ int main(int argc, char **argv, char **env)
     char *s;
     char *st;
     t_list *cmds = NULL;
-    t_list *tmp;
+    // t_list *tmp;
     t_general *sa = malloc(sizeof(t_general));
     sa->cmds = malloc(sizeof(t_list));
     memset(sa, 0, sizeof(t_general));
@@ -72,17 +72,17 @@ int main(int argc, char **argv, char **env)
                 redir_array(cmds);
                 // free_define_and_cmd(cmds);
                 // if_builtin(sa->cmds->final_cmd, sa, 1);
-                tmp = cmds;
-                while(tmp)
-                {
-                    i = 0;
-                    while(tmp->final_cmd[i])
-                    {
-                        printf("finished:%s\n", tmp->final_cmd[i]);
-                        i++;
-                    }
-                    tmp = tmp->next;
-                }
+                // tmp = cmds;
+                // while(tmp)
+                // {
+                //     i = 0;
+                //     while(tmp->final_cmd[i])
+                //     {
+                //         printf("finished:%s\n", tmp->final_cmd[i]);
+                //         i++;
+                //     }
+                //     tmp = tmp->next;
+                // }
             }
         }
     }
