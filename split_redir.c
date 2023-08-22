@@ -91,27 +91,31 @@ char *expand_ENV(char *str, char **env)
     i = 0;
     while (str[i])
     {
-        if (str[i] == '$' && checkQuoteIndex(str, i) == 0)
+        if (str[i] == '$' && check_dollar(str, i) == 0)
         {
             if ( str[i + 1] == '?')
             {
-                i++;
+            //  execute previous command exit status
+                i += 2;
             }
-            j = i + 1;
-            while (str[j] && (ft_isalnum(str[j]) || str[j] == '_'))
-                j++;
-            if (j > i + 1)
+            else
             {
-                check_env = ft_substr(str, i + 1, j - i - 1);
-                if (get_env_var(env, check_env) == -1 && check_env)
-                    i += ft_strlen(check_env);
-                else if (get_env_var(env, check_env) != -1 && check_env)
+                j = i + 1;
+                while (str[j] && (ft_isalnum(str[j]) || str[j] == '_'))
+                    j++;
+                if (j > i + 1)
                 {
-                    extract = extract_ENV(env[get_env_var(env, check_env)]);
-                    result = ft_strjoin(result, extract);
-                    i += ft_strlen(extract) - 2;
-                    free(extract);
-                    free(check_env);
+                    check_env = ft_substr(str, i + 1, j - i - 1);
+                    if (get_env_var(env, check_env) == -1 && check_env)
+                        i += ft_strlen(check_env);
+                    else if (get_env_var(env, check_env) != -1 && check_env)
+                    {
+                        extract = extract_ENV(env[get_env_var(env, check_env)]);
+                        result = ft_strjoin(result, extract);
+                        i += ft_strlen(extract) - 2;
+                        free(extract);
+                        free(check_env);
+                    }
                 }
             }
         }

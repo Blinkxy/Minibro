@@ -92,6 +92,7 @@ void    tokenizer(char **str);
 t_list *createNode(char* cmd, int i);
 void 	addNodeFront(t_list *head, char* str, int i);
 int 	checkQuoteIndex(char* str, int index);
+int 	check_dollar(char *str, int index);
 char 	**removePipePointers(char** str);
 char** 	split_cmd(char* str);
 int 	isWhitespace(char c);

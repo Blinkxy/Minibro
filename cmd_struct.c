@@ -105,7 +105,7 @@ void insert_new_struct(t_define *define, t_define *inserted, t_list *cmds, int i
         final_define[i + j] = define[i];
         i++;
     }
-    cmds->size_cmd = i + j;
+    // cmds->size_cmd = i + j;
     define = final_define;
 }
 
@@ -136,7 +136,7 @@ void final_struct(t_list *cmds, char **env)
                 }
                 else if (countWords(tmp->define[i].content) > 1 && tmp->define[i].type != FYLE)
                 {
-                    printf("BUG!");
+                    // printf("BUG!\n");
                     new_struct = malloc(sizeof(t_define) * countWords(tmp->define[i].content));
                     if(!new_struct)
                         return;
@@ -145,6 +145,7 @@ void final_struct(t_list *cmds, char **env)
                     insert_new_struct(tmp->define, new_struct, cmds, i);
                 }
             }
+            // printf("size:%d et index:%d\n",tmp->size_cmd, tmp->index);
             i++;
         }
         tmp = tmp->next;
@@ -216,11 +217,40 @@ void cmd_define(t_list *cmds)
                 tmp->define[i].type = tmp->define[i].state;
                 tmp->define[i].index = i;
             }
-            if (ft_strchr(tmp->cmd[i], '$') && tmp->define[i].state != DELIMITER
-            && checkQuoteIndex(tmp->cmd[i], ft_indexchr(tmp->cmd[i], i)) == 0)
+            if (ft_strchr(tmp->cmd[i], '$') && tmp->define[i].state != DELIMITER)
                 tmp->define[i].dollar = 1;
             i++;
         }
         tmp = tmp->next;
     }
+}
+
+int check_dollar(char *str, int index)
+{
+    int i;
+    int Squote;
+    int Dquote;
+
+    Squote = 0;
+    Dquote = 0;
+    i = 0;
+    while(i < index)
+    {
+        if ( str[i] == '\''  && str[i - 1] != '\\' && Dquote == 0 && Squote == 0)
+            Squote = 1;
+        else if (str[i] == '\"' && str[i - 1] != '\\' && Dquote == 0 && Squote == 0)
+            Dquote = 1;
+        else if (str[i] == '\''  && str[i - 1] != '\\' && Dquote == 0 && Squote == 1)
+            Squote = 0;
+        else if (str[i] == '\"' && str[i - 1] != '\\' && Dquote == 1 && Squote == 0)
+            Dquote = 0;
+        i++;
+    }
+    if (i == index && Dquote == 1 && Squote == 0)
+        return(0); // Inside Double Quotes
+    else if ( i == index && Dquote == 0 && Squote == 0)
+        return(0); // Not within Quotes
+    else if ( i == index && Dquote == 0 && Squote == 1)
+        return(1); // Inside Single Quotes
+    return(0);
 }
