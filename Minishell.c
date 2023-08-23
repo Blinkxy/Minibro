@@ -70,7 +70,7 @@ int main(int argc, char **argv, char **env)
                 final_remove_quotes(cmds);
                 final_cmd(cmds);
                 redir_array(cmds);
-                // free_define_and_cmd(cmds);
+                free_define_and_cmd(cmds);
                 // if_builtin(sa->cmds->final_cmd, sa, 1);
                 // tmp = cmds;
                 // while(tmp)

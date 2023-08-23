@@ -1,5 +1,50 @@
 #include "Minishell.h"
 
+int	skip_quote(char *str, int i)
+{
+	if (str[i] == '\"')
+	{
+		i++;
+		while (str[i] != '\"')
+			i++;
+	}
+	else if (str[i] == '\'')
+	{
+		i++;
+		while (str[i] != '\'')
+			i++;
+	}
+	return (i);
+}
+
+int countWords(char* str) 
+{
+    int count = 0;
+    int inQuotes = 0;
+    int wordStart = 0;
+    int i = 0;
+
+    while (str[i]) 
+    {
+        if (str[i] == '\'' || str[i] == '"')
+            inQuotes = !inQuotes;
+        else if (str[i] == ' ' && !inQuotes) 
+        {
+            if (wordStart == 1) 
+            {
+                count++;
+                wordStart = 0;
+            }
+        } 
+        else
+            wordStart = 1;
+        i++;
+    }
+    if (wordStart == 1)
+        count++;
+    return count;
+}
+
 void free_struct(t_define *define)
 {
     int i;
@@ -29,41 +74,24 @@ void initialize_define(t_define *define, int size)
     }
 }
 
-int countWords(char* str) 
-{
-    int count = 0;
-    int inQuotes = 0;
-    int wordStart = 0;
-    int i = 0;
-
-    while (str[i]) 
-    {
-        if (str[i] == '\'')
-            inQuotes = !inQuotes;
-        else if (str[i] == ' ' && !inQuotes) 
-        {
-            if (wordStart == 1) 
-            {
-                count++;
-                wordStart = 0;
-            }
-        } 
-        else
-            wordStart = 1;
-        i++;
-    }
-    if (wordStart == 1)
-        count++;
-    return count;
-}
 
 void fill_new_struct(char *str, t_define *new_struct)
 {
-    int i;
+    int	i;
     char **split_words;
-    
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '\"' || str[i] == '\'')
+			i = skip_quote(str, i);
+		else if (str[i] == ' ' || str[i] == '\t'
+			|| str[i] == '\n')
+			str[i] = '\n';
+		i++;
+	}
     i = 0;
-    split_words = ft_split(str, ' ');
+    split_words = ft_split(str, '\n');
     while(split_words[i])
     {
         new_struct[i].content = ft_strdup(split_words[i]);
@@ -105,7 +133,6 @@ void insert_new_struct(t_define *define, t_define *inserted, t_list *cmds, int i
         final_define[i + j] = define[i];
         i++;
     }
-    // cmds->size_cmd = i + j;
     define = final_define;
 }
 
@@ -124,19 +151,18 @@ void final_struct(t_list *cmds, char **env)
         {
             if (tmp->define[i].dollar == 1)
             {
-                // tmp->define[i].content = Expand_quotes(tmp->define[i].content);
-                // tmp->define[i].content = ft_strtrim(tmp->define[i].content, " ");
-                // printf("%s\n", tmp->define[i].content);
+                // printf("Original:%s\n", tmp->define[i].content);
                 tmp->define[i].content = expand_ENV(tmp->define[i].content, env);
+                // printf("count:%d\n", countWords(tmp->define[i].content));
                 // printf("Expended:%s\n", tmp->define[i].content);
                 if (countWords(tmp->define[i].content) > 1 && tmp->define[i].type == FYLE)
                 {
                     printf("ambiguous redirect\n");
+                    // free struct
                     return;
                 }
                 else if (countWords(tmp->define[i].content) > 1 && tmp->define[i].type != FYLE)
                 {
-                    // printf("BUG!\n");
                     new_struct = malloc(sizeof(t_define) * countWords(tmp->define[i].content));
                     if(!new_struct)
                         return;
@@ -145,7 +171,6 @@ void final_struct(t_list *cmds, char **env)
                     insert_new_struct(tmp->define, new_struct, cmds, i);
                 }
             }
-            // printf("size:%d et index:%d\n",tmp->size_cmd, tmp->index);
             i++;
         }
         tmp = tmp->next;

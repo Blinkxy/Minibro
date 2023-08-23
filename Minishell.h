@@ -106,6 +106,7 @@ char* 	concatenate_char(char* str, char c);
 void    final_remove_quotes(t_list *cmds);
 void 	initialize_define(t_define *new_struct, int size);
 int 	countWords(char* str);
+int		skip_quote(char *str, int i);
 char	**splitWords(char* str, int* wordCount);
 void 	fill_new_struct(char *str, t_define *new_struct);
 void 	insert_new_struct(t_define *define, t_define *inserted, t_list *cmds, int index);
