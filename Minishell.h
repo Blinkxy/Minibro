@@ -20,6 +20,7 @@
 #include <sys/wait.h>
 #include <sys/types.h>
 #include <limits.h>
+#include <fcntl.h>
 
 typedef enum e_type
 {
@@ -59,6 +60,8 @@ typedef struct s_redir
 typedef struct s_list
 {
     char** cmd;     //  double array of EACH command
+	int fd_in;
+	int fd_out;
     int index;		// index of the command
 	int size_cmd;	// how many pointers in each command
 	t_define *define; // each pointer of cmd is in a struct for define/expand
@@ -71,8 +74,6 @@ typedef struct s_list
 typedef struct s_general
 {
 	int ex_status;
-	int fd_out;
-	int fd_in;
 	char **env;
 	char **env_export;
 	t_list *cmds;
@@ -166,4 +167,5 @@ int get_env_var(char **env, char *var);
 
 
 //exuction functions
-int if_builtin(char **cmd, t_general *sa, int fd);
+void handle_redir(t_list *cmd, t_general *sa);
+void reset_fd(t_list *cmd);

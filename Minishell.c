@@ -44,7 +44,7 @@ int main(int argc, char **argv, char **env)
     get_export_env(sa);
     while(1)
     {
-        s = readline("mzoheir$>");
+        s = readline("minishell$>");
         // if(!s)
         // {
         //         //protect Crtl-D
@@ -71,7 +71,8 @@ int main(int argc, char **argv, char **env)
                 final_cmd(cmds);
                 redir_array(cmds);
                 free_define_and_cmd(cmds);
-                // if_builtin(sa->cmds->final_cmd, sa, 1);
+                reset_fd(cmds);
+                handle_redir(cmds, sa);
                 // tmp = cmds;
                 // while(tmp)
                 // {

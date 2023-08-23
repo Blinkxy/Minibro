@@ -14,7 +14,7 @@ OBJ = $(SRC:.c=.o)
 all: $(NAME) 	
 
 $(NAME): $(OBJ)
-	@make -C Libft
+	@make -C libft
 	@$(CC) $(OBJ) $(LIBFT_A) -o $(NAME) $(LRFLAG)
 	@echo ---program linked---
 
