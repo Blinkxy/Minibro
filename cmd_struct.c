@@ -126,7 +126,6 @@ void fill_new_struct(char *str, t_define *new_struct)
     split_words = ft_split(copy, '\n');
     while(split_words[i])
     {
-        printf("split:%s OK!",split_words[i]);
         new_struct[i].content = ft_strdup(split_words[i]);
         new_struct[i].state = WORD;
         new_struct[i].type = new_struct[i].state;

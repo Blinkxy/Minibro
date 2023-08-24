@@ -123,8 +123,7 @@ char *expand_ENV(char *str, char **env)
             result = concatenate_char(result, str[i]);
         i++;
     }
-    printf("result:%s\n", result);
-    // printf("size:%d\n", ft_strlen(result));
+    // printf("result:%s\n", result);
     return result;
 }
 

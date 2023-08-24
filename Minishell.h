@@ -100,22 +100,27 @@ int 	isWhitespace(char c);
 int 	count_cmds(char **str);
 int 	sizeof_cmd(t_list *cmds);
 void 	cmd_define(t_list *cmds);
+
+		//  ENV Handling		
 char 	*extract_ENV(char *str);
 char 	*expand_ENV(char *str, char **env);
 char	*Expand_quotes(char* str);
 char* 	concatenate_char(char* str, char c);
-void    final_remove_quotes(t_list *cmds);
+
 void 	initialize_define(t_define *new_struct, int size);
 int 	countWords(char* str);
 int		skip_quote(char *str, int i);
 char	**splitWords(char* str, int* wordCount);
+void	free_double_array(char **str);
+
 void 	fill_new_struct(char *str, t_define *new_struct);
-void 	insert_new_struct(t_define *define, t_define *inserted, t_list *cmds, int index);
+t_define *insert_new_struct(t_define *define, t_define *inserted, t_list *cmds, int index);
 void 	free_struct(t_define *define);
 void 	final_struct(t_list *cmds, char **env);
 void    redir_array(t_list *commands);
 void 	free_define_and_cmd(t_list *cmds);
 void    final_cmd(t_list *cmds);
+void    final_remove_quotes(t_list *cmds);
 
 void free_words(char** words, int count);
 
