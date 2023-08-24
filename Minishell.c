@@ -68,8 +68,8 @@ int main(int argc, char **argv, char **env)
                 cmd_define(cmds);
                 final_struct(cmds,env);
                 final_remove_quotes(cmds);
-                final_cmd(cmds);
                 redir_array(cmds);
+                final_cmd(cmds);
                 free_define_and_cmd(cmds);
                 reset_fd(cmds);
                 handle_redir(cmds, sa);
