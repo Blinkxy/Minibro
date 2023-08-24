@@ -20,15 +20,28 @@ int	skip_quote(char *str, int i)
 int countWords(char* str) 
 {
     int count = 0;
-    int inQuotes = 0;
+    int inSingleQuotes = 0;
+    int inDoubleQuotes = 0;
     int wordStart = 0;
     int i = 0;
 
     while (str[i]) 
     {
-        if (str[i] == '\'' || str[i] == '"')
-            inQuotes = !inQuotes;
-        else if (str[i] == ' ' && !inQuotes) 
+        if (str[i] == '\'')
+        {
+            if (!inDoubleQuotes)
+                inSingleQuotes = !inSingleQuotes;
+            else
+                wordStart = 1; // Treat characters within double quotes as a word
+        }
+        else if (str[i] == '"')
+        {
+            if (!inSingleQuotes)
+                inDoubleQuotes = !inDoubleQuotes;
+            else
+                wordStart = 1; // Treat characters within single quotes as a word
+        }
+        else if (str[i] == ' ' && !inSingleQuotes && !inDoubleQuotes) 
         {
             if (wordStart == 1) 
             {
@@ -40,7 +53,7 @@ int countWords(char* str)
             wordStart = 1;
         i++;
     }
-    if (wordStart == 1)
+    if (wordStart == 1 && !inSingleQuotes && !inDoubleQuotes)
         count++;
     return count;
 }
@@ -74,47 +87,73 @@ void initialize_define(t_define *define, int size)
     }
 }
 
+char *fix_split(char *str)
+{
+    int i;
+    int len;
+    char *fixed;
+
+    i = 0;
+    len = ft_strlen(str);
+    fixed = malloc(sizeof(char) * len);
+    while(i < len - 1)
+    {
+        fixed[i] = str[i];
+        i++;
+    }
+    fixed[len - 1] = '\0';
+    return(fixed);
+}
 
 void fill_new_struct(char *str, t_define *new_struct)
 {
     int	i;
     char **split_words;
+    char *copy;
 
 	i = 0;
-	while (str[i])
+    copy = ft_strdup(str);
+	while (copy[i])
 	{
-		if (str[i] == '\"' || str[i] == '\'')
-			i = skip_quote(str, i);
-		else if (str[i] == ' ' || str[i] == '\t'
-			|| str[i] == '\n')
-			str[i] = '\n';
+		if (copy[i] == '\"' || copy[i] == '\'')
+			i = skip_quote(copy, i);
+		else if (copy[i] == ' ' || copy[i] == '\t'
+			|| copy[i] == '\n')
+			copy[i] = '\n';
 		i++;
 	}
     i = 0;
-    split_words = ft_split(str, '\n');
+    split_words = ft_split(copy, '\n');
     while(split_words[i])
     {
+        printf("split:%s OK!",split_words[i]);
         new_struct[i].content = ft_strdup(split_words[i]);
         new_struct[i].state = WORD;
         new_struct[i].type = new_struct[i].state;
         i++;
     }
-    i = 0;
-    while(split_words[i])
-    {
-        free(split_words[i]);
-        i++;
-    }
-    if(split_words)
-        free(split_words);
+    free_double_array(split_words);
 }
 
-void insert_new_struct(t_define *define, t_define *inserted, t_list *cmds, int index)
+void	free_double_array(char **str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i] != NULL)
+	{
+		free(str[i]);
+		i++;
+	}
+	free(str);
+}
+
+t_define *insert_new_struct(t_define *define, t_define *inserted, t_list *cmds, int index)
 {
     int i;
     int j;
     t_define *final_define;
-    
+    // printf("newsize total:%d\n", cmds->size_cmd);
     final_define = (t_define *)malloc(sizeof(t_define) * cmds->size_cmd);
     i = 0;
     while( i < index)
@@ -128,12 +167,13 @@ void insert_new_struct(t_define *define, t_define *inserted, t_list *cmds, int i
         final_define[i + j] = inserted[j];
         j++;
     }
-    while( i < cmds->size_cmd)
+    while( i < (cmds->size_cmd) - (inserted->size_struct_inserted) + 1)
     {
         final_define[i + j] = define[i];
         i++;
     }
-    define = final_define;
+    // free_struct(define);
+    return(final_define);
 }
 
 void final_struct(t_list *cmds, char **env)
@@ -153,7 +193,6 @@ void final_struct(t_list *cmds, char **env)
             {
                 // printf("Original:%s\n", tmp->define[i].content);
                 tmp->define[i].content = expand_ENV(tmp->define[i].content, env);
-                // printf("count:%d\n", countWords(tmp->define[i].content));
                 // printf("Expended:%s\n", tmp->define[i].content);
                 if (countWords(tmp->define[i].content) > 1 && tmp->define[i].type == FYLE)
                 {
@@ -168,7 +207,11 @@ void final_struct(t_list *cmds, char **env)
                         return;
                     initialize_define(new_struct, countWords(tmp->define[i].content));
                     fill_new_struct(tmp->define[i].content,new_struct);
-                    insert_new_struct(tmp->define, new_struct, cmds, i);
+                    // printf("Oldsize:%d\n", tmp->size_cmd);
+                    tmp->size_cmd += countWords(tmp->define[i].content) - 1;
+                    // printf("newsize:%d\n", tmp->size_cmd);
+                    tmp->define = insert_new_struct(tmp->define, new_struct, tmp, i);
+                    i += countWords(tmp->define[i].content) - 1;
                 }
             }
             i++;
@@ -242,7 +285,7 @@ void cmd_define(t_list *cmds)
                 tmp->define[i].type = tmp->define[i].state;
                 tmp->define[i].index = i;
             }
-            if (ft_strchr(tmp->cmd[i], '$') && tmp->define[i].state != DELIMITER)
+            if (ft_strchr(tmp->cmd[i], '$') && tmp->define[i].state != DELIMITER && tmp->define[i].state)
                 tmp->define[i].dollar = 1;
             i++;
         }

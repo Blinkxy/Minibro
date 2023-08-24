@@ -112,7 +112,7 @@ char *expand_ENV(char *str, char **env)
                     {
                         extract = extract_ENV(env[get_env_var(env, check_env)]);
                         result = ft_strjoin(result, extract);
-                        i += ft_strlen(extract) - 2;
+                        i += ft_strlen(extract) - 1;
                         free(extract);
                         free(check_env);
                     }
@@ -123,6 +123,8 @@ char *expand_ENV(char *str, char **env)
             result = concatenate_char(result, str[i]);
         i++;
     }
+    // printf("result:%s\n", result);
+    // printf("size:%d\n", ft_strlen(result));
     return result;
 }
 
