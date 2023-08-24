@@ -188,7 +188,6 @@ t_define *insert_new_struct(t_define *define, t_define *inserted, t_list *cmds, 
         final_define[i + j] = define[i];
         i++;
     }
-    free_struct(define);
     return(final_define);
 }
 

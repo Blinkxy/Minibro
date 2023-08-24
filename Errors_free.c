@@ -15,7 +15,8 @@ void free_define_and_cmd(t_list *cmds)
                 free(cmds->define[i].content);
             i++;
         }
-        free(tmp->define);
+        if(tmp->define)
+            free(tmp->define);
         i = 0;
         if(cmds->cmd)
         {
