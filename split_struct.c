@@ -9,12 +9,9 @@ void    final_cmd(t_list *cmds)
     t_list *tmp;
 
     tmp = cmds;
-    // printf("SIZE FINAL%d")
     while(tmp)
     {
         tmp->final_cmd = (char **)malloc(sizeof(char*) * (tmp->size_cmd - (tmp->red_nb*2)) + 1);
-        int size = (tmp->size_cmd - (tmp->red_nb*2)) + 1;
-        // printf("size:%d\n", size);
         if(!tmp->final_cmd)
             return;
         i = 0;
@@ -28,8 +25,6 @@ void    final_cmd(t_list *cmds)
             }
             i++;
         }
-        // printf("j = %d\n",j);
-        // printf("i = %d\n",i);
         tmp->final_cmd[j] = '\0';
         tmp = tmp->next;
     }
