@@ -14,7 +14,7 @@ void    final_cmd(t_list *cmds)
     {
         tmp->final_cmd = (char **)malloc(sizeof(char*) * (tmp->size_cmd - (tmp->red_nb*2)) + 1);
         int size = (tmp->size_cmd - (tmp->red_nb*2)) + 1;
-        printf("size:%d\n", size);
+        // printf("size:%d\n", size);
         if(!tmp->final_cmd)
             return;
         i = 0;
