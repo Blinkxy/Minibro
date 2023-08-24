@@ -69,6 +69,7 @@ void free_struct(t_define *define)
             free(define[i].content);
         i++;
     }
+    free(define);
 }
 
 void initialize_define(t_define *define, int size)
@@ -81,8 +82,24 @@ void initialize_define(t_define *define, int size)
     define[j].dollar = 0;
     define[j].content = 0;
     define[j].index = 0;
+    define[j].size_struct = size;
+    define[j].size_struct_inserted = 0;
+    j++;
+    }
+}
+
+void initialize_define_inserted(t_define *define, int inserted)
+{
+    int j = 0;
+    while (j < inserted)
+    {
+    define[j].state = 0;
+    define[j].type = 0;
+    define[j].dollar = 0;
+    define[j].content = 0;
+    define[j].index = 0;
     define[j].size_struct = 0;
-    define[j].size_struct_inserted = size;
+    define[j].size_struct_inserted = inserted;
     j++;
     }
 }
@@ -171,7 +188,7 @@ t_define *insert_new_struct(t_define *define, t_define *inserted, t_list *cmds, 
         final_define[i + j] = define[i];
         i++;
     }
-    // free_struct(define);
+    free_struct(define);
     return(final_define);
 }
 
@@ -204,7 +221,7 @@ void final_struct(t_list *cmds, char **env)
                     new_struct = malloc(sizeof(t_define) * countWords(tmp->define[i].content));
                     if(!new_struct)
                         return;
-                    initialize_define(new_struct, countWords(tmp->define[i].content));
+                    initialize_define_inserted(new_struct, countWords(tmp->define[i].content));
                     fill_new_struct(tmp->define[i].content,new_struct);
                     // printf("Oldsize:%d\n", tmp->size_cmd);
                     tmp->size_cmd += countWords(tmp->define[i].content) - 1;
@@ -221,13 +238,15 @@ void final_struct(t_list *cmds, char **env)
 
 void cmd_define(t_list *cmds)
 {
-    int i = 0;
+    int i;
     t_list *tmp;
 
     tmp = cmds;
     while(tmp)
     {
+        // printf("size_cmd:%d\n",tmp->size_cmd);
         tmp->define = malloc(sizeof(t_define) * (tmp->size_cmd));
+        // printf("sizeof_define:%lu\n", sizeof(tmp->define));
         if(!(tmp->define))
             return;
         initialize_define(tmp->define, tmp->size_cmd);

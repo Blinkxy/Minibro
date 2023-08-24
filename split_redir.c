@@ -9,7 +9,7 @@ char** split_cmd(char* str)
 {
     int withinQuotes = 0;
     int length = ft_strlen(str);
-    char* modifiedStr = (char*)ft_calloc((length * 2 + 1) * sizeof(char), 1);
+    char* modifiedStr = (char*)ft_calloc((length * 5 + 1) * sizeof(char), 1);
     int newIndex = 0;
     int i = -1;
     while(++i < length) 
@@ -123,7 +123,7 @@ char *expand_ENV(char *str, char **env)
             result = concatenate_char(result, str[i]);
         i++;
     }
-    // printf("result:%s\n", result);
+    free(str);
     return result;
 }
 

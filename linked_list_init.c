@@ -23,6 +23,10 @@ t_list *createNode(char* cmd, int i)
 		return NULL;
     newNode->index = i;
     newNode->red_nb = 0;
+    newNode->fd_in = 0;
+    newNode->fd_out = 0;
+    newNode->redir = 0;
+    newNode->final_cmd = 0;
     newNode->cmd = split_cmd(cmd);
     j = 0;
     while(newNode->cmd[j])
