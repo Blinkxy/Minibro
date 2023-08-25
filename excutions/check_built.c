@@ -6,30 +6,6 @@ void reset_fd(t_list *cmd)
     cmd->fd_in = 0;
 }
 
-int execute_external_command(char **cmd) 
-{
-    pid_t pid;
-
-    pid = fork();
-    
-    if (pid == 0) 
-    { // Child process
-        execvp(cmd[0], cmd);
-        perror("execvp"); // This line will be reached only if execvp fails
-        exit(EXIT_FAILURE);
-    }
-    else if (pid > 0) 
-    { // Parent process
-        int status;
-        waitpid(pid, &status, 0);
-        if (WIFEXITED(status)) {
-            return WEXITSTATUS(status);
-        }
-    } 
-    else // Fork failed
-        perror("fork");
-    return 1; // Return a non-zero value to indicate an error
-}
 
 int handle_builtins(t_list *cmds, t_general *sa)
 {

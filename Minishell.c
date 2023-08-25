@@ -70,9 +70,9 @@ int main(int argc, char **argv, char **env)
                 final_remove_quotes(cmds);
                 redir_array(cmds);
                 final_cmd(cmds);
-                free_define_and_cmd(cmds);
-                reset_fd(cmds);
-                handle_redir(cmds, sa);
+                ex_minishell(cmds, sa);
+              //  free_define_and_cmd(cmds)
+                // handle_redir(cmds, sa);
                 // tmp = cmds;
                 // while(tmp)
                 // {
