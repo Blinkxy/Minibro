@@ -84,9 +84,10 @@ void pipex(t_list *cmd, t_general *sa) {
             ft_putendl_fd("error", 2);
             exit(EXIT_FAILURE);
         } else if (id[index] == 0) {
-            if (index == 0) {
+            if (index == 0)
                 dup2(fd[index][1], STDOUT_FILENO);
-            } else {
+            else 
+            {
                 dup2(fd[index - 1][0], STDIN_FILENO);
                 dup2(fd[index][1], STDOUT_FILENO);
             }

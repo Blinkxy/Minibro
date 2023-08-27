@@ -177,6 +177,8 @@ void reset_fd(t_list *cmd);
 int handle_builtins(t_list *cmds, t_general *sa);
 int execute_external_command(char **cmd);
 int ex_minishell(t_list *cmd, t_general *sa);
+int handle_heredoc(t_redir *red);
+int check_heredoc(t_redir *red);
 
 
 // pipe
