@@ -64,7 +64,7 @@ int main(int argc, char **argv, char **env)
                     cmds = createNode(str[0], i);
                 while( ++i < count_cmds(str))
                     addNodeFront(cmds, str[i],i);
-
+                add_prev_list(cmds);
                 cmd_define(cmds);
                 final_struct(cmds,env);
                 final_remove_quotes(cmds);

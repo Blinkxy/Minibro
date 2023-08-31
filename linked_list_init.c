@@ -33,6 +33,7 @@ t_list *createNode(char* cmd, int i)
         j++;
     newNode->size_cmd = j;
     newNode->next = NULL;
+    newNode->prev = NULL;
     return newNode;
 }
 
@@ -43,4 +44,17 @@ void addNodeFront(t_list *head, char* str, int i)
     while (current->next != NULL)
         current = current->next;
     current->next = createNode(str, i);
+}
+
+void add_prev_list(t_list *cmds)
+{
+    t_list *tmp;
+
+    tmp = cmds;
+    while(tmp)
+    {
+        if(tmp->next != NULL)
+            tmp->next->prev = tmp;
+        tmp = tmp->next;
+    }
 }

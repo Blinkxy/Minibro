@@ -68,6 +68,7 @@ typedef struct s_list
 	int red_nb;		// number of total redirection in this command
 	t_redir *redir;	// array of all the redir in this command to send to exec
 	char** final_cmd;	// command + arg(if existent) to send to exec
+	struct s_list *prev;
     struct s_list *next;
 }           t_list;
 
@@ -92,6 +93,7 @@ void	removeExtraNewlines(char* str);
 void    tokenizer(char **str);
 t_list *createNode(char* cmd, int i);
 void 	addNodeFront(t_list *head, char* str, int i);
+void 	add_prev_list(t_list *cmds);
 int 	checkQuoteIndex(char* str, int index);
 int 	check_dollar(char *str, int index);
 char 	**removePipePointers(char** str);
