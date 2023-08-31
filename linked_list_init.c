@@ -55,6 +55,8 @@ void add_prev_list(t_list *cmds)
     {
         if(tmp->next != NULL)
             tmp->next->prev = tmp;
+        else if (tmp->next->next == NULL)
+            tmp->next->prev = tmp;
         tmp = tmp->next;
     }
 }
