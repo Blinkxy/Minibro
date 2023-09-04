@@ -48,13 +48,13 @@ void addNodeFront(t_list *head, char* str, int i)
 
 void add_prev_list(t_list *cmds)
 {
-    t_list *tmp;
+    t_list *tmp = cmds;
+    t_list *prev = NULL;
 
-    tmp = cmds;
-    while(tmp)
+    while (tmp)
     {
-        if (tmp->next || tmp->next->next == NULL)
-            tmp->next->prev = tmp;
+        tmp->prev = prev;
+        prev = tmp;       
         tmp = tmp->next;
     }
 }
