@@ -59,6 +59,9 @@ typedef struct s_redir
 
 typedef struct s_list
 {
+
+	int has_herdoc; // falg indicating if the cmd has a herdoc
+	int herdoc_content_fd; // fd for herdoc content
     char** cmd;     //  double array of EACH command
 	int fd_in;
 	int fd_out;
@@ -102,6 +105,7 @@ int 	isWhitespace(char c);
 int 	count_cmds(char **str);
 int 	sizeof_cmd(t_list *cmds);
 void 	cmd_define(t_list *cmds);
+void add_prev_list(t_list *cmds);
 
 		//  ENV Handling		
 char 	*extract_ENV(char *str);
@@ -179,8 +183,8 @@ void reset_fd(t_list *cmd);
 int handle_builtins(t_list *cmds, t_general *sa);
 int execute_external_command(char **cmd);
 int ex_minishell(t_list *cmd, t_general *sa);
-int handle_heredoc(t_redir *red);
-int check_heredoc(t_redir *red);
+void handle_heredoc_input(t_list *cmd);
+int check_heredoc(t_list *cmd);
 
 
 // pipe

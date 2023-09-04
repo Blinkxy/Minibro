@@ -86,8 +86,7 @@ void pipex(t_list *cmd, t_general *sa) {
         } else if (id[index] == 0) {
             if (index == 0)
                 dup2(fd[index][1], STDOUT_FILENO);
-            else 
-            {
+            else {
                 dup2(fd[index - 1][0], STDIN_FILENO);
                 dup2(fd[index][1], STDOUT_FILENO);
             }
@@ -99,12 +98,13 @@ void pipex(t_list *cmd, t_general *sa) {
                 i++;
             }
 
-            if (is_builtin(tmp->final_cmd) == 1) {
-                handle_builtins(tmp, sa);
-            } else {
-                execute_external_command(tmp->final_cmd);
+            // Check if the command has a heredoc
+            if (tmp->has_herdoc) {
+                // Redirect input from the heredoc content file descriptor
+                dup2(tmp->herdoc_content_fd, STDIN_FILENO);
             }
-            
+
+            handle_redir(tmp, sa);
             exit(EXIT_SUCCESS);
         }
 

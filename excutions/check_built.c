@@ -32,66 +32,65 @@ int handle_builtins(t_list *cmds, t_general *sa)
 }
 
 
-int open_fdheredoc(void) {
-    int fd;
-    char file[] = "/tmp/.herdoc";
-    if (access(file, F_OK) != -1)
-        unlink(file);
-    fd = open(file, O_CREAT | O_RDWR | O_TRUNC, 0644);
-    if (fd == -1) {
-        fprintf(stderr, "open error\n");
-        return -1;
-    }
-    return fd;
-}
-
-int handle_heredoc(t_redir *red) {
-    int fd;
-    char *line;
-    fd = open_fdheredoc();
-    if (fd == -1)
-        return -1;
+void handle_heredoc_input(t_list *cmd) {
     
-    while (1) {
+    char *line;
+    char *filename = "/tmp/.herdoc"; // Temporary file path
+
+    cmd->has_herdoc = 1;
+    cmd->herdoc_content_fd = open(filename, O_CREAT | O_RDWR | O_TRUNC, 0644);
+    if (cmd->herdoc_content_fd == -1) 
+    {
+        ft_putendl_fd("open error\n", 2);
+        // Handle error
+        return;
+    }
+
+    while (1) 
+    {
         line = readline(">");
-        if (line == NULL) {
-            // Handle readline error or EOF
-            break;
-        }
-        if (strcmp(line, red->delimiter) == 0) {
+        if (line == NULL || ft_strcmp(line, cmd->redir->delimiter) == 0) {
+            // Heredoc is complete
             free(line);
-            close(fd);
-            break;
-        };
-        // Write the line to the file descriptor
-        ft_strjoin(line, "\n"); // Add newline character
-        //printf("%s\n", line);
-        write(fd, line, strlen(line));
+            close(cmd->herdoc_content_fd);
+            return;
+        }
+        // Write the line to the file with a newline character
+        write(cmd->herdoc_content_fd, line, strlen(line));
+        write(cmd->herdoc_content_fd, "\n", 1);
         free(line);
     }
-
-    return 0;
 }
 
-
-int check_heredoc(t_redir *red) {
+int check_heredoc(t_list *cmd) {
     pid_t id;
+    t_list *tmp;
 
-    if (red->type == HEREDOC && red->delimiter != NULL) {
-        id = fork();
-        if (id == -1) {
-            // Handle fork error
-            return -1;
-        } else if (id == 0) {
-            // Child process
-            handle_heredoc(red); 
-            exit(0);
-        } else {
-            // Parent process
-            wait(NULL);
+    tmp = cmd;
+    if(tmp->red_nb == 0 && tmp->next == NULL)
+        return(0);
+    if(tmp->red_nb == 0)
+        tmp = tmp->next;
+
+    while (tmp) 
+    {
+        if (tmp->redir->type == HEREDOC ) 
+        {
+            id = fork();
+            if (id == -1) {
+                ft_putendl_fd("error fork\n", 2);
+                return -1;
+            } else if (id == 0) {
+                // Child process: Handle heredoc and save it to a file
+                handle_heredoc_input(cmd);
+                exit(0);
+            } else {
+                // Parent process
+                wait(NULL);
+            }
         }
+        tmp = tmp->next;
     }
-
     return 0;
 }
 
@@ -112,8 +111,7 @@ void handle_redir(t_list *cmd, t_general *sa)
         } else if (cmd->redir->type == APPEND) {
             cmd->fd_out = open(cmd->redir->file, O_CREAT | O_RDWR | O_APPEND, 0644);
             dup2(cmd->fd_out, 1);
-        } else if(cmd->redir->type ==  HEREDOC)
-            check_heredoc(cmd->redir);
+        }
         nb_r--;
         cmd->redir++;
     }
