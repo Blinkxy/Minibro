@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 20:19:32 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/08/16 13:59:50 by marvin           ###   ########.fr       */
+/*   Updated: 2023/09/06 10:23:32 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,17 +73,7 @@ int main(int argc, char **argv, char **env)
                 ex_minishell(cmds, sa);
               //  free_define_and_cmd(cmds)
                 // handle_redir(cmds, sa);
-                // tmp = cmds;
-                // while(tmp)
-                // {
-                //     i = 0;
-                //     while(tmp->final_cmd[i])
-                //     {
-                //         printf("finished:%s\n", tmp->final_cmd[i]);
-                //         i++;
-                //     }
-                //     tmp = tmp->next;
-                // }
+
             }
         }
     }
