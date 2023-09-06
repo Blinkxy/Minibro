@@ -178,15 +178,10 @@ int get_env_var(char **env, char *var);
 
 
 //exuction functions
-void handle_redir(t_list *cmd, t_general *sa);
-void reset_fd(t_list *cmd);
 int handle_builtins(t_list *cmds, t_general *sa);
-int execute_external_command(char **cmd);
 int ex_minishell(t_list *cmd, t_general *sa);
-void handle_heredoc_input(t_list *cmd);
-int check_heredoc(t_list *cmd);
-
-
+int is_builtin(char **args);
+void ex_cmd(t_general *sa, char **cmd);
 // pipe
 void pipex(t_list *cmds, t_general *sa);
 int numberOf_cmd(t_list *cmds);

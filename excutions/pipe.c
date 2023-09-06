@@ -1,31 +1,4 @@
 #include "../Minishell.h"
-
-int execute_external_command(char **cmd) 
-{
-    pid_t pid;
-
-    pid = fork();
-    
-    if (pid == 0) 
-    { // Child process
-        execvp(cmd[0], cmd);
-        perror("execvp"); // This line will be reached only if execvp fails
-        exit(EXIT_FAILURE);
-    }
-    else if (pid > 0) 
-    { // Parent process
-        int status;
-        waitpid(pid, &status, 0);
-        if (WIFEXITED(status)) {
-            return WEXITSTATUS(status);
-        }
-    } 
-    else // Fork failed
-        perror("fork");
-    return 1; // Return a non-zero value to indicate an error
-}
-
-
 int is_builtin(char **args)
 {
     if(args)
@@ -97,14 +70,13 @@ void pipex(t_list *cmd, t_general *sa) {
                 close(fd[i][1]);
                 i++;
             }
-
-            // Check if the command has a heredoc
+            // Chk the command has a heredoc
             if (tmp->has_herdoc) {
-                // Redirect input from the heredoc content file descriptor
+               // herdoc
                 dup2(tmp->herdoc_content_fd, STDIN_FILENO);
             }
-
-            handle_redir(tmp, sa);
+            if(is_builtin(tmp->final_cmd))
+                ex_minishell(tmp-sa, sa);
             exit(EXIT_SUCCESS);
         }
 

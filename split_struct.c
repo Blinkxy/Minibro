@@ -25,7 +25,7 @@ void    final_cmd(t_list *cmds)
             }
             i++;
         }
-        tmp->final_cmd[j] = '\0';
+        tmp->final_cmd[j] = NULL;
         tmp = tmp->next;
     }
 }
