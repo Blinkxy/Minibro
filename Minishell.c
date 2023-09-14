@@ -6,7 +6,7 @@
 /*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 20:19:32 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/09/06 10:23:32 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/09/14 19:24:18 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,7 @@ int main(int argc, char **argv, char **env)
         if(s && s[0])
         {
             add_history(s);
-            if (start_pipe(s) == 0)
-                printf("syntax error near unexpected token '|'\n");
-            if (checker_line(s) == 1 && start_pipe(s) == 1)
+            if (checker_line(s) == 1 && checker_redir(s) == 1)
             {
                 st = addnext_pipe(s);
                 str = ft_split(st,'\n');
@@ -67,9 +65,11 @@ int main(int argc, char **argv, char **env)
                 add_prev_list(cmds);
                 cmd_define(cmds);
                 final_struct(cmds,env);
-                final_remove_quotes(cmds);
                 redir_array(cmds);
+                final_remove_quotes(cmds);
                 final_cmd(cmds);
+                //check_heredoc(cmds);
+                
                 ex_minishell(cmds, sa);
               //  free_define_and_cmd(cmds)
                 // handle_redir(cmds, sa);

@@ -16,94 +16,49 @@ int	skip_quote(char *str, int i)
 	}
 	return (i);
 }
+void	count_word_bis(char *str, t_count *count_words, int *i)
+{
+	if (str[*i] == '\'')
+	{
+		if (!count_words->inDoubleQuotes)
+			count_words->inSingleQuotes = !count_words->inSingleQuotes;
+		else
+			count_words->wordStart = 1;
+	}
+	else if (str[*i] == '"')
+	{
+		if (!count_words->inSingleQuotes)
+			count_words->inDoubleQuotes = !count_words->inDoubleQuotes;
+		else
+			count_words->wordStart = 1;
+	}
+	else if (str[*i] == ' ' && !count_words->inSingleQuotes
+			&& !count_words->inDoubleQuotes)
+	{
+		if (count_words->wordStart == 1)
+		{
+			count_words->word_count++;
+			count_words->wordStart = 0;
+		}
+	}
+	else
+		count_words->wordStart = 1;
+}
 
 int	countWords(char *str)
 {
-	int count = 0;
-	int inSingleQuotes = 0;
-	int inDoubleQuotes = 0;
-	int wordStart = 0;
-	int i = 0;
-
-	while (str[i])
-	{
-		if (str[i] == '\'')
-		{
-			if (!inDoubleQuotes)
-				inSingleQuotes = !inSingleQuotes;
-			else
-				wordStart = 1;
-					// Treat characters within double quotes as a word
-		}
-		else if (str[i] == '"')
-		{
-			if (!inSingleQuotes)
-				inDoubleQuotes = !inDoubleQuotes;
-			else
-				wordStart = 1;
-					// Treat characters within single quotes as a word
-		}
-		else if (str[i] == ' ' && !inSingleQuotes && !inDoubleQuotes)
-		{
-			if (wordStart == 1)
-			{
-				count++;
-				wordStart = 0;
-			}
-		}
-		else
-			wordStart = 1;
-		i++;
-	}
-	if (wordStart == 1 && !inSingleQuotes && !inDoubleQuotes)
-		count++;
-	return (count);
-}
-
-void	free_struct(t_define *define)
-{
 	int i;
+	t_count count;
 
-	i = 0;
-	while (i < define->size_struct)
+	i = -1;
+	initialize_counter(&count);
+	while (str[++i])
 	{
-		if (define[i].content)
-			free(define[i].content);
-		i++;
+		count_word_bis(str, &count, &i);
 	}
-	free(define);
-}
-
-void	initialize_define(t_define *define, int size)
-{
-	int j = 0;
-	while (j < size)
-	{
-		define[j].state = 0;
-		define[j].type = 0;
-		define[j].dollar = 0;
-		define[j].content = 0;
-		define[j].index = 0;
-		define[j].size_struct = size;
-		define[j].size_struct_inserted = 0;
-		j++;
-	}
-}
-
-void	initialize_define_inserted(t_define *define, int inserted)
-{
-	int j = 0;
-	while (j < inserted)
-	{
-		define[j].state = 0;
-		define[j].type = 0;
-		define[j].dollar = 0;
-		define[j].content = 0;
-		define[j].index = 0;
-		define[j].size_struct = 0;
-		define[j].size_struct_inserted = inserted;
-		j++;
-	}
+	if (count.wordStart == 1 && !count.inSingleQuotes && !count.inDoubleQuotes)
+		count.word_count++;
+	return (count.word_count);
 }
 
 char	*fix_split(char *str)
@@ -171,7 +126,6 @@ t_define	*insert_new_struct(t_define *define, t_define *inserted,
 	int i;
 	int j;
 	t_define *final_define;
-	// printf("newsize total:%d\n", cmds->size_cmd);
 	final_define = (t_define *)malloc(sizeof(t_define) * cmds->size_cmd);
 	i = 0;
 	while (i < index)
@@ -209,13 +163,13 @@ void	final_struct(t_list *cmds, char **env)
 			if (tmp->define[i].dollar == 1)
 			{
 				tmp->define[i].content = expand_ENV(tmp->define[i].content,
-						env);
+													env);
 				if (countWords(tmp->define[i].content) > 1
 					&& tmp->define[i].type == FYLE)
 				{
 					printf("ambiguous redirect\n");
-					// free struct
-					return ;
+					// free all
+					break;
 				}
 				else if (countWords(tmp->define[i].content) > 1
 						&& tmp->define[i].type != FYLE)
@@ -223,9 +177,12 @@ void	final_struct(t_list *cmds, char **env)
 					new_struct = malloc(sizeof(t_define)
 							* countWords(tmp->define[i].content));
 					if (!new_struct)
-						return ;
+					{
+						// free all
+						break;
+					}
 					initialize_define_inserted(new_struct,
-							countWords(tmp->define[i].content));
+												countWords(tmp->define[i].content));
 					fill_new_struct(tmp->define[i].content, new_struct);
 					tmp->size_cmd += countWords(tmp->define[i].content) - 1;
 					tmp->define = insert_new_struct(tmp->define, new_struct,

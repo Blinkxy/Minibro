@@ -1,0 +1,53 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   initializers.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/09/10 15:44:58 by mzoheir           #+#    #+#             */
+/*   Updated: 2023/09/10 15:51:53 by mzoheir          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "Minishell.h"
+
+void	initialize_define(t_define *define, int size)
+{
+	int j = 0;
+	while (j < size)
+	{
+		define[j].type = 0;
+		define[j].state = 0;
+		define[j].index = 0;
+		define[j].content = 0;
+		define[j].dollar = 0;
+		define[j].size_struct = size;
+		define[j].size_struct_inserted = 0;
+		j++;
+	}
+}
+
+void	initialize_define_inserted(t_define *define, int inserted)
+{
+	int j = 0;
+	while (j < inserted)
+	{
+		define[j].state = 0;
+		define[j].type = 0;
+		define[j].dollar = 0;
+		define[j].content = 0;
+		define[j].index = 0;
+		define[j].size_struct = 0;
+		define[j].size_struct_inserted = inserted;
+		j++;
+	}
+}
+
+void	initialize_counter(t_count *counter)
+{   
+    counter->word_count= 0;
+	counter->inSingleQuotes= 0;;
+	counter->inDoubleQuotes = 0;;
+	counter->wordStart = 0;;
+}

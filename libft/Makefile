@@ -17,7 +17,6 @@ all: $(NAME)
 
 $(NAME): $(OBJ)
 	@$(AR) $(NAME) $(OBJ)
-	@echo ---library generated----
 
 %.o: %.c
 	@$(CC) $(CFLAGS) -c $<
@@ -25,10 +24,8 @@ $(NAME): $(OBJ)
 
 clean:
 	@$(RM) $(OBJ)
-	@echo ---LIBFT objects cleaned---
 fclean: clean
 	@$(RM) $(NAME) libft.a
-	@echo ---library cleaned---
 re: fclean all
 
 .PHONY: all clean fclean re
