@@ -1,6 +1,6 @@
 #include "../Minishell.h"
 
-int handle_redin(t_redir *red)
+int handle_redin(t_list *cmd, t_redir *red)
 {
     int fd;
     if(access(red->file, F_OK) != 0)
@@ -9,7 +9,7 @@ int handle_redin(t_redir *red)
         ft_putstr_fd("no such file or directory: ", 2);
         ft_putstr_fd(red->file, 2);
         ft_putstr_fd("\n", 2);
-        return(-1);
+        return(-3);
     }
     if(access(red->file, R_OK) != 0)
     {
@@ -17,18 +17,16 @@ int handle_redin(t_redir *red)
         ft_putstr_fd("Permission denied: ", 2);
         ft_putstr_fd(red->file, 2);
         ft_putstr_fd("\n", 2);
-        return(-1);
+        return(-2);
     }
+    if(cmd->fd_in > 2)
+        close(cmd->fd_in);
     fd = open(red->file, O_RDONLY);
-    if(fd > 0)
-    {
-        dup2(fd, STDIN_FILENO);
-        close(fd);
-    }
+
     return(fd);
 }
 
-int handle_redout(t_redir *red)
+int handle_redout(t_list *cmd, t_redir *red)
 {
     int fd;
     fd = open(red->file,  O_CREAT | O_RDWR | O_TRUNC, 0644);
@@ -39,18 +37,15 @@ int handle_redout(t_redir *red)
         ft_putstr_fd(red->file, 2);
         ft_putstr_fd("\n", 2);
         close(fd);
-        return(-1);
+        return(-2);
     }
-    if(fd > 0)
-    {
-        dup2(fd, STDOUT_FILENO);
-        close(fd);
-    }
-    return(1);
+    if(cmd->fd_out > 2)
+        close(cmd->fd_out);
+    return(fd);
 }
 
 
-int handle_append(t_redir *red)
+int handle_append(t_list *cmd, t_redir *red)
 {
     int fd;
     fd = open(red->file, O_CREAT | O_RDWR | O_APPEND, 0644);
@@ -61,91 +56,88 @@ int handle_append(t_redir *red)
         ft_putstr_fd(red->file, 2);
         ft_putstr_fd("\n", 2);
         close(fd);
-        return(-1);
+        return(-3);
     }
-    if(fd > 0)
-    {
-        dup2(fd, STDOUT_FILENO);
-        close(fd);
-    }
+    if(cmd->fd_out > 2)
+        close(cmd->fd_out);
     return(fd);
 }
 
 
-void make_red(t_list *cmd)
+int ft_heredoc(t_list *cmds, t_general *sa)
 {
+    char *line;
+    int pipefd[2];
+    pipe(pipefd);
+    (void)sa;
+    while(1)
+    {
+        line = readline("> ");
+        if(ft_strcmp(line , cmds->redir->delimiter) == 0)
+        {
+            close(pipefd[1]);
+            free(line);
+            break;
+        }
+        write(pipefd[1], line, strlen(line));
+        write(pipefd[1], "\n", 1);
+        free(line);
+    }
+    return(pipefd[0]);
+}
+
+
+int make_red(t_list *cmd, t_general *sa)
+{
+    t_list *head;
     int nb_red;
 
-    nb_red = cmd->red_nb;
-    if(cmd->red_nb == 0)
-        return;
-    if(cmd->fd_in > 2)
-        close(cmd->fd_in);
-    if(cmd->fd_out > 2)
-        close(cmd->fd_out);
-    while(nb_red > 0)
+    head = cmd;
+    nb_red = 0;
+    while(head)
     {
-        if(cmd->redir->type == RED_IN  )
-            cmd->fd_in = handle_redin(cmd->redir);
-        else if(cmd->redir->type == RED_OUT)
-            cmd->fd_out = handle_redout(cmd->redir);
-        else if(cmd->redir->type == APPEND)
-            cmd->fd_out = handle_append(cmd->redir);
-        nb_red--;
-        cmd->redir++;
-    }
-}
-
-int handle_builtins(t_list *cmds, t_general *sa)
-{
-    if(cmds)
-    {
-        make_red(cmds);
-        if(ft_strcmp(cmds->final_cmd[0], "cd") == 0)
-            sa->ex_status = ft_cd(sa, cmds->final_cmd);
-        else if(ft_strcmp(cmds->final_cmd[0], "echo")== 0)
-            sa->ex_status = ft_echo(cmds->final_cmd, cmds->fd_out);
-        else if(ft_strcmp(cmds->final_cmd[0], "env") == 0)
-            sa->ex_status = ft_env(sa, cmds->fd_out);
-        else if(ft_strcmp(cmds->final_cmd[0], "export") == 0)
-            sa->ex_status = ft_export(sa, cmds->final_cmd, cmds->fd_out);
-        else if(ft_strcmp(cmds->final_cmd[0], "pwd") == 0)
-            sa->ex_status = ft_pwd(cmds->fd_out);
-        else if(ft_strcmp(cmds->final_cmd[0], "unset") == 0)
-            sa->ex_status = ft_unset(sa, cmds->final_cmd);
-        else if(ft_strcmp(cmds->final_cmd[0], "exit") == 0)
-            sa->ex_status = ft_exit(cmds->final_cmd, sa);
-    }
-    return(1);
-}
-
-int ex_minishell(t_list *cmd, t_general *sa)
-{
-    int res;
-    int in = dup(0);
-    int out = dup(1);
-
-    res = numberOf_cmd(cmd);
-    if(is_builtin(cmd->final_cmd) == 0) 
-    {
-        make_red(cmd);
-        if(cmd->fd_in == -1 || cmd->fd_out == -1)
+        nb_red = head->red_nb;
+        while(nb_red > 0)
         {
-            close(in);
-            close(out);
-            return(0);
+            if(head->redir->type == RED_IN)
+                 head->fd_in = handle_redin(head, head->redir);
+             else if(head->redir->type == RED_OUT)
+                head->fd_out = handle_redout(head, head->redir);
+            else if(head->redir->type == APPEND)
+                head->fd_out = handle_append(head, head->redir);
+            else if(head->redir->type == HEREDOC)
+                head->fd_in = ft_heredoc(head, sa);
+            head->redir++;
+            nb_red--;
         }
-        ex_cmd(sa, cmd->final_cmd);
+        if(head->next == NULL)
+            break;
+        head = head->next;
     }
-    else if(res == 1)
-        handle_builtins(cmd, sa);
+    return(0);
+}
 
-    else
-        pipex(cmd, sa);
 
-    dup2(in, 0);
-    dup2(out, 1);
-    close(in);
-    close(out);
-    return(1);
+void dup_fds(t_list *cmds)
+{
+    if(cmds->fd_in != 0)
+    {
+        if(cmds->fd_in < 0)
+            exit(EXIT_FAILURE);
+        dup2(cmds->fd_in, STDIN_FILENO);
+    }
+    if(cmds->fd_out > 1)
+    {
+        if(cmds->fd_out < 1)
+            exit(EXIT_FAILURE);
+        dup2(cmds->fd_out, STDOUT_FILENO);
+    }
+}
+
+void close_fds(t_list *cmds)
+{
+    if(cmds->fd_in > 0)
+        close(cmds->fd_in);
+    if(cmds->fd_out > 1)
+        close(cmds->fd_out);
 }

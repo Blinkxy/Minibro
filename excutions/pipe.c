@@ -1,4 +1,5 @@
 #include "../Minishell.h"
+
 int is_builtin(char **args)
 {
     if(args)
@@ -20,7 +21,7 @@ int is_builtin(char **args)
     }
         return(0);
 }
-
+ 
 int numberOf_cmd(t_list *cmds)
 {
     int nb;
@@ -36,81 +37,94 @@ int numberOf_cmd(t_list *cmds)
     return(nb);
 }
 
-void pipex(t_list *cmd, t_general *sa)
-{
-    t_list *tmp;
-    int index;
-    int fd[numberOf_cmd(cmd) - 1][2];
-    pid_t id[numberOf_cmd(cmd)];
 
-    index = 0;
-    int i = 0;
-    tmp = cmd;
+#include <sys/wait.h>
 
-    while (index < numberOf_cmd(cmd)) 
+void ex_pipe(t_list *cmd, t_general *sa) {
+    t_list *tmp = cmd;
+    int num_cmds = numberOf_cmd(cmd);
+
+    int fd[num_cmds - 1][2];
+    pid_t pid;
+
+    int index = 0;
+    while (tmp != NULL) 
     {
-        if (index < numberOf_cmd(cmd) - 1)
-            pipe(fd[index]);
-
-        id[index] = fork();
-
-        if (id[index] == -1)
+        if (index < num_cmds - 1) 
         {
-            ft_putendl_fd("error", 2);
+            if (pipe(fd[index]) == -1) 
+            {
+                perror("pipe");
+                exit(EXIT_FAILURE);
+            }
+        }
+
+        pid = fork();
+        if (pid == -1) 
+        {
+            perror("fork");
             exit(EXIT_FAILURE);
         }
-        else if (id[index] == 0)
+
+        if (pid == 0) 
         {
-            if (index == 0)
-                dup2(fd[index][1], STDOUT_FILENO);
-            else 
+            // Child process
+            if (index > 0) 
             {
+                // Redirect input from the previous pipe
                 dup2(fd[index - 1][0], STDIN_FILENO);
-                dup2(fd[index][1], STDOUT_FILENO);
+                close(fd[index - 1][0]);
+                close(fd[index - 1][1]);
             }
-            i = 0;
-            while (i < numberOf_cmd(cmd) - 1)
+
+            if (index < num_cmds - 1) 
             {
-                close(fd[i][0]);
-                close(fd[i][1]);
-                i++;
+                // Redirect output to the next pipe
+                dup2(fd[index][1], STDOUT_FILENO);
+                close(fd[index][0]);
+                close(fd[index][1]);
             }
-            // Chk the command has a heredoc
-            if (tmp->has_herdoc) {
-               // herdoc
-                dup2(tmp->herdoc_content_fd, STDIN_FILENO);
+
+            // Handle the command execution (similar to your ex_child function)
+            if (is_builtin(tmp->final_cmd) == 1) {
+                dup_fds(tmp);
+                handle_builtins(tmp, sa);
+                close_fds(tmp);
+            } else {
+                dup_fds(tmp);
+                ex_cmd(sa, tmp);
+                close_fds(tmp);
             }
-            if(is_builtin(tmp->final_cmd))
-                ex_minishell(cmd, sa);
+
             exit(EXIT_SUCCESS);
         }
-
-        if (index > 0) 
+         else 
         {
-            i = 0;
-            while (i < numberOf_cmd(cmd) - 1)
-            {
-                close(fd[i][0]);
-                close(fd[i][1]);
-                i++;
+            // Parent process
+            close_fds(tmp);
+            if (index > 0) {
+                close(fd[index - 1][0]);
+                close(fd[index - 1][1]);
             }
+
+            tmp = tmp->next;
         }
-        tmp = tmp->next;
+
         index++;
     }
 
-    i = 0;
-    while (i < numberOf_cmd(cmd) - 1)
-    {
+    // Close any remaining pipes in the parent process
+    int i = 0;
+    while (i < num_cmds - 1) {
         close(fd[i][0]);
         close(fd[i][1]);
         i++;
     }
 
+    // Wait for all child processes to finish
     i = 0;
-    while (i < numberOf_cmd(cmd))
-    {
-        waitpid(id[i], NULL, 0);
+    while (i < num_cmds) {
+        wait(NULL);
         i++;
     }
 }

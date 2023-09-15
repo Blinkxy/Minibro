@@ -3,14 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   Minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdouzi <mdouzi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 20:19:32 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/09/15 23:10:21 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/09/13 18:27:50 by mdouzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Minishell.h"
+
+int gb_ex_st = 0;
+
+
+void default_fds(t_list *cmds)
+{
+    t_list *head;
+
+    head = cmds;
+    while(head)
+    {
+        head->fd[0] = -1;
+        head->fd[1] = -1;
+        head = head->next;
+    }
+}
 
 void init_env_data(t_general *sa, char **envp)
 {
@@ -52,28 +68,27 @@ int main(int argc, char **argv, char **env)
         if(s && s[0])
         {
             add_history(s);
-            if (checker_line(s) == 1 && checker_redir(s) == 1)
+            if (start_pipe(s) == 0)
+                printf("syntax error near unexpected token '|'\n");
+            if (checker_line(s) == 1 && start_pipe(s) == 1)
             {
                 st = addnext_pipe(s);
                 str = ft_split(st,'\n');
-                str = remove_pipe_pointers(str);
+                str = removePipePointers(str);
                 i = 0;
                 if(str[0])
-                    cmds = create_node(str[0], i);
+                    cmds = createNode(str[0], i);
                 while( ++i < count_cmds(str))
-                    add_node_front(cmds, str[i],i);
-                add_prev_list(cmds);
+                    addNodeFront(cmds, str[i],i);
+               // add_prev_list(cmds);
                 cmd_define(cmds);
                 final_struct(cmds,env);
-                redir_array(cmds);
                 final_remove_quotes(cmds);
+                redir_array(cmds);
                 final_cmd(cmds);
-                //check_heredoc(cmds);
-                
-                //ex_minishell(cmds, sa);
-              //  free_define_and_cmd(cmds)
-                // handle_redir(cmds, sa);
-
+                default_fds(cmds);
+                make_red(cmds, sa);
+                ex_test(cmds, sa);
             }
         }
     }

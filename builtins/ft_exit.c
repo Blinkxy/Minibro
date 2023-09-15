@@ -49,7 +49,7 @@ int is_digit(char *str, int index)
     return(1);
 }
 
-int check_exit(char *arg, t_general *sa)
+int check_exit(char *arg)
 {
     int i;
     long long exit_digit;
@@ -60,18 +60,18 @@ int check_exit(char *arg, t_general *sa)
 		i++;
     if(arg[i] && (arg[i] == '+' || arg[i] == '-'))
         i++;
-    if(is_digit(arg, i)== 0 || is_greater_than_llong(arg) == 0)
+    if(is_digit(arg, i)== 0 || is_greater_than_llong(arg) == 1)
         return(1);
     exit_digit = ft_ex_atoi(arg);
-    sa->ex_status = exit_digit % 256;
+    gb_ex_st = exit_digit % 256;
     return(0);
 }
 
-int ft_exit(char **cmd, t_general * sa)
+int ft_exit(char **cmd)
 {
     if(!cmd[1])
-        exit(sa->ex_status);
-    if(check_exit(cmd[1], sa) == 1 )
+        exit(gb_ex_st);
+    if(check_exit(cmd[1]) == 1 )
     {
         ft_putstr_fd("minishell: exit: ", 2);
         ft_putstr_fd(cmd[1], 2);
@@ -83,7 +83,7 @@ int ft_exit(char **cmd, t_general * sa)
         ft_putstr_fd("minishell: exit: too many arguments\n", 2);
         return(1);
     }
-    exit(sa->ex_status);
+    exit(gb_ex_st);
 }
 
 

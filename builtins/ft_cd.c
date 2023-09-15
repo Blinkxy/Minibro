@@ -1,12 +1,30 @@
 #include "../Minishell.h"
 
+int update_pwd(t_general *sa)
+{
+    char pwd[PATH_MAX];
+    char *res;
+    int index;
+    if(getcwd(pwd, PATH_MAX) == NULL)
+        return(1);
+    res = env_join("PWD=", pwd);
+    index = get_env_var(sa->env, "PWD");
+    if(index == -1)
+        return(1);
+    remplace_env_var(sa->env, index, res);
+    return(0);
+}
+
 int ft_cd(t_general *sa, char **cmd)
 {
     int res;
 
     res = 0;
     if(!cmd[1])
-       res = cd_home(sa);
+    {
+       res = cd_home(sa); 
+        update_pwd(sa);
+    }
     else
     {
         update_oldpwd(sa);
@@ -18,6 +36,7 @@ int ft_cd(t_general *sa, char **cmd)
             ft_putstr_fd(" no such file or directory \n", 2);
 
         }
+        update_pwd(sa);
     }
     return(res);
 }
@@ -69,7 +88,8 @@ char *get_path_env(char *env)
     int path_length = strlen(env) - i;
 
     res = (char *)malloc(sizeof(char) * (path_length + 1));
-    while (env[i]) {
+    while (env[i]) 
+    {
         res[j] = env[i];
         i++;
         j++;

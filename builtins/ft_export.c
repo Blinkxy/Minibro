@@ -48,7 +48,6 @@ int check_or_update(char **new_var,char *var, t_general *sa)
 
     index = -1;
     index = get_env_var(sa->env_export, new_var[0]);
-    printf("index == %d\n", index);
     if(index != -1 && ft_strchr(var, '=') != NULL)
     {
         free(sa->env_export[index]);
@@ -112,6 +111,8 @@ int ft_export(t_general *sa, char **cmd, int fd)
     return(res);
 }
 
-
-
+// char *remove_dq_env(char *str)
+// {
+    
+// }
 

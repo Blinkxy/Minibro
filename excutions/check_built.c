@@ -1,10 +1,6 @@
 #include "../Minishell.h"
 
-// void reset_fd(t_list *cmd)
-// {
-//     cmd->fd_out = 1;
-//     cmd->fd_in = 0;
-// }
+
 
 
 

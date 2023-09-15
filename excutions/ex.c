@@ -59,44 +59,32 @@ char *get_path(char **env, char *cmd)
 }
 
 
-void ex_cmd(t_general *sa, char **cmd)
+void ex_cmd(t_general *sa, t_list *cmd)
 {
-    pid_t id;
-    
-    id = fork();
-    if(id < 0)
+    if(cmd->final_cmd[0][0] == '.' || cmd->final_cmd[0][0] == '/')
     {
-        ft_putstr_fd("fork\n", 2);
-        return;
-    }
-    if(id == 0)
-    {
-        if(cmd[0][0] == '.' || cmd[0][0] == '/')
+        if(access(cmd->final_cmd[0], F_OK) != 0)
         {
-            if(access(cmd[0], F_OK) != 0)
-            {
-                ft_putstr_fd("minishell: ", 2);
-                ft_putstr_fd("command not found: ", 2);
-                ft_putstr_fd(cmd[0], 2);
-                ft_putstr_fd("\n", 2);
+            ft_putstr_fd("minishell: ", 2);
+            ft_putstr_fd("command not found: ", 2);
+            ft_putstr_fd(cmd->final_cmd[0], 2);
+            ft_putstr_fd("\n", 2);
                 exit(1);
-            }
-            else
-            {
-                execve(cmd[0], cmd, sa->env);
-                exit(0);
-            }
         }
-        else 
+        else
         {
-            cmd[0] = ft_strdup(get_path(sa->env, cmd[0]));
-            execve(cmd[0], cmd, sa->env);
-            printf("cmd\n");
-            exit(0);
+            //dup_fds(cmd);
+            execve(cmd->final_cmd[0], cmd->final_cmd, sa->env);
+            //close_fds(cmd);
         }
     }
-    else
-        wait(NULL);
-    
+    else 
+    {
+            cmd->final_cmd[0] = ft_strdup(get_path(sa->env, cmd->final_cmd[0]));
+            //dup_fds(cmd);
+            execve(cmd->final_cmd[0], cmd->final_cmd, sa->env);
+            //close_fds(cmd);
+    }
+
 }
 
