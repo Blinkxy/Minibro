@@ -6,7 +6,7 @@
 /*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 20:20:00 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/09/14 18:05:02 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/09/15 22:15:46 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,16 +24,16 @@
 
 typedef enum e_type
 {
-	WORD = 1, // argument of command or ENV
-	HEREDOC,  // <<
-	APPEND,   // >>
-	RED_OUT,  // >
-	RED_IN,   // <
-	FYLE,     // argument of redir
-	NOT,      // string
-	END,      // end of cmd
+	WORD = 1,
+	HEREDOC,
+	APPEND,
+	RED_OUT,
+	RED_IN,
+	FYLE,
+	NOT,
+	END,
 	ENV,
-	DELIMITER, // of heredoc
+	DELIMITER,
 }					t_type;
 
 typedef struct s_define
@@ -50,34 +50,44 @@ typedef struct s_define
 typedef struct s_redir
 {
 	int				type;
-	char *red; // < or > or << or >>
+	char			*red;
 	int				*fd;
 	char			*file;
 	char			*delimiter;
-}				t_redir;
+}					t_redir;
+
+typedef struct s_index
+{
+	int				i;
+	int				j;
+	int				insinglequotes;
+	int				indoublequotes;
+	int				inquotes;
+	int				len;
+	int				index;
+}					t_index;
 
 typedef struct s_count
 {
-	int word_count;
-	int inSingleQuotes;
-	int inDoubleQuotes;
-	int wordStart;
+	int				word_count;
+	int				insinglequotes;
+	int				indoublequotes;
+	int				wordstart;
 }					t_count;
 
 typedef struct s_list
 {
-
-	int has_herdoc; // flag indicating if the cmd has a herdoc
-	int herdoc_content_fd; // fd for herdoc content
-    char** cmd;     //  double array of EACH command
-	int fd_in;
-	int fd_out;
-    int index;		// index of the command
-	int size_cmd;	// how many pointers in each command
-	t_define *define; // each pointer of cmd is in a struct for define/expand
-	int red_nb;       // number of total redirection in this command
-	t_redir *redir;   // array of all the redir in this command to send to exec
-	char **final_cmd; // command + arg(if existent) to send to exec
+	int				has_herdoc;
+	int				herdoc_content_fd;
+	char			**cmd;
+	int				fd_in;
+	int				fd_out;
+	int				index;
+	int				size_cmd;
+	t_define		*define;
+	int				red_nb;
+	t_redir			*redir;
+	char			**final_cmd;
 	struct s_list	*prev;
 	struct s_list	*next;
 }					t_list;
@@ -93,52 +103,61 @@ typedef struct s_general
 
 //   PARSING UTILS
 
-int     checker_line(char *line);
-int		checker_redir(char *line);
-int     cnt_cmds(char *line);
-int     valid_cmd(char **splitted);
-int     checkQuotes(char* line);
-char    *addnext_pipe(char* str);
-void	removeExtraNewlines(char* str);
-void    tokenizer(char **str);
-t_list *createNode(char* cmd, int i);
-void 	addNodeFront(t_list *head, char* str, int i);
-void 	add_prev_list(t_list *cmds);
-int 	checkQuoteIndex(char* str, int index);
-int 	check_dollar(char *str, int index);
-char 	**removePipePointers(char** str);
-char** 	split_cmd(char* str);
-int 	isWhitespace(char c);
-int 	count_cmds(char **str);
-int 	sizeof_cmd(t_list *cmds);
-void 	cmd_define(t_list *cmds);
-void add_prev_list(t_list *cmds);
+int					checker_line(char *line);
+int					checker_redir(char *line);
+int					cnt_cmds(char *line);
+int					valid_cmd(char **splitted);
+int					checkquotes(char *line);
+char				*addnext_pipe(char *str);
+void				addnext_pipe_util(t_index *index, char *str, char *new_str);
+void				remove_xtra_newlines(char *str);
+void				tokenizer(char **str);
+t_list				*create_node(char *cmd, int i);
+void				add_node_front(t_list *head, char *str, int i);
+void				add_prev_list(t_list *cmds);
+int					checkquote_index(char *str, int index);
+int					check_dollar(char *str, int index);
+char				**remove_pipe_pointers(char **str);
+char				**split_cmd(char *str);
+int					iswhitespace(char c);
+int					count_cmds(char **str);
+int					sizeof_cmd(t_list *cmds);
+void				cmd_define(t_list *cmds);
+void				add_prev_list(t_list *cmds);
 
-		//  ENV Handling		
-char 	*extract_ENV(char *str);
-char 	*expand_ENV(char *str, char **env);
-char	*Expand_quotes(char* str);
-char* 	concatenate_char(char* str, char c);
+//  ENV Expand
+char				*extract_env(char *str);
+char				*expand_env(char *str, char **env);
+char				*expand_quotes(char *str);
+char				*concatenate_char(char *str, char c);
+void				initialize_define(t_define *new_struct, int size);
+void				initialize_define_inserted(t_define *define, int inserted);
+void				initialize_counter(t_count *counter);
+void				initialize_index(t_index *index);
+int					countwords(char *str);
+void				count_word_bis(char *str, t_count *count_words, int *i);
+int					skip_quote(char *str, int i);
+char				**splitWords(char *str, int *wordCount);
+void				free_double_array(char **str);
 
-void 	initialize_define(t_define *new_struct, int size);
-void	initialize_define_inserted(t_define *define, int inserted);
-void	initialize_counter(t_count *counter);
-int 	countWords(char* str);
-void	count_word_bis(char *str, t_count *count_words, int *i);
-int		skip_quote(char *str, int i);
-char	**splitWords(char* str, int* wordCount);
-void	free_double_array(char **str);
+// Expand
 
-void 	fill_new_struct(char *str, t_define *new_struct);
-t_define *insert_new_struct(t_define *define, t_define *inserted, t_list *cmds, int index);
-void 	free_struct(t_define *define);
-void 	final_struct(t_list *cmds, char **env);
-void    redir_array(t_list *commands);
-void 	free_define_and_cmd(t_list *cmds);
-void    final_cmd(t_list *cmds);
-void    final_remove_quotes(t_list *cmds);
+void				fill_new_struct(char *str, t_define *new_struct);
+t_define			*insert_new_struct(t_define *define, t_define *inserted,
+						t_list *cmds, int index);
+void				free_struct(t_define *define);
+void				final_struct(t_list *cmds, char **env);
+void				redir_array(t_list *commands);
+void				redir_arrayx(t_list *tmp, int *i, int *j);
+void				redir_red_in(t_list *tmp, int *i, int *j);
+void				redir_red_out(t_list *tmp, int *i, int *j);
+void				redir_append(t_list *tmp, int *i, int *j);
+void				redir_heredoc(t_list *tmp, int *i, int *j);
+void				free_define_and_cmd(t_list *cmds);
+void				final_cmd(t_list *cmds);
+void				final_remove_quotes(t_list *cmds);
 
-void free_words(char** words, int count);
+void				free_words(char **words, int count);
 
 //general functions
 int					ft_size(char **str);
@@ -186,10 +205,10 @@ int					compare_env_var(char *str, char *var);
 int					get_env_var(char **env, char *var);
 
 //exuction functions
-int handle_builtins(t_list *cmds, t_general *sa);
-int ex_minishell(t_list *cmd, t_general *sa);
-int is_builtin(char **args);
-void ex_cmd(t_general *sa, char **cmd);
+int					handle_builtins(t_list *cmds, t_general *sa);
+int					ex_minishell(t_list *cmd, t_general *sa);
+int					is_builtin(char **args);
+void				ex_cmd(t_general *sa, char **cmd);
 // pipe
 void				pipex(t_list *cmds, t_general *sa);
 int					numberOf_cmd(t_list *cmds);

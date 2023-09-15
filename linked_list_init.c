@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   linked_list_init.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 15:42:46 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/07/21 19:06:54 by marvin           ###   ########.fr       */
+/*   Updated: 2023/09/15 20:22:20 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Minishell.h"
 
 
-t_list *createNode(char* cmd, int i) 
+t_list *create_node(char* cmd, int i) 
 {
     t_list *newNode;
     int j;
@@ -37,13 +37,13 @@ t_list *createNode(char* cmd, int i)
     return newNode;
 }
 
-void addNodeFront(t_list *head, char* str, int i) 
+void add_node_front(t_list *head, char* str, int i) 
 {
     t_list *current = head;
 
     while (current->next != NULL)
         current = current->next;
-    current->next = createNode(str, i);
+    current->next = create_node(str, i);
 }
 
 void add_prev_list(t_list *cmds)

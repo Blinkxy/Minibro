@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Errors_free.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/09/15 15:54:45 by mzoheir           #+#    #+#             */
+/*   Updated: 2023/09/15 15:54:47 by mzoheir          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "Minishell.h"
 
 void	free_define_and_cmd(t_list *cmds)
@@ -61,7 +73,7 @@ int	start_pipe(char *s)
 
 int	checker_line(char *line)
 {
-	if (checkQuotes(line) == 0)
+	if (checkquotes(line) == 0)
 	{
 		printf("Invalid command: quotes not closed\n");
 		return (0);

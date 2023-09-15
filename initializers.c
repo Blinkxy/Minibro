@@ -6,7 +6,7 @@
 /*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 15:44:58 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/09/10 15:51:53 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/09/15 22:14:49 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,18 @@ void	initialize_define_inserted(t_define *define, int inserted)
 
 void	initialize_counter(t_count *counter)
 {   
-    counter->word_count= 0;
-	counter->inSingleQuotes= 0;;
-	counter->inDoubleQuotes = 0;;
-	counter->wordStart = 0;;
+    counter->word_count = 0;
+	counter->insinglequotes = 0;;
+	counter->indoublequotes = 0;;
+	counter->wordstart = 0;;
+}
+void	initialize_index(t_index *index)
+{   
+    index->i = 0;
+    index->j = 0;
+	index->insinglequotes = 0;
+	index->indoublequotes = 0;
+	index->len = 0;
+	index->index = 0;
+	index->inquotes = 0;
 }

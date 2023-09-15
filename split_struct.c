@@ -1,12 +1,22 @@
-#include "Minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   split_struct.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/09/15 15:48:17 by mzoheir           #+#    #+#             */
+/*   Updated: 2023/09/15 15:48:17 by mzoheir          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-// int     final_size(t_list *cmds)
+#include "Minishell.h"
 
 void	final_cmd(t_list *cmds)
 {
-	int i;
-	int j;
-	t_list *tmp;
+	int			i;
+	int			j;
+	t_list		*tmp;
 
 	tmp = cmds;
 	while (tmp)
@@ -30,5 +40,3 @@ void	final_cmd(t_list *cmds)
 		tmp = tmp->next;
 	}
 }
-
-

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cmd_struct.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/09/15 15:54:36 by mzoheir           #+#    #+#             */
+/*   Updated: 2023/09/15 15:54:36 by mzoheir          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "Minishell.h"
 
 int	skip_quote(char *str, int i)
@@ -20,32 +32,32 @@ void	count_word_bis(char *str, t_count *count_words, int *i)
 {
 	if (str[*i] == '\'')
 	{
-		if (!count_words->inDoubleQuotes)
-			count_words->inSingleQuotes = !count_words->inSingleQuotes;
+		if (!count_words->indoublequotes)
+			count_words->insinglequotes = !count_words->insinglequotes;
 		else
-			count_words->wordStart = 1;
+			count_words->wordstart = 1;
 	}
 	else if (str[*i] == '"')
 	{
-		if (!count_words->inSingleQuotes)
-			count_words->inDoubleQuotes = !count_words->inDoubleQuotes;
+		if (!count_words->insinglequotes)
+			count_words->indoublequotes = !count_words->indoublequotes;
 		else
-			count_words->wordStart = 1;
+			count_words->wordstart = 1;
 	}
-	else if (str[*i] == ' ' && !count_words->inSingleQuotes
-			&& !count_words->inDoubleQuotes)
+	else if (str[*i] == ' ' && !count_words->insinglequotes
+			&& !count_words->indoublequotes)
 	{
-		if (count_words->wordStart == 1)
+		if (count_words->wordstart == 1)
 		{
 			count_words->word_count++;
-			count_words->wordStart = 0;
+			count_words->wordstart = 0;
 		}
 	}
 	else
-		count_words->wordStart = 1;
+		count_words->wordstart = 1;
 }
 
-int	countWords(char *str)
+int	countwords(char *str)
 {
 	int i;
 	t_count count;
@@ -56,7 +68,7 @@ int	countWords(char *str)
 	{
 		count_word_bis(str, &count, &i);
 	}
-	if (count.wordStart == 1 && !count.inSingleQuotes && !count.inDoubleQuotes)
+	if (count.wordstart == 1 && !count.insinglequotes && !count.indoublequotes)
 		count.word_count++;
 	return (count.word_count);
 }
@@ -162,32 +174,32 @@ void	final_struct(t_list *cmds, char **env)
 		{
 			if (tmp->define[i].dollar == 1)
 			{
-				tmp->define[i].content = expand_ENV(tmp->define[i].content,
+				tmp->define[i].content = expand_env(tmp->define[i].content,
 													env);
-				if (countWords(tmp->define[i].content) > 1
+				if (countwords(tmp->define[i].content) > 1
 					&& tmp->define[i].type == FYLE)
 				{
 					printf("ambiguous redirect\n");
 					// free all
 					break;
 				}
-				else if (countWords(tmp->define[i].content) > 1
+				else if (countwords(tmp->define[i].content) > 1
 						&& tmp->define[i].type != FYLE)
 				{
 					new_struct = malloc(sizeof(t_define)
-							* countWords(tmp->define[i].content));
+							* countwords(tmp->define[i].content));
 					if (!new_struct)
 					{
 						// free all
 						break;
 					}
 					initialize_define_inserted(new_struct,
-												countWords(tmp->define[i].content));
+												countwords(tmp->define[i].content));
 					fill_new_struct(tmp->define[i].content, new_struct);
-					tmp->size_cmd += countWords(tmp->define[i].content) - 1;
+					tmp->size_cmd += countwords(tmp->define[i].content) - 1;
 					tmp->define = insert_new_struct(tmp->define, new_struct,
 							tmp, i);
-					i += countWords(tmp->define[i].content) - 1;
+					i += countwords(tmp->define[i].content) - 1;
 				}
 			}
 			i++;
@@ -274,32 +286,32 @@ void	cmd_define(t_list *cmds)
 int	check_dollar(char *str, int index)
 {
 	int i;
-	int Squote;
-	int Dquote;
+	int squote;
+	int dquote;
 
-	Squote = 0;
-	Dquote = 0;
+	squote = 0;
+	dquote = 0;
 	i = 0;
 	while (i < index)
 	{
-		if (str[i] == '\'' && str[i - 1] != '\\' && Dquote == 0 && Squote == 0)
-			Squote = 1;
-		else if (str[i] == '\"' && str[i - 1] != '\\' && Dquote == 0
-				&& Squote == 0)
-			Dquote = 1;
-		else if (str[i] == '\'' && str[i - 1] != '\\' && Dquote == 0
-				&& Squote == 1)
-			Squote = 0;
-		else if (str[i] == '\"' && str[i - 1] != '\\' && Dquote == 1
-				&& Squote == 0)
-			Dquote = 0;
+		if (str[i] == '\'' && str[i - 1] != '\\' && dquote == 0 && squote == 0)
+			squote = 1;
+		else if (str[i] == '\"' && str[i - 1] != '\\' && dquote == 0
+				&& squote == 0)
+			dquote = 1;
+		else if (str[i] == '\'' && str[i - 1] != '\\' && dquote == 0
+				&& squote == 1)
+			squote = 0;
+		else if (str[i] == '\"' && str[i - 1] != '\\' && dquote == 1
+				&& squote == 0)
+			dquote = 0;
 		i++;
 	}
-	if (i == index && Dquote == 1 && Squote == 0)
+	if (i == index && dquote == 1 && squote == 0)
 		return (0); // Inside Double Quotes
-	else if (i == index && Dquote == 0 && Squote == 0)
+	else if (i == index && dquote == 0 && squote == 0)
 		return (0); // Not within Quotes
-	else if (i == index && Dquote == 0 && Squote == 1)
+	else if (i == index && dquote == 0 && squote == 1)
 		return (1); // Inside Single Quotes
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 20:19:32 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/09/14 19:24:18 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/09/15 23:10:21 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,12 +56,12 @@ int main(int argc, char **argv, char **env)
             {
                 st = addnext_pipe(s);
                 str = ft_split(st,'\n');
-                str = removePipePointers(str);
+                str = remove_pipe_pointers(str);
                 i = 0;
                 if(str[0])
-                    cmds = createNode(str[0], i);
+                    cmds = create_node(str[0], i);
                 while( ++i < count_cmds(str))
-                    addNodeFront(cmds, str[i],i);
+                    add_node_front(cmds, str[i],i);
                 add_prev_list(cmds);
                 cmd_define(cmds);
                 final_struct(cmds,env);
@@ -70,7 +70,7 @@ int main(int argc, char **argv, char **env)
                 final_cmd(cmds);
                 //check_heredoc(cmds);
                 
-                ex_minishell(cmds, sa);
+                //ex_minishell(cmds, sa);
               //  free_define_and_cmd(cmds)
                 // handle_redir(cmds, sa);
 
