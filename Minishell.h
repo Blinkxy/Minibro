@@ -6,7 +6,7 @@
 /*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 20:20:00 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/09/16 03:44:33 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/09/16 05:40:12 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -221,6 +221,7 @@ void ex_pipe(t_list *cmd, t_general *sa);
 int check_herdoc(t_list *cmds, t_general *sa);
 void heredoc(t_list *cmds, t_general *sa, int fd[2]);
 int handle_herdoc(t_list *cmds, t_general *sa);
+int hrdc_expand(char *delimiter);
 
 // mak
 void pipex(t_list *cmds, t_general *sa);

@@ -63,13 +63,20 @@ int handle_append(t_list *cmd, t_redir *red)
     return(fd);
 }
 
-
+int hrdc_expand(char *delimiter)
+{   
+    if (ft_strchr(delimiter, '\'') || ft_strchr(delimiter, '"'))
+    {
+            expand_quotes(delimiter);
+            return(1);
+    }
+    return(0);
+}
 int ft_heredoc(t_list *cmds, t_general *sa)
 {
     char *line;
     int pipefd[2];
     pipe(pipefd);
-    (void)sa;
     while(1)
     {
         line = readline("> ");
@@ -79,7 +86,13 @@ int ft_heredoc(t_list *cmds, t_general *sa)
             free(line);
             break;
         }
-        write(pipefd[1], line, strlen(line));
+        if (hrdc_expand(cmds->redir->delimiter) == 0)
+        {
+            line = expand_env(line, sa->env);
+            write(pipefd[1], line, ft_strlen(line));
+        }
+        else
+            write(pipefd[1], line, ft_strlen(line));
         write(pipefd[1], "\n", 1);
         free(line);
     }
