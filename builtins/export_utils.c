@@ -88,7 +88,7 @@ void double_swap(int i, int j, t_general *sa)
 }
 
 // print all the export when i get export cmd with no args
-void solo_export(t_general *sa, int fd)
+void solo_export(t_general *sa)
 {
     int i;
     int j;
@@ -108,9 +108,9 @@ void solo_export(t_general *sa, int fd)
     i = 0;
     while(sa->env_export[i])
     {
-        ft_putstr_fd("declare -x ", fd);
-        ft_putstr_fd(sa->env_export[i++], fd);
-        ft_putstr_fd("\n", fd);
+        ft_putstr_fd("declare -x ", 1);
+        ft_putstr_fd(sa->env_export[i++], 1);
+        ft_putstr_fd("\n", 1);
     }
     
 }

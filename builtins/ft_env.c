@@ -1,6 +1,6 @@
 #include "../Minishell.h"
 
-int ft_env(t_general *sa, int fd)
+int ft_env(t_general *sa)
 {
     int i;
 
@@ -9,8 +9,8 @@ int ft_env(t_general *sa, int fd)
         return(1);
     while(sa->env[i])
     {
-        ft_putstr_fd(sa->env[i++], fd);
-        ft_putstr_fd("\n", fd);
+        ft_putstr_fd(sa->env[i++], 1);
+        ft_putstr_fd("\n", 1);
     }
     return(0);
 }

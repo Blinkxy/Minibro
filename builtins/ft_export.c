@@ -45,6 +45,7 @@ char *with_value(char **new_var)
 int check_or_update(char **new_var,char *var, t_general *sa)
 {
     int index;
+    char *var_fr_env;
 
     index = -1;
     index = get_env_var(sa->env_export, new_var[0]);
@@ -59,13 +60,14 @@ int check_or_update(char **new_var,char *var, t_general *sa)
         return(0);
     else
     {
+        var_fr_env = expand_quotes(var);
         sa->env_export = export_update(sa->env_export, var);
-        sa->env = export_update(sa->env, var);
+        sa->env = export_update(sa->env, var_fr_env);
     }
     return(1);
 }
 
-int ft_export(t_general *sa, char **cmd, int fd)
+int ft_export(t_general *sa, char **cmd)
 {
     int i;
     int res;
@@ -78,7 +80,7 @@ int ft_export(t_general *sa, char **cmd, int fd)
     new_var = NULL;
     if(cmd[1] == NULL)
     {
-        solo_export(sa, fd);
+        solo_export(sa);
         res = 1;
     }
     while(cmd[i])
