@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdouzi <mdouzi@student.1337.ma>            +#+  +:+       +#+        */
+/*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 20:19:32 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/09/13 18:27:50 by mdouzi           ###   ########.fr       */
+/*   Updated: 2023/09/16 04:05:23 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,18 +68,16 @@ int main(int argc, char **argv, char **env)
         if(s && s[0])
         {
             add_history(s);
-            if (start_pipe(s) == 0)
-                printf("syntax error near unexpected token '|'\n");
-            if (checker_line(s) == 1 && start_pipe(s) == 1)
+            if (checker_line(s) == 1 && checker_redir(s) == 1)
             {
                 st = addnext_pipe(s);
                 str = ft_split(st,'\n');
-                str = removePipePointers(str);
+                str = remove_pipe_pointers(str);
                 i = 0;
                 if(str[0])
-                    cmds = createNode(str[0], i);
+                    cmds = create_node(str[0], i);
                 while( ++i < count_cmds(str))
-                    addNodeFront(cmds, str[i],i);
+                    add_node_front(cmds, str[i],i);
                // add_prev_list(cmds);
                 cmd_define(cmds);
                 final_struct(cmds,env);

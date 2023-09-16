@@ -6,7 +6,7 @@
 /*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 20:20:00 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/09/16 02:25:29 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/09/16 03:44:33 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,6 @@ void				initialize_index(t_index *index);
 int					countwords(char *str);
 void				count_word_bis(char *str, t_count *count_words, int *i);
 int					skip_quote(char *str, int i);
-char				**splitWords(char *str, int *wordCount);
 void				free_double_array(char **str);
 
 // Expand
@@ -217,7 +216,7 @@ void ex_cmd(t_general *sa, t_list *cmd);
 int make_red(t_list *cmd, t_general *sa);
 int ex_builtins(t_list *cmd, t_general *sa);
 void ex_test(t_list *cmd, t_general *sa);
-void ex_pipe(t_list *cmd, t_general *sa); 
+void ex_pipe(t_list *cmd, t_general *sa);
 // heredocument
 int check_herdoc(t_list *cmds, t_general *sa);
 void heredoc(t_list *cmds, t_general *sa, int fd[2]);

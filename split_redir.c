@@ -22,53 +22,53 @@ int	iswhitespace(char c)
 
 char	**split_cmd(char *str)
 {
-	t_index *index;
+	t_index index;
 	char		*newstr;
 
-	index = NULL;
-	initialize_index(index);
-	index->len = ft_strlen(str);
-	newstr = (char *)ft_calloc((index->len * 2 + 1) * sizeof(char), 1);
-	index->i = -1;
-	while (++(index->i) < index->len)
+	
+	initialize_index(&index);
+	index.len = ft_strlen(str);
+	newstr = (char *)ft_calloc((index.len * 2 + 1) * sizeof(char), 1);
+	index.i = -1;
+	while (++(index.i) < index.len)
 	{
-		if (str[index->i] == '\'' || str[index->i] == '\"')
+		if (str[index.i] == '\'' || str[index.i] == '\"')
 		{
-			index->inquotes = !index->inquotes;
-			newstr[index->index++] = str[index->i];
+			index.inquotes = !index.inquotes;
+			newstr[index.index++] = str[index.i];
 		}
-		else if (!index->inquotes && str[index->i] == '>' && str[index->i + 1] != '>')
+		else if (!index.inquotes && str[index.i] == '>' && str[index.i + 1] != '>')
 		{
-			newstr[index->index++] = '\n';
-			newstr[index->index++] = '>';
-			newstr[index->index++] = '\n';
+			newstr[index.index++] = '\n';
+			newstr[index.index++] = '>';
+			newstr[index.index++] = '\n';
 		}
-		else if (!index->inquotes && str[index->i] == '>' && str[index->i + 1] == '>')
+		else if (!index.inquotes && str[index.i] == '>' && str[index.i + 1] == '>')
 		{
-			newstr[index->index++] = '\n';
-			newstr[index->index++] = '>';
-			newstr[index->index++] = '>';
-			newstr[index->index++] = '\n';
-			index->i++;
+			newstr[index.index++] = '\n';
+			newstr[index.index++] = '>';
+			newstr[index.index++] = '>';
+			newstr[index.index++] = '\n';
+			index.i++;
 		}
-		else if (!index->inquotes && str[index->i] == '<' && str[index->i + 1] != '<')
+		else if (!index.inquotes && str[index.i] == '<' && str[index.i + 1] != '<')
 		{
-			newstr[index->index++] = '\n';
-			newstr[index->index++] = '<';
-			newstr[index->index++] = '\n';
+			newstr[index.index++] = '\n';
+			newstr[index.index++] = '<';
+			newstr[index.index++] = '\n';
 		}
-		else if (!index->inquotes && str[index->i] == '<' && str[index->i + 1] == '<')
+		else if (!index.inquotes && str[index.i] == '<' && str[index.i + 1] == '<')
 		{
-			newstr[index->index++] = '\n';
-			newstr[index->index++] = '<';
-			newstr[index->index++] = '<';
-			newstr[index->index++] = '\n';
-			index->i++;
+			newstr[index.index++] = '\n';
+			newstr[index.index++] = '<';
+			newstr[index.index++] = '<';
+			newstr[index.index++] = '\n';
+			index.i++;
 		}
-		else if (!index->inquotes && iswhitespace(str[index->i]))
-			newstr[index->index++] = '\n';
+		else if (!index.inquotes && iswhitespace(str[index.i]))
+			newstr[index.index++] = '\n';
 		else
-			newstr[index->index++] = str[index->i];
+			newstr[index.index++] = str[index.i];
 	}
 	free(str);
 	return (ft_split(newstr, '\n'));
@@ -82,12 +82,9 @@ void	final_remove_quotes(t_list *cmds)
 	tmp = cmds;
 	while (tmp)
 	{
-		i = 0;
-		while (i < tmp->size_cmd)
-		{
+		i = -1;
+		while (++i < tmp->size_cmd)
 			tmp->define[i].content = expand_quotes(tmp->define[i].content);
-			i++;
-		}
 		tmp = tmp->next;
 	}
 }
@@ -116,21 +113,20 @@ void	expand_quotes_util(t_index *index, char *str, char *result)
 
 char	*expand_quotes(char *str)
 {
-	t_index		*index;
+	t_index		index;
 	char		*result;
 
-	index = NULL;
-	initialize_index(index);
-	index->len = ft_strlen(str);
-	result = (char *)malloc(index->len + 1);
+	initialize_index(&index);
+	index.len = ft_strlen(str);
+	result = (char *)malloc(index.len + 1);
 	if (!result)
 		return (NULL);
-	while (str[index->i] != '\0')
+	while (str[index.i] != '\0')
 	{
-		expand_quotes_util(index, str, result);
-		index->i++;
+		expand_quotes_util(&index, str, result);
+		index.i++;
 	}
 	free(str);
-	result[index->j++] = '\0';
+	result[index.j++] = '\0';
 	return (result);
 }

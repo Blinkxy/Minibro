@@ -6,7 +6,7 @@
 /*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 20:29:26 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/09/15 23:05:37 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/09/16 04:03:54 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,6 @@ char	*addnext_pipe(char *str)
 	t_index index;
 
 	initialize_index(&index);
-	
 	index.len = ft_strlen(str); 
 	new_str = (char *)ft_calloc((index.len * 2 + 1) * sizeof(char), 1);
 	index.i = -1;
@@ -90,12 +89,16 @@ char	**remove_pipe_pointers(char **str)
 			count++;
 	}
 	result = (char **)malloc((count + 1) * sizeof(char *));
-	i = -1;
-	j = -1;
-	while (str[++i])
+	i = 0;
+	j = 0;
+	while (str[i])
 	{
 		if (str[i][0] != '|')
-			result[++j] = str[i];
+		{
+			result[j] = str[i];
+			j++;
+		}
+			i++;
 	}
 	result[j] = NULL;
 	free(str);
