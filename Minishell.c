@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdouzi <mdouzi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 20:19:32 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/09/16 04:05:23 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/09/16 23:43:25 by mdouzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ int main(int argc, char **argv, char **env)
                     add_node_front(cmds, str[i],i);
                // add_prev_list(cmds);
                 cmd_define(cmds);
-                final_struct(cmds,env);
+                final_struct(cmds,sa->env);
                 final_remove_quotes(cmds);
                 redir_array(cmds);
                 final_cmd(cmds);

@@ -60,9 +60,10 @@ int check_or_update(char **new_var,char *var, t_general *sa)
         return(0);
     else
     {
-        var_fr_env = expand_quotes(var);
+        var_fr_env = expand_quotes(ft_strdup(var));
         sa->env_export = export_update(sa->env_export, var);
         sa->env = export_update(sa->env, var_fr_env);
+        free(var_fr_env);
     }
     return(1);
 }
