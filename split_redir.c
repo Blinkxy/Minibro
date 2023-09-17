@@ -15,61 +15,43 @@
 
 #include "Minishell.h"
 
-int	iswhitespace(char c)
+void	split_redirections(char *newstr, t_index *index, char *str)
 {
-	return (c == ' ' || c == '\t');
+	if (str[index->i] == '\'' || str[index->i] == '\"')
+	{
+		index->inquotes = !index->inquotes;
+		newstr[index->index++] = str[index->i];
+	}
+	if (!index->inquotes && str[index->i] == '>' && str[index->i + 1] != '>')
+		split_red_in(newstr, index);
+	else if (!index->inquotes && str[index->i]
+		== '<' && str[index->i + 1] != '<')
+		split_red_out(newstr, index);
+	else if (!index->inquotes && str[index->i]
+		== '>' && str[index->i + 1] == '>')
+		split_append(newstr, index);
+	else if (!index->inquotes && str[index->i]
+		== '<' && str[index->i + 1] == '<')
+		split_heredoc(newstr, index);
+	else if (!index->inquotes && iswhitespace(str[index->i]))
+		newstr[index->index++] = '\n';
+	else
+		newstr[index->index++] = str[index->i];
 }
 
 char	**split_cmd(char *str)
 {
-	t_index index;
+	t_index		index;
 	char		*newstr;
 
-	
 	initialize_index(&index);
 	index.len = ft_strlen(str);
 	newstr = (char *)ft_calloc((index.len * 2 + 1) * sizeof(char), 1);
+	if (!newstr)
+		return (NULL);
 	index.i = -1;
 	while (++(index.i) < index.len)
-	{
-		if (str[index.i] == '\'' || str[index.i] == '\"')
-		{
-			index.inquotes = !index.inquotes;
-			newstr[index.index++] = str[index.i];
-		}
-		else if (!index.inquotes && str[index.i] == '>' && str[index.i + 1] != '>')
-		{
-			newstr[index.index++] = '\n';
-			newstr[index.index++] = '>';
-			newstr[index.index++] = '\n';
-		}
-		else if (!index.inquotes && str[index.i] == '>' && str[index.i + 1] == '>')
-		{
-			newstr[index.index++] = '\n';
-			newstr[index.index++] = '>';
-			newstr[index.index++] = '>';
-			newstr[index.index++] = '\n';
-			index.i++;
-		}
-		else if (!index.inquotes && str[index.i] == '<' && str[index.i + 1] != '<')
-		{
-			newstr[index.index++] = '\n';
-			newstr[index.index++] = '<';
-			newstr[index.index++] = '\n';
-		}
-		else if (!index.inquotes && str[index.i] == '<' && str[index.i + 1] == '<')
-		{
-			newstr[index.index++] = '\n';
-			newstr[index.index++] = '<';
-			newstr[index.index++] = '<';
-			newstr[index.index++] = '\n';
-			index.i++;
-		}
-		else if (!index.inquotes && iswhitespace(str[index.i]))
-			newstr[index.index++] = '\n';
-		else
-			newstr[index.index++] = str[index.i];
-	}
+		split_redirections(newstr, &index, str);
 	free(str);
 	return (ft_split(newstr, '\n'));
 }
@@ -124,7 +106,7 @@ char	*expand_quotes(char *str)
 	result = (char *)malloc(index.len + 1);
 	if (!result)
 		return (NULL);
-	while (str[index.i] != '\0')
+	while (str[index.i])
 	{
 		expand_quotes_util(&index, str, result);
 		index.i++;

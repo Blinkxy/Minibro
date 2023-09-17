@@ -6,7 +6,7 @@
 /*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 21:30:26 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/09/16 05:31:47 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/09/16 23:41:06 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ char	*expand_env(char *str, char **env)
 		{
 			if (str[i + 1] == '?')
 			{
-				
+				printf("%d", gb_ex_st);
 				i += 2;
 			}
 			else

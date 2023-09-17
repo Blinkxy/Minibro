@@ -63,39 +63,47 @@ int handle_append(t_list *cmd, t_redir *red)
     return(fd);
 }
 
-int hrdc_expand(char *delimiter)
+int    hrdc_expand(char *delimiter)
 {   
-    if (ft_strchr(delimiter, '\'') || ft_strchr(delimiter, '"'))
-    {
-            expand_quotes(delimiter);
-            return(1);
-    }
-    return(0);
+    if (ft_strchr(delimiter, '\'') || ft_strchr(delimiter, '"'))         
+            return(0);
+    return(1);
 }
 int ft_heredoc(t_list *cmds, t_general *sa)
 {
     char *line;
+    char *tmp;
+    char *del;
     int pipefd[2];
+
+    tmp = NULL;
     pipe(pipefd);
+    del = ft_strdup(cmds->redir->delimiter);
+    del = expand_quotes(del);
     while(1)
     {
         line = readline("> ");
-        if(ft_strcmp(line , cmds->redir->delimiter) == 0)
+        if(ft_strcmp(line , del) == 0)
         {
             close(pipefd[1]);
             free(line);
             break;
         }
-        if (hrdc_expand(cmds->redir->delimiter) == 0)
+        else if (hrdc_expand(cmds->redir->delimiter) == 1)
         {
-            line = expand_env(line, sa->env);
-            write(pipefd[1], line, ft_strlen(line));
+            tmp = ft_strdup(del);
+            tmp = expand_env(line, sa->env);
+            write(pipefd[1], tmp, ft_strlen(tmp));
+            free(tmp);
         }
         else
+        {
             write(pipefd[1], line, ft_strlen(line));
-        write(pipefd[1], "\n", 1);
-        free(line);
+            free(line);
+        }
+            write(pipefd[1], "\n", 1);
     }
+    free(del);
     return(pipefd[0]);
 }
 
