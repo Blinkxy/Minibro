@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdouzi <mdouzi@student.1337.ma>            +#+  +:+       +#+        */
+/*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 20:20:00 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/09/16 22:21:00 by mdouzi           ###   ########.fr       */
+/*   Updated: 2023/09/17 03:05:44 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,6 +122,12 @@ int					check_dollar(char *str, int index);
 char				**remove_pipe_pointers(char **str);
 char				**split_cmd(char *str);
 int					iswhitespace(char c);
+void				split_whitespace(char *newstr, t_index *index, char *str);
+void				split_red_in(char *newstr, t_index *index);
+void				split_append(char *newstr, t_index *index);
+void				split_red_out(char *newstr, t_index *index);
+void				split_heredoc(char *newstr, t_index *index);
+void				split_quotes(char *newstr, t_index *index, char *str);
 int					count_cmds(char **str);
 int					sizeof_cmd(t_list *cmds);
 void				cmd_define(t_list *cmds);
@@ -221,7 +227,7 @@ void ex_pipe(t_list *cmd, t_general *sa);
 int check_herdoc(t_list *cmds, t_general *sa);
 void heredoc(t_list *cmds, t_general *sa, int fd[2]);
 int handle_herdoc(t_list *cmds, t_general *sa);
-int hrdc_expand(char *delimiter);
+int	hrdc_expand(char *delimiter);
 
 // mak
 void pipex(t_list *cmds, t_general *sa);
