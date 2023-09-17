@@ -7,13 +7,13 @@ int handle_builtins(t_list *cmds, t_general *sa)
         if(ft_strcmp(cmds->final_cmd[0], "cd") == 0)
            gb_ex_st = ft_cd(sa, cmds->final_cmd);
         else if(ft_strcmp(cmds->final_cmd[0], "echo")== 0)
-           gb_ex_st = ft_echo(cmds->final_cmd, cmds->fd_out);
+           gb_ex_st = ft_echo(cmds->final_cmd);
         else if(ft_strcmp(cmds->final_cmd[0], "env") == 0)
-           gb_ex_st = ft_env(sa, cmds->fd_out);
+           gb_ex_st = ft_env(sa);
         else if(ft_strcmp(cmds->final_cmd[0], "export") == 0)
-           gb_ex_st = ft_export(sa, cmds->final_cmd, cmds->fd_out);
+           gb_ex_st = ft_export(sa, cmds->final_cmd);
         else if(ft_strcmp(cmds->final_cmd[0], "pwd") == 0)
-           gb_ex_st = ft_pwd(cmds->fd_out);
+           gb_ex_st = ft_pwd();
         else if(ft_strcmp(cmds->final_cmd[0], "unset") == 0)
            gb_ex_st = ft_unset(sa, cmds->final_cmd);
         else if(ft_strcmp(cmds->final_cmd[0], "exit") == 0)

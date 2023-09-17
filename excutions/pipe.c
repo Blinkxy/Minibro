@@ -37,9 +37,6 @@ int numberOf_cmd(t_list *cmds)
     return(nb);
 }
 
-
-#include <sys/wait.h>
-
 void ex_pipe(t_list *cmd, t_general *sa) {
     t_list *tmp = cmd;
     int num_cmds = numberOf_cmd(cmd);

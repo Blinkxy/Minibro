@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdouzi <mdouzi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 20:20:00 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/09/16 05:40:12 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/09/16 22:21:00 by mdouzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,8 +173,8 @@ void close_fds(t_list *cmds);
 int 	var_export_check(char *env_var);
 void get_export_env(t_general *sa);
 void double_swap(int i, int j, t_general *sa);
-void solo_export(t_general *sa, int fd);
-int ft_export(t_general *sa, char **cmd, int fd);
+void solo_export(t_general *sa);
+int ft_export(t_general *sa, char **cmd);
 char	**export_split_var(char *arg);
 int check_number_of_wr(char *str, char c);
 char *only_name(char *name, char *arg);
@@ -183,7 +183,7 @@ int double_qchek(char *str);
 
 // builtin echo
 int	check_n_line(char *line);
-int	ft_echo(char **cmd, int fd);
+int	ft_echo(char **cmd);
 
 // builtin exit
 int ft_exit(char **cmd);
@@ -192,10 +192,10 @@ int ft_exit(char **cmd);
 int ft_unset(t_general *sa, char **cmd);
 
 // builtin env
-int ft_env(t_general *sa, int fd);
+int ft_env(t_general *sa);
 
 // builtin pwd
-int ft_pwd(int fd);
+int ft_pwd(void);
 
 //builtin cd
 int ft_cd(t_general *sa, char **cmd);

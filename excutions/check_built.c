@@ -1,10 +1,5 @@
 #include "../Minishell.h"
 
-
-
-
-
-
 // void handle_heredoc_input(t_list *cmd) {
     
 //     char *line;

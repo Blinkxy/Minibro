@@ -22,7 +22,7 @@ int	check_n_line(char *line)
 	return (1);
 }
 
-int	ft_echo(char **cmd, int fd)
+int	ft_echo(char **cmd)
 {
 	int	j;
 	int	i;
@@ -35,7 +35,7 @@ int	ft_echo(char **cmd, int fd)
 			i++;
 		else
 		{
-			ft_putstr_fd(cmd[j], fd);
+			ft_putstr_fd(cmd[j], 1);
 			if (cmd[j + 1] != NULL)
 				printf(" ");
 		}
