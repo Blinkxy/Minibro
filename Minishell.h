@@ -6,7 +6,7 @@
 /*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 20:20:00 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/09/17 03:05:44 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/09/18 20:22:29 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,8 +130,15 @@ void				split_heredoc(char *newstr, t_index *index);
 void				split_quotes(char *newstr, t_index *index, char *str);
 int					count_cmds(char **str);
 int					sizeof_cmd(t_list *cmds);
-void				cmd_define(t_list *cmds);
 void				add_prev_list(t_list *cmds);
+
+// DEFINES
+void				cmd_define(t_list *cmds);
+void				define_hrdc(t_list *tmp, int *i);
+void				define_append(t_list *tmp, int *i);
+void				define_red_in(t_list *tmp, int *i);
+void				define_red_out(t_list *tmp, int *i);
+void				define_file(t_list *tmp, int *i);
 
 //  ENV Expand
 char				*extract_env(char *str);

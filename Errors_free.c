@@ -6,7 +6,7 @@
 /*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 15:54:45 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/09/15 15:54:47 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/09/18 20:02:45 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,20 +55,6 @@ void	free_struct(t_define *define)
 		i++;
 	}
 	free(define);
-}
-
-int	start_pipe(char *s)
-{
-	int	i;
-
-	i = 0;
-	if (s[0] == '|')
-		return (0);
-	while (s[i] == ' ' || s[i] == '\t')
-		i++;
-	if (s[i] == '|')
-		return (0);
-	return (1);
 }
 
 int	checker_line(char *line)

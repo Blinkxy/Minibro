@@ -6,7 +6,7 @@
 /*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 20:29:26 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/09/16 04:03:54 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/09/18 20:02:28 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ int	checkquotes(char *line)
 	}
 	return (singlequotes % 2 == 0 && doublequotes % 2 == 0);
 }
+
 void	addnext_pipe_util(t_index *index, char *str, char *new_str)
 {
 	if (str[index->i] == '\'' && index->insinglequotes == 0 && index->indoublequotes == 0)
@@ -89,16 +90,12 @@ char	**remove_pipe_pointers(char **str)
 			count++;
 	}
 	result = (char **)malloc((count + 1) * sizeof(char *));
-	i = 0;
-	j = 0;
-	while (str[i])
+	i = -1;
+	j = -1;
+	while (str[++i])
 	{
 		if (str[i][0] != '|')
-		{
-			result[j] = str[i];
-			j++;
-		}
-			i++;
+			result[++j] = str[i];
 	}
 	result[j] = NULL;
 	free(str);
@@ -147,6 +144,5 @@ int	checkquote_index(char *str, int index)
 		}
 		i++;
 	}
-
 	return (0);
 }

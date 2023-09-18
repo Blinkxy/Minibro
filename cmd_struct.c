@@ -208,110 +208,31 @@ void	final_struct(t_list *cmds, char **env)
 	}
 }
 
-void	cmd_define(t_list *cmds)
-{
-	int i;
-	t_list *tmp;
-
-	tmp = cmds;
-	while (tmp)
-	{
-		tmp->define = malloc(sizeof(t_define) * (tmp->size_cmd));
-		if (!(tmp->define))
-			return ;
-		initialize_define(tmp->define, tmp->size_cmd);
-		i = 0;
-		while (tmp->cmd[i])
-		{
-			if (ft_strncmp("<<", tmp->cmd[i], 2) == 0)
-			{
-				tmp->define[i].state = HEREDOC;
-				tmp->define[i].content = ft_strdup(tmp->cmd[i]);
-				tmp->define[i].type = tmp->define[i].state;
-				tmp->define[i].index = i;
-			}
-			else if (ft_strncmp(">>", tmp->cmd[i], 2) == 0)
-			{
-				tmp->define[i].state = APPEND;
-				tmp->define[i].content = ft_strdup(tmp->cmd[i]);
-				tmp->define[i].type = tmp->define[i].state;
-				tmp->define[i].index = i;
-			}
-			else if (ft_strncmp("<", tmp->cmd[i], 1) == 0)
-			{
-				tmp->define[i].state = RED_IN;
-				tmp->define[i].content = ft_strdup(tmp->cmd[i]);
-				tmp->define[i].type = tmp->define[i].state;
-				tmp->define[i].index = i;
-			}
-			else if (ft_strncmp(">", tmp->cmd[i], 1) == 0)
-			{
-				tmp->define[i].state = RED_OUT;
-				tmp->define[i].content = ft_strdup(tmp->cmd[i]);
-				tmp->define[i].type = tmp->define[i].state;
-				tmp->define[i].index = i;
-			}
-			else if (tmp->define[i - 1].state == RED_IN || tmp->define[i
-					- 1].state == APPEND ||
-						tmp->define[i - 1].state == RED_OUT)
-			{
-				tmp->define[i].content = ft_strdup(tmp->cmd[i]);
-				tmp->define[i].state = FYLE;
-				tmp->define[i].type = tmp->define[i].state;
-				tmp->define[i].index = i;
-			}
-			else if (tmp->define[i - 1].state == HEREDOC)
-			{
-				tmp->define[i].content = ft_strdup(tmp->cmd[i]);
-				tmp->define[i].state = DELIMITER;
-				tmp->define[i].type = tmp->define[i].state;
-				tmp->define[i].index = i;
-			}
-			else
-			{
-				tmp->define[i].content = ft_strdup(tmp->cmd[i]);
-				tmp->define[i].state = WORD;
-				tmp->define[i].type = tmp->define[i].state;
-				tmp->define[i].index = i;
-			}
-			if (ft_strchr(tmp->cmd[i], '$') && tmp->define[i].state != DELIMITER
-				&& tmp->define[i].state)
-				tmp->define[i].dollar = 1;
-			i++;
-		}
-		tmp = tmp->next;
-	}
-}
-
 int	check_dollar(char *str, int index)
 {
-	int i;
-	int squote;
-	int dquote;
+	t_index utils;
 
-	squote = 0;
-	dquote = 0;
-	i = 0;
-	while (i < index)
+	initialize_index(&utils);
+	while (utils.i < index)
 	{
-		if (str[i] == '\'' && str[i - 1] != '\\' && dquote == 0 && squote == 0)
-			squote = 1;
-		else if (str[i] == '\"' && str[i - 1] != '\\' && dquote == 0
-				&& squote == 0)
-			dquote = 1;
-		else if (str[i] == '\'' && str[i - 1] != '\\' && dquote == 0
-				&& squote == 1)
-			squote = 0;
-		else if (str[i] == '\"' && str[i - 1] != '\\' && dquote == 1
-				&& squote == 0)
-			dquote = 0;
-		i++;
+		if (str[utils.i] == '\'' && str[utils.i - 1] != '\\' && utils.indoublequotes == 0 && utils.insinglequotes == 0)
+			utils.insinglequotes = 1;
+		else if (str[utils.i] == '\"' && str[utils.i - 1] != '\\' && utils.indoublequotes == 0
+				&& utils.insinglequotes == 0)
+			utils.indoublequotes = 1;
+		else if (str[utils.i] == '\'' && str[utils.i - 1] != '\\' && utils.indoublequotes == 0
+				&& utils.insinglequotes == 1)
+			utils.insinglequotes = 0;
+		else if (str[utils.i] == '\"' && str[utils.i - 1] != '\\' && utils.indoublequotes == 1
+				&& utils.insinglequotes == 0)
+			utils.indoublequotes = 0;
+		utils.i++;
 	}
-	if (i == index && dquote == 1 && squote == 0)
+	if (utils.i == index && utils.indoublequotes == 1 && utils.insinglequotes == 0)
 		return (0); // Inside Double Quotes
-	else if (i == index && dquote == 0 && squote == 0)
+	else if (utils.i == index && utils.indoublequotes == 0 && utils.insinglequotes == 0)
 		return (0); // Not within Quotes
-	else if (i == index && dquote == 0 && squote == 1)
+	else if (utils.i == index && utils.indoublequotes == 0 && utils.insinglequotes == 1)
 		return (1); // Inside Single Quotes
 	return (0);
 }
