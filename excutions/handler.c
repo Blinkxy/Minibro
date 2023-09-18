@@ -57,7 +57,7 @@ void ex_test(t_list *cmd, t_general *sa)
     t_list *head;
 
     head = cmd;
-    if(cmd && !cmd->next && is_builtin(cmd->final_cmd) == 1)
+    if(cmd && !cmd->next && is_builtin(cmd->final_cmd) == 1 && cmd->final_cmd)
         ex_builtins(cmd, sa);
     else
         ex_pipe(cmd, sa);

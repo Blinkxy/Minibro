@@ -22,7 +22,7 @@ void	final_cmd(t_list *cmds)
 	while (tmp)
 	{
 		tmp->final_cmd = (char **)malloc(sizeof(char *) * (tmp->size_cmd
-					- (tmp->red_nb * 2)) + 1);
+					- (tmp->red_nb * 2) + 1));
 		if (!tmp->final_cmd)
 			return ;
 		i = 0;
@@ -37,6 +37,8 @@ void	final_cmd(t_list *cmds)
 			i++;
 		}
 		tmp->final_cmd[j] = NULL;
+		if (j == 0)
+			tmp->final_cmd = NULL;
 		tmp = tmp->next;
 	}
 }
