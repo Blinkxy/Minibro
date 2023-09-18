@@ -6,7 +6,7 @@
 /*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 20:19:32 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/09/17 03:05:29 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/09/18 22:18:57 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ int main(int argc, char **argv, char **env)
     char *s;
     char *st;
     t_list *cmds = NULL;
-    // t_list *tmp;
     t_general *sa = malloc(sizeof(t_general));
     sa->cmds = malloc(sizeof(t_list));
     memset(sa, 0, sizeof(t_general));
@@ -63,7 +62,7 @@ int main(int argc, char **argv, char **env)
         s = readline("minishell$>");
         // if(!s)
         // {
-        //         //protect Crtl-D
+            // SIGNALS
         // }
         if(s && s[0])
         {

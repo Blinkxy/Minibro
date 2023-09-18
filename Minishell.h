@@ -6,7 +6,7 @@
 /*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 20:20:00 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/09/18 20:22:29 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/09/18 21:51:28 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,12 +133,15 @@ int					sizeof_cmd(t_list *cmds);
 void				add_prev_list(t_list *cmds);
 
 // DEFINES
+void				define_delim(t_list *tmp, int i);
+void				define_word(t_list *tmp, int i);
+void				define_all(t_list *tmp, int i);
 void				cmd_define(t_list *cmds);
-void				define_hrdc(t_list *tmp, int *i);
-void				define_append(t_list *tmp, int *i);
-void				define_red_in(t_list *tmp, int *i);
-void				define_red_out(t_list *tmp, int *i);
-void				define_file(t_list *tmp, int *i);
+void				define_hrdc(t_list *tmp, int i);
+void				define_append(t_list *tmp, int i);
+void				define_red_in(t_list *tmp, int i);
+void				define_red_out(t_list *tmp, int i);
+void				define_file(t_list *tmp, int i);
 
 //  ENV Expand
 char				*extract_env(char *str);
