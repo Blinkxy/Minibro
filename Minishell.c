@@ -6,13 +6,13 @@
 /*   By: mdouzi < mdouzi@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 20:19:32 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/09/21 05:33:23 by mdouzi           ###   ########.fr       */
+/*   Updated: 2023/09/21 07:27:17 by mdouzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Minishell.h"
 
-int		gb_ex_st = 0;
+int		g_sig = 0;
 
 void	default_fds(t_list *cmds)
 {
@@ -41,6 +41,21 @@ void	init_env_data(t_general *sa, char **envp)
 	sa->env[i] = NULL;
 }
 
+void ft_handler(int sig)
+{
+	(void)sig;
+	(void)sig;
+	if (g_sig == -1)
+	{
+		g_sig = -2;
+		close (STDIN_FILENO);
+	}
+    printf("\n");
+    rl_replace_line("", 0);
+    rl_on_new_line();
+    rl_redisplay();
+}
+
 int	main(int argc, char **argv, char **env)
 {
 	int			i;
@@ -49,6 +64,8 @@ int	main(int argc, char **argv, char **env)
 	char		*st;
 	t_list		*cmds;
 	t_general	*sa;
+	int		stdin;
+	int 	stdout;
 
 	(void)argc;
 	(void)argv;
@@ -56,20 +73,18 @@ int	main(int argc, char **argv, char **env)
 	sa = malloc(sizeof(t_general));
 	sa->cmds = malloc(sizeof(t_list));
 	memset(sa, 0, sizeof(t_general));
+	signal(SIGQUIT, SIG_IGN);
+	signal(SIGINT, ft_handler);
 	init_env_data(sa, env);
 	get_export_env(sa);
-	// handle_signals(1);
 	while (1)
 	{
+		g_sig = 0;
+		stdin = dup(STDIN_FILENO);
+		stdout = dup(STDOUT_FILENO);
 		s = readline("minishell$>");
-		// if(!s)
-		// {
-		// SIGNALS
-		// }
 		if (s && s[0])
 		{
-			// int in  = dup(0);
-			// int out = dup(1);
 			add_history(s);
 			if (checker_line(s) == 1 && checker_redir(s) == 1)
 			{
@@ -93,6 +108,12 @@ int	main(int argc, char **argv, char **env)
 				// dup()
 			}
 		}
+		dup2(stdin, STDIN_FILENO);
+		if(g_sig)
+			printf("\n");
+		dup2(stdout, STDOUT_FILENO);
+		close(stdin);
+		close(stdout);
 	}
 	return (0);
 }

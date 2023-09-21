@@ -6,7 +6,7 @@
 /*   By: mdouzi < mdouzi@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/21 05:48:21 by mdouzi            #+#    #+#             */
-/*   Updated: 2023/09/21 05:48:22 by mdouzi           ###   ########.fr       */
+/*   Updated: 2023/09/21 07:07:47 by mdouzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,8 @@ void	ex_test(t_list *cmd, t_general *sa)
 	t_list	*head;
 	int		num_cmds;
 
+	if (g_sig == -2)
+		return ;
 	head = cmd;
 	num_cmds = numberof_cmd(cmd);
 	if (cmd && !cmd->next && is_builtin(cmd->final_cmd) == 1 && cmd->final_cmd)

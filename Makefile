@@ -1,6 +1,6 @@
 
 NAME = Minishell
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g 
 LRFLAG = -lreadline
 RM = rm -rf
 LIBFT_A = libft/libft.a
@@ -16,7 +16,7 @@ all: $(NAME)
 
 $(NAME): $(OBJ)
 	@make -C libft
-	@$(CC) $(OBJ) -o $(NAME) $(LIBFT_A) $(LRFLAG) -L/Users/mdouzi/goinfre/homebrew/opt/readline/lib -I/Users/mdouzi/goinfre/homebrew/opt/readline/include -lreadline
+	@$(CC) -g -fsanitize=address $(OBJ) -o $(NAME) $(LIBFT_A) $(LRFLAG) -L/Users/mdouzi/goinfre/homebrew/opt/readline/lib -I/Users/mdouzi/goinfre/homebrew/opt/readline/include -lreadline
 
 %.o: %.c
 	@$(CC) $(CFLAGS) -c $< -o $@

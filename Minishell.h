@@ -6,7 +6,7 @@
 /*   By: mdouzi < mdouzi@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 20:20:00 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/09/21 05:47:28 by mdouzi           ###   ########.fr       */
+/*   Updated: 2023/09/21 07:03:37 by mdouzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 #include <limits.h>
 #include <fcntl.h>
 
-extern int gb_ex_st;
+extern int g_sig;
 void	rl_replace_line (const char *text, int clear_undo);
 
 typedef enum e_type
@@ -245,4 +245,4 @@ void pipex(t_list *cmds, t_general *sa);
 int numberof_cmd(t_list *cmds);
 
 // signals 
-void handle_signals(int mode);
+void ft_handler(int sig);
