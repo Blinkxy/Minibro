@@ -1,127 +1,148 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipe.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mdouzi < mdouzi@student.1337.ma>           +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/09/20 04:54:27 by mdouzi            #+#    #+#             */
+/*   Updated: 2023/09/21 05:53:02 by mdouzi           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../Minishell.h"
 
-int is_builtin(char **args)
+int	is_builtin(char **args)
 {
-    if(args)
-    {
-        if(ft_strcmp(args[0], "echo") == 0)
-            return(1);
-        else if(ft_strcmp(args[0], "exit") == 0)
-            return(1);
-        else if(ft_strcmp(args[0], "unset") == 0)
-            return(1);
-        else if(ft_strcmp(args[0], "cd") == 0)
-            return(1);
-        else if(ft_strcmp(args[0], "export") == 0)
-            return(1);
-        else if(ft_strcmp(args[0], "env") == 0)
-            return(1);
-        else if(ft_strcmp(args[0], "pwd") == 0)
-            return(1);        
-    }
-        return(0);
-}
- 
-int numberOf_cmd(t_list *cmds)
-{
-    int nb;
-    t_list *tmp;
-
-    tmp = cmds;
-    nb = 0;
-    while(tmp)
-    {
-        nb++;
-        tmp = tmp->next;
-    }
-    return(nb);
+	if (args)
+	{
+		if (ft_strcmp(args[0], "echo") == 0)
+			return (1);
+		else if (ft_strcmp(args[0], "exit") == 0)
+			return (1);
+		else if (ft_strcmp(args[0], "unset") == 0)
+			return (1);
+		else if (ft_strcmp(args[0], "cd") == 0)
+			return (1);
+		else if (ft_strcmp(args[0], "export") == 0)
+			return (1);
+		else if (ft_strcmp(args[0], "env") == 0)
+			return (1);
+		else if (ft_strcmp(args[0], "pwd") == 0)
+			return (1);
+	}
+	return (0);
 }
 
-void ex_pipe(t_list *cmd, t_general *sa) {
-    t_list *tmp = cmd;
-    int num_cmds = numberOf_cmd(cmd);
+int	numberof_cmd(t_list *cmds)
+{
+	int		nb;
+	t_list	*tmp;
 
-    int fd[num_cmds - 1][2];
-    pid_t pid;
+	tmp = cmds;
+	nb = 0;
+	while (tmp)
+	{
+		nb++;
+		tmp = tmp->next;
+	}
+	return (nb);
+}
 
-    int index = 0;
-    while (tmp != NULL) 
-    {
-        if (index < num_cmds - 1) 
-        {
-            if (pipe(fd[index]) == -1) 
-            {
-                perror("pipe");
-                exit(EXIT_FAILURE);
-            }
-        }
+void	 child_job(int fd[][2], t_general *sa, t_list *tmp, int index,
+		int num_cmds)
+{
+	if (index > 0)
+	{
+		dup2(fd[index - 1][0], STDIN_FILENO);
+		close(fd[index - 1][0]);
+		close(fd[index - 1][1]);
+	}
+	if (index < num_cmds - 1)
+	{
+		dup2(fd[index][1], STDOUT_FILENO);
+		close(fd[index][0]);
+		close(fd[index][1]);
+	}
+	if (is_builtin(tmp->final_cmd) == 1)
+	{
+		dup_fds(tmp);
+		handle_builtins(tmp, sa);
+		close_fds(tmp);
+	}
+	else
+	{
+		dup_fds(tmp);
+		ex_cmd(sa, tmp);
+		close_fds(tmp);
+	}
+	exit(EXIT_SUCCESS);
+}
 
-        pid = fork();
-        if (pid == -1) 
-        {
-            perror("fork");
-            exit(EXIT_FAILURE);
-        }
+void	parent_job(int fd[][2], int index, t_list *tmp)
+{
+	close_fds(tmp);
+	if (index > 0)
+	{
+		close(fd[index - 1][0]);
+		close(fd[index - 1][1]);
+	}
+}
 
-        if (pid == 0) 
-        {
-            // Child process
-            if (index > 0) 
-            {
-                // Redirect input from the previous pipe
-                dup2(fd[index - 1][0], STDIN_FILENO);
-                close(fd[index - 1][0]);
-                close(fd[index - 1][1]);
-            }
+int	wait_and_close(int fd[][2], int num_cmds)
+{
+	int	i;
 
-            if (index < num_cmds - 1) 
-            {
-                // Redirect output to the next pipe
-                dup2(fd[index][1], STDOUT_FILENO);
-                close(fd[index][0]);
-                close(fd[index][1]);
-            }
+	i = 0;
+	int exit_status = 0;
+	while (i < num_cmds - 1)
+	{
+		close(fd[i][0]);
+		close(fd[i][1]);
+		i++;
+	}
+	i = 0;
+	while (i < num_cmds)
+	{
+		wait(&exit_status);
+		i++;
+	}
+	return WEXITSTATUS(exit_status);
+}
 
-            // Handle the command execution (similar to your ex_child function)
-            if (is_builtin(tmp->final_cmd) == 1) {
-                dup_fds(tmp);
-                handle_builtins(tmp, sa);
-                close_fds(tmp);
-            } else {
-                dup_fds(tmp);
-                ex_cmd(sa, tmp);
-                close_fds(tmp);
-            }
+void	ex_pipe(t_list *cmd, t_general *sa, int num_cmds)
+{
+	t_list	*tmp;
+	int		fd[num_cmds - 1][2];
+	pid_t	pid;
+	int		index;
 
-            exit(EXIT_SUCCESS);
-        }
-         else 
-        {
-            // Parent process
-            close_fds(tmp);
-            if (index > 0) {
-                close(fd[index - 1][0]);
-                close(fd[index - 1][1]);
-            }
-
-            tmp = tmp->next;
-        }
-
-        index++;
-    }
-
-    // Close any remaining pipes in the parent process
-    int i = 0;
-    while (i < num_cmds - 1) {
-        close(fd[i][0]);
-        close(fd[i][1]);
-        i++;
-    }
-
-    // Wait for all child processes to finish
-    i = 0;
-    while (i < num_cmds) {
-        wait(NULL);
-        i++;
-    }
+	tmp = cmd;
+	index = 0;
+	while (tmp != NULL)
+	{
+		if (index < num_cmds - 1)
+		{
+			if (pipe(fd[index]) == -1)
+			{
+				perror("pipe");
+				exit(EXIT_FAILURE);
+			}
+		}
+		pid = fork();
+		if (pid == -1)
+		{
+			perror("fork");
+			exit(EXIT_FAILURE);
+		}
+		if (pid == 0)
+			child_job(fd, sa, tmp, index, num_cmds);
+		else
+		{
+			parent_job(fd, index, tmp);
+			tmp = tmp->next;
+			index++;
+		}
+	}
+	sa->ex_status = wait_and_close(fd, num_cmds);
 }
