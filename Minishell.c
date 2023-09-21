@@ -3,91 +3,96 @@
 /*                                                        :::      ::::::::   */
 /*   Minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdouzi < mdouzi@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 20:19:32 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/09/18 22:18:57 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/09/21 05:33:23 by mdouzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Minishell.h"
 
-int gb_ex_st = 0;
+int		gb_ex_st = 0;
 
-
-void default_fds(t_list *cmds)
+void	default_fds(t_list *cmds)
 {
-    t_list *head;
+	t_list	*head;
 
-    head = cmds;
-    while(head)
-    {
-        head->fd[0] = -1;
-        head->fd[1] = -1;
-        head = head->next;
-    }
+	head = cmds;
+	while (head)
+	{
+		head->fd[0] = -1;
+		head->fd[1] = -1;
+		head = head->next;
+	}
 }
 
-void init_env_data(t_general *sa, char **envp)
+void	init_env_data(t_general *sa, char **envp)
 {
-    int i;
+	int	i;
 
-    i  = 0;
-    sa->env = malloc(sizeof(char *) * (ft_size(envp) + 1));
-    while(envp[i])
-    {
-        sa->env[i] = ft_strdup(envp[i]);
-        i++;
-    }
-    sa->env[i] = NULL;
+	i = 0;
+	sa->env = malloc(sizeof(char *) * (ft_size(envp) + 1));
+	while (envp[i])
+	{
+		sa->env[i] = ft_strdup(envp[i]);
+		i++;
+	}
+	sa->env[i] = NULL;
 }
 
-int main(int argc, char **argv, char **env)
+int	main(int argc, char **argv, char **env)
 {
-    (void)argc;
-    (void)argv;
-    int i;
-    char **str;
-    char *s;
-    char *st;
-    t_list *cmds = NULL;
-    t_general *sa = malloc(sizeof(t_general));
-    sa->cmds = malloc(sizeof(t_list));
-    memset(sa, 0, sizeof(t_general));
+	int			i;
+	char		**str;
+	char		*s;
+	char		*st;
+	t_list		*cmds;
+	t_general	*sa;
 
-    init_env_data(sa, env);
-    get_export_env(sa);
-    while(1)
-    {
-        s = readline("minishell$>");
-        // if(!s)
-        // {
-            // SIGNALS
-        // }
-        if(s && s[0])
-        {
-            add_history(s);
-            if (checker_line(s) == 1 && checker_redir(s) == 1)
-            {
-                st = addnext_pipe(s);
-                str = ft_split(st,'\n');
-                str = remove_pipe_pointers(str);
-                i = 0;
-                if(str[0])
-                    cmds = create_node(str[0], i);
-                while( ++i < count_cmds(str))
-                    add_node_front(cmds, str[i],i);
-               // add_prev_list(cmds);
-                cmd_define(cmds);
-                final_struct(cmds,sa->env);
-                final_remove_quotes(cmds);
-                redir_array(cmds);
-                final_cmd(cmds);
-                default_fds(cmds);
-                make_red(cmds, sa);
-                ex_test(cmds, sa);
-            }
-        }
-    }
-    return(0);
+	(void)argc;
+	(void)argv;
+	cmds = NULL;
+	sa = malloc(sizeof(t_general));
+	sa->cmds = malloc(sizeof(t_list));
+	memset(sa, 0, sizeof(t_general));
+	init_env_data(sa, env);
+	get_export_env(sa);
+	// handle_signals(1);
+	while (1)
+	{
+		s = readline("minishell$>");
+		// if(!s)
+		// {
+		// SIGNALS
+		// }
+		if (s && s[0])
+		{
+			// int in  = dup(0);
+			// int out = dup(1);
+			add_history(s);
+			if (checker_line(s) == 1 && checker_redir(s) == 1)
+			{
+				st = addnext_pipe(s);
+				str = ft_split(st, '\n');
+				str = remove_pipe_pointers(str);
+				i = 0;
+				if (str[0])
+					cmds = create_node(str[0], i);
+				while (++i < count_cmds(str))
+					add_node_front(cmds, str[i], i);
+				// add_prev_list(cmds);
+				cmd_define(cmds);
+				final_struct(cmds, sa->env);
+				final_remove_quotes(cmds);
+				redir_array(cmds);
+				final_cmd(cmds);
+				default_fds(cmds);
+				make_red(cmds, sa);
+				ex_test(cmds, sa);
+				// dup()
+			}
+		}
+	}
+	return (0);
 }

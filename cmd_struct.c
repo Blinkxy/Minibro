@@ -59,8 +59,8 @@ void	count_word_bis(char *str, t_count *count_words, int *i)
 
 int	countwords(char *str)
 {
-	int i;
-	t_count count;
+	int		i;
+	t_count	count;
 
 	i = -1;
 	initialize_counter(&count);
@@ -75,9 +75,9 @@ int	countwords(char *str)
 
 char	*fix_split(char *str)
 {
-	int i;
-	int len;
-	char *fixed;
+	int		i;
+	int		len;
+	char	*fixed;
 
 	i = 0;
 	len = ft_strlen(str);
@@ -93,9 +93,9 @@ char	*fix_split(char *str)
 
 void	fill_new_struct(char *str, t_define *new_struct)
 {
-	int i;
-	char **split_words;
-	char *copy;
+	int		i;
+	char	**split_words;
+	char	*copy;
 
 	i = 0;
 	copy = ft_strdup(str);
@@ -121,7 +121,7 @@ void	fill_new_struct(char *str, t_define *new_struct)
 
 void	free_double_array(char **str)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (str[i] != NULL)
@@ -135,9 +135,10 @@ void	free_double_array(char **str)
 t_define	*insert_new_struct(t_define *define, t_define *inserted,
 		t_list *cmds, int index)
 {
-	int i;
-	int j;
-	t_define *final_define;
+	int			i;
+	int			j;
+	t_define	*final_define;
+
 	final_define = (t_define *)malloc(sizeof(t_define) * cmds->size_cmd);
 	i = 0;
 	while (i < index)
@@ -161,9 +162,9 @@ t_define	*insert_new_struct(t_define *define, t_define *inserted,
 
 void	final_struct(t_list *cmds, char **env)
 {
-	t_list *tmp;
-	int i;
-	t_define *new_struct;
+	t_list		*tmp;
+	int			i;
+	t_define	*new_struct;
 
 	i = 0;
 	tmp = cmds;
@@ -181,7 +182,7 @@ void	final_struct(t_list *cmds, char **env)
 				{
 					printf("ambiguous redirect\n");
 					// free all
-					break;
+					break ;
 				}
 				else if (countwords(tmp->define[i].content) > 1
 						&& tmp->define[i].type != FYLE)
@@ -191,7 +192,7 @@ void	final_struct(t_list *cmds, char **env)
 					if (!new_struct)
 					{
 						// free all
-						break;
+						break ;
 					}
 					initialize_define_inserted(new_struct,
 												countwords(tmp->define[i].content));
@@ -215,24 +216,28 @@ int	check_dollar(char *str, int index)
 	initialize_index(&utils);
 	while (utils.i < index)
 	{
-		if (str[utils.i] == '\'' && str[utils.i - 1] != '\\' && utils.indoublequotes == 0 && utils.insinglequotes == 0)
+		if (str[utils.i] == '\'' && str[utils.i - 1] != '\\'
+			&& utils.indoublequotes == 0 && utils.insinglequotes == 0)
 			utils.insinglequotes = 1;
-		else if (str[utils.i] == '\"' && str[utils.i - 1] != '\\' && utils.indoublequotes == 0
-				&& utils.insinglequotes == 0)
+		else if (str[utils.i] == '\"' && str[utils.i - 1] != '\\'
+				&& utils.indoublequotes == 0 && utils.insinglequotes == 0)
 			utils.indoublequotes = 1;
-		else if (str[utils.i] == '\'' && str[utils.i - 1] != '\\' && utils.indoublequotes == 0
-				&& utils.insinglequotes == 1)
+		else if (str[utils.i] == '\'' && str[utils.i - 1] != '\\'
+				&& utils.indoublequotes == 0 && utils.insinglequotes == 1)
 			utils.insinglequotes = 0;
-		else if (str[utils.i] == '\"' && str[utils.i - 1] != '\\' && utils.indoublequotes == 1
-				&& utils.insinglequotes == 0)
+		else if (str[utils.i] == '\"' && str[utils.i - 1] != '\\'
+				&& utils.indoublequotes == 1 && utils.insinglequotes == 0)
 			utils.indoublequotes = 0;
 		utils.i++;
 	}
-	if (utils.i == index && utils.indoublequotes == 1 && utils.insinglequotes == 0)
+	if (utils.i == index && utils.indoublequotes == 1
+		&& utils.insinglequotes == 0)
 		return (0); // Inside Double Quotes
-	else if (utils.i == index && utils.indoublequotes == 0 && utils.insinglequotes == 0)
+	else if (utils.i == index && utils.indoublequotes == 0
+			&& utils.insinglequotes == 0)
 		return (0); // Not within Quotes
-	else if (utils.i == index && utils.indoublequotes == 0 && utils.insinglequotes == 1)
+	else if (utils.i == index && utils.indoublequotes == 0
+			&& utils.insinglequotes == 1)
 		return (1); // Inside Single Quotes
 	return (0);
 }

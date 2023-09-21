@@ -22,9 +22,9 @@ int	redir_array_bis(t_list *tmp)
 	while (++i < tmp->size_cmd)
 	{
 		if (ft_strncmp("<<", tmp->define[i].content, 2) == 0 || ft_strncmp(">>",
-				tmp->define[i].content, 2) == 0 
-			|| ft_strncmp("<", tmp->define[i].content, 1) == 0 
-			|| ft_strncmp(">", tmp->define[i].content, 1) == 0)
+				tmp->define[i].content, 2) == 0 || ft_strncmp("<",
+				tmp->define[i].content, 1) == 0 || ft_strncmp(">",
+				tmp->define[i].content, 1) == 0)
 			nb_red++;
 	}
 	return (nb_red);

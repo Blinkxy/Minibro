@@ -24,14 +24,14 @@ void	split_redirections(char *newstr, t_index *index, char *str)
 	}
 	if (!index->inquotes && str[index->i] == '>' && str[index->i + 1] != '>')
 		split_red_in(newstr, index);
-	else if (!index->inquotes && str[index->i]
-		== '<' && str[index->i + 1] != '<')
+	else if (!index->inquotes && str[index->i] == '<' && str[index->i
+			+ 1] != '<')
 		split_red_out(newstr, index);
-	else if (!index->inquotes && str[index->i]
-		== '>' && str[index->i + 1] == '>')
+	else if (!index->inquotes && str[index->i] == '>' && str[index->i
+			+ 1] == '>')
 		split_append(newstr, index);
-	else if (!index->inquotes && str[index->i]
-		== '<' && str[index->i + 1] == '<')
+	else if (!index->inquotes && str[index->i] == '<' && str[index->i
+			+ 1] == '<')
 		split_heredoc(newstr, index);
 	else if (!index->inquotes && iswhitespace(str[index->i]))
 		newstr[index->index++] = '\n';
@@ -41,8 +41,8 @@ void	split_redirections(char *newstr, t_index *index, char *str)
 
 char	**split_cmd(char *str)
 {
-	t_index		index;
-	char		*newstr;
+	t_index	index;
+	char	*newstr;
 
 	initialize_index(&index);
 	index.len = ft_strlen(str);
@@ -58,8 +58,8 @@ char	**split_cmd(char *str)
 
 void	final_remove_quotes(t_list *cmds)
 {
-	int			i;
-	t_list		*tmp;
+	int		i;
+	t_list	*tmp;
 
 	tmp = cmds;
 	while (tmp)
@@ -76,19 +76,16 @@ void	final_remove_quotes(t_list *cmds)
 
 void	expand_quotes_util(t_index *index, char *str, char *result)
 {
-	if (str[index->i] == '\'' && (index->i == 0
-			|| str[index->i - 1] != '\\')
+	if (str[index->i] == '\'' && (index->i == 0 || str[index->i - 1] != '\\')
 		&& index->indoublequotes % 2 == 0)
 		index->insinglequotes = (index->insinglequotes + 1) % 2;
-	else if (str[index->i] == '"' && (index->i == 0
-			|| str[index->i - 1] != '\\') 
-		&& index->insinglequotes % 2 == 0)
+	else if (str[index->i] == '"' && (index->i == 0 || str[index->i
+			- 1] != '\\') && index->insinglequotes % 2 == 0)
 		index->indoublequotes = (index->indoublequotes + 1) % 2;
 	else
 	{
 		if (!(str[index->i] == '\'' && index->insinglequotes)
-			&& !(str[index->i] == '"'
-				&& index->indoublequotes))
+				&& !(str[index->i] == '"' && index->indoublequotes))
 		{
 			result[index->j] = str[index->i];
 			index->j++;
@@ -98,8 +95,8 @@ void	expand_quotes_util(t_index *index, char *str, char *result)
 
 char	*expand_quotes(char *str)
 {
-	t_index		index;
-	char		*result;
+	t_index	index;
+	char	*result;
 
 	initialize_index(&index);
 	index.len = ft_strlen(str);

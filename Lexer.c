@@ -34,21 +34,26 @@ int	checkquotes(char *line)
 
 void	addnext_pipe_util(t_index *index, char *str, char *new_str)
 {
-	if (str[index->i] == '\'' && index->insinglequotes == 0 && index->indoublequotes == 0)
+	if (str[index->i] == '\'' && index->insinglequotes == 0
+		&& index->indoublequotes == 0)
 	{
 		index->insinglequotes = 1;
 		new_str[index->index++] = str[index->i];
 	}
-	else if (str[index->i] == '\"' && index->insinglequotes == 0 && index->indoublequotes == 0)
+	else if (str[index->i] == '\"' && index->insinglequotes == 0
+			&& index->indoublequotes == 0)
 	{
 		index->indoublequotes = 1;
 		new_str[index->index++] = str[index->i];
 	}
-	if (str[index->i] == '\'' && index->insinglequotes == 1 && index->indoublequotes == 0)
+	if (str[index->i] == '\'' && index->insinglequotes == 1
+		&& index->indoublequotes == 0)
 		index->insinglequotes = 0;
-	else if (str[index->i] == '\"' && index->insinglequotes == 0 && index->indoublequotes == 1)
+	else if (str[index->i] == '\"' && index->insinglequotes == 0
+			&& index->indoublequotes == 1)
 		index->indoublequotes = 0;
-	else if (index->insinglequotes == 0 && index->indoublequotes == 0 && str[index->i] == '|')
+	else if (index->insinglequotes == 0 && index->indoublequotes == 0
+			&& str[index->i] == '|')
 	{
 		new_str[index->index++] = '\n';
 		new_str[index->index++] = '|';
@@ -61,10 +66,10 @@ void	addnext_pipe_util(t_index *index, char *str, char *new_str)
 char	*addnext_pipe(char *str)
 {
 	char	*new_str;
-	t_index index;
+	t_index	index;
 
 	initialize_index(&index);
-	index.len = ft_strlen(str); 
+	index.len = ft_strlen(str);
 	new_str = (char *)ft_calloc((index.len * 2 + 1) * sizeof(char), 1);
 	index.i = -1;
 	while (++(index.i) < index.len)
@@ -91,7 +96,7 @@ char	**remove_pipe_pointers(char **str)
 	}
 	result = (char **)malloc((count + 1) * sizeof(char *));
 	if (!result)
-		return NULL;
+		return (NULL);
 	i = 0;
 	j = 0;
 	while (str[i])
@@ -128,10 +133,13 @@ char	*concatenate_char(char *str, char c)
 
 int	checkquote_index(char *str, int index)
 {
-	int singlequotes = 0;
-	int doublequotes = 0;
-	int i = 0;
+	int	singlequotes;
+	int	doublequotes;
+	int	i;
 
+	singlequotes = 0;
+	doublequotes = 0;
+	i = 0;
 	while (str[i] != '\0')
 	{
 		if (str[i] == '\'' && (i == 0 || str[i - 1] != '\\') && doublequotes

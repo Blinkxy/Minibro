@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_handling.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdouzi < mdouzi@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 21:30:26 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/09/18 20:03:03 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/09/21 03:42:05 by mdouzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,11 @@ char	*extract_env(char *str)
 
 char	*expand_env(char *str, char **env)
 {
-	int			i;
-	int			j;
-	char		*result;
-	char		*check_env;
-	char		*extract;
+	int		i;
+	int		j;
+	char	*result;
+	char	*check_env;
+	char	*extract;
 
 	result = ft_calloc(1, 1);
 	if (!result)
@@ -52,7 +52,7 @@ char	*expand_env(char *str, char **env)
 		{
 			if (str[i + 1] == '?')
 			{
-				printf("%d", gb_ex_st);
+				printf("%d\n", gb_ex_st);
 				i += 2;
 			}
 			else
@@ -68,7 +68,7 @@ char	*expand_env(char *str, char **env)
 					else if (get_env_var(env, check_env) != -1 && check_env)
 					{
 						extract = extract_env(env[get_env_var(env,
-									check_env)]);
+																check_env)]);
 						result = ft_strjoin(result, extract);
 						i += ft_strlen(check_env);
 						free(extract);

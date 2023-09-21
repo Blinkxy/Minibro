@@ -14,7 +14,9 @@
 
 void	initialize_define(t_define *define, int size)
 {
-	int j = 0;
+	int	j;
+
+	j = 0;
 	while (j < size)
 	{
 		define[j].type = 0;
@@ -30,7 +32,9 @@ void	initialize_define(t_define *define, int size)
 
 void	initialize_define_inserted(t_define *define, int inserted)
 {
-	int j = 0;
+	int	j;
+
+	j = 0;
 	while (j < inserted)
 	{
 		define[j].state = 0;
@@ -45,16 +49,19 @@ void	initialize_define_inserted(t_define *define, int inserted)
 }
 
 void	initialize_counter(t_count *counter)
-{   
-    counter->word_count = 0;
-	counter->insinglequotes = 0;;
-	counter->indoublequotes = 0;;
-	counter->wordstart = 0;;
+{
+	counter->word_count = 0;
+	counter->insinglequotes = 0;
+	;
+	counter->indoublequotes = 0;
+	;
+	counter->wordstart = 0;
+	;
 }
 void	initialize_index(t_index *index)
-{   
-    index->i = 0;
-    index->j = 0;
+{
+	index->i = 0;
+	index->j = 0;
 	index->insinglequotes = 0;
 	index->indoublequotes = 0;
 	index->len = 0;

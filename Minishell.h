@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdouzi < mdouzi@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 20:20:00 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/09/18 21:51:28 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/09/21 05:47:28 by mdouzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 #include <fcntl.h>
 
 extern int gb_ex_st;
+void	rl_replace_line (const char *text, int clear_undo);
 
 typedef enum e_type
 {
@@ -202,7 +203,7 @@ int	check_n_line(char *line);
 int	ft_echo(char **cmd);
 
 // builtin exit
-int ft_exit(char **cmd);
+int	ft_exit(char **cmd, t_general *sa);
 
 // builtin unset
 int ft_unset(t_general *sa, char **cmd);
@@ -232,7 +233,7 @@ void ex_cmd(t_general *sa, t_list *cmd);
 int make_red(t_list *cmd, t_general *sa);
 int ex_builtins(t_list *cmd, t_general *sa);
 void ex_test(t_list *cmd, t_general *sa);
-void ex_pipe(t_list *cmd, t_general *sa);
+void	ex_pipe(t_list *cmd, t_general *sa, int num_cmds);
 // heredocument
 int check_herdoc(t_list *cmds, t_general *sa);
 void heredoc(t_list *cmds, t_general *sa, int fd[2]);
@@ -241,4 +242,7 @@ int	hrdc_expand(char *delimiter);
 
 // mak
 void pipex(t_list *cmds, t_general *sa);
-int numberOf_cmd(t_list *cmds);
+int numberof_cmd(t_list *cmds);
+
+// signals 
+void handle_signals(int mode);

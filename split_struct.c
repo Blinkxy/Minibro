@@ -14,9 +14,9 @@
 
 void	final_cmd(t_list *cmds)
 {
-	int			i;
-	int			j;
-	t_list		*tmp;
+	int		i;
+	int		j;
+	t_list	*tmp;
 
 	tmp = cmds;
 	while (tmp)
