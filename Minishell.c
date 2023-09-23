@@ -5,10 +5,12 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mdouzi < mdouzi@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/08 20:19:32 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/09/21 08:02:10 by mdouzi           ###   ########.fr       */
+/*   Created: 2023/09/23 01:17:28 by mdouzi            #+#    #+#             */
+/*   Updated: 2023/09/23 01:17:29 by mdouzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+
 
 #include "Minishell.h"
 
@@ -109,7 +111,11 @@ int	main(int argc, char **argv, char **env)
 			}
 		}
 		dup2(stdin, STDIN_FILENO);
+<<<<<<< HEAD
 		if(g_sig == -2)
+=======
+		if(g_sig)
+>>>>>>> c7a55245eae99bb14271faadb323afaa974dd963
 			printf("\n");
 		dup2(stdout, STDOUT_FILENO);
 		close(stdin);
