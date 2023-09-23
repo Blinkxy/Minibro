@@ -16,7 +16,7 @@ all: $(NAME)
 
 $(NAME): $(OBJ)
 	@make -C libft
-	@$(CC) -g -fsanitize=address $(OBJ) -o $(NAME) $(LIBFT_A) $(LRFLAG) -L/Users/mdouzi/goinfre/homebrew/opt/readline/lib -I/Users/mdouzi/goinfre/homebrew/opt/readline/include -lreadline
+	@$(CC)  $(OBJ) -o $(NAME) $(LIBFT_A) $(LRFLAG) -L/Users/mdouzi/goinfre/homebrew/opt/readline/lib -I/Users/mdouzi/goinfre/homebrew/opt/readline/include -lreadline
 
 %.o: %.c
 	@$(CC) $(CFLAGS) -c $< -o $@

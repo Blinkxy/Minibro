@@ -6,7 +6,7 @@
 /*   By: mdouzi < mdouzi@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 20:19:32 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/09/21 07:27:17 by mdouzi           ###   ########.fr       */
+/*   Updated: 2023/09/21 08:02:10 by mdouzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ int	main(int argc, char **argv, char **env)
 			}
 		}
 		dup2(stdin, STDIN_FILENO);
-		if(g_sig)
+		if(g_sig == -2)
 			printf("\n");
 		dup2(stdout, STDOUT_FILENO);
 		close(stdin);
