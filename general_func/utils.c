@@ -29,3 +29,11 @@ void free_tab(char **tab)
         free(tab[i++]);
     free(tab);
 }
+
+void ft_error(char *first, char *arg, char *last)
+{
+    ft_putstr_fd(first, 2);
+    ft_putstr_fd(arg, 2);
+    ft_putstr_fd(last, 2);
+    ft_putstr_fd("\n", 2);
+}
