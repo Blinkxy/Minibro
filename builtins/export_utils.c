@@ -6,7 +6,7 @@
 /*   By: mdouzi < mdouzi@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 03:21:32 by mdouzi            #+#    #+#             */
-/*   Updated: 2023/09/20 03:55:01 by mdouzi           ###   ########.fr       */
+/*   Updated: 2023/09/24 05:28:51 by mdouzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,10 +161,8 @@ char	*only_name(char *name, char *arg)
 {
 	int		len;
 	char	*res;
-	int		i;
 	int		equal;
 
-	i = 0;
 	len = 0;
 	equal = 0;
 	if (ft_strchr(arg, '=') != NULL)
@@ -175,5 +173,6 @@ char	*only_name(char *name, char *arg)
 	else
 		len = ft_strlen(name);
 	res = copy_name_var(name, len, equal);
+	
 	return (res);
 }

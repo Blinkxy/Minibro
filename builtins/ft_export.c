@@ -6,7 +6,7 @@
 /*   By: mdouzi < mdouzi@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 03:18:58 by mdouzi            #+#    #+#             */
-/*   Updated: 2023/09/20 03:20:34 by mdouzi           ###   ########.fr       */
+/*   Updated: 2023/09/24 05:29:34 by mdouzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,30 +80,19 @@ int	check_or_update(char **new_var, char *var, t_general *sa)
 	return (1);
 }
 
-int	ft_export(t_general *sa, char **cmd)
+void export_with_var(t_general *sa, char **cmd, int *res)
 {
-	int		i;
-	int		res;
-	char	**new_var;
-	char	*var;
+	int i;
+	char *var;
+	char **new_var;
 
-	res = 0;
 	i = 1;
-	var = NULL;
-	new_var = NULL;
-	if (cmd[1] == NULL)
-	{
-		solo_export(sa);
-		res = 1;
-	}
 	while (cmd[i])
 	{
 		if (var_export_check(cmd[i]) == 1)
 		{
-			ft_putstr_fd("export: `", 2);
-			ft_putstr_fd(cmd[i], 2);
-			ft_putstr_fd("': not a valid identifier\n", 2);
-			res = 1;
+			ft_error("export: '", cmd[i], "' : not a valid identifier");
+			*res = 1;
 		}
 		else
 		{
@@ -123,10 +112,24 @@ int	ft_export(t_general *sa, char **cmd)
 		}
 		i++;
 	}
-	return (res);
 }
 
-// char *remove_dq_env(char *str)
-// {
+int	ft_export(t_general *sa, char **cmd)
+{
+	int		i;
+	int		res;
+	char	**new_var;
+	char	*var;
 
-// }
+	res = 0;
+	i = 1;
+	var = NULL;
+	new_var = NULL;
+	if (cmd[1] == NULL)
+	{
+		solo_export(sa);
+		res = 1;
+	}
+	export_with_var(sa, cmd, &res);
+	return (res);
+}

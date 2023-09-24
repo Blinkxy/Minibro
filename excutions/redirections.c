@@ -79,14 +79,12 @@ int	ft_heredoc(t_list *cmds, t_general *sa)
 
 	tmp = NULL;
 	pipe(pipefd);
-	if (g_sig == -2)
-		return (0);
 	del = ft_strdup(cmds->redir->delimiter);
 	del = expand_quotes(del);
 	while (1)
 	{
 		line = readline("> ");
-		if (!line || g_sig == -2)
+		if (!line)
 			break;
 		if (ft_strcmp(line, del) == 0)
 		{
@@ -120,7 +118,7 @@ int	make_red(t_list *cmd, t_general *sa)
 	head = cmd;
 	nb_red = 0;
 	g_sig = -1;
-	while (head || g_sig != -2)
+	while (head)
 	{
 		nb_red = head->red_nb;
 		while (nb_red > 0)

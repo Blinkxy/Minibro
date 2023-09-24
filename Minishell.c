@@ -52,7 +52,7 @@ void ft_handler(int sig)
 		g_sig = -2;
 		close (STDIN_FILENO);
 	}
-    printf("\n");
+	write(1, "\n", 1);
     rl_replace_line("", 0);
     rl_on_new_line();
     rl_redisplay();
@@ -75,8 +75,6 @@ int	main(int argc, char **argv, char **env)
 	sa = malloc(sizeof(t_general));
 	sa->cmds = malloc(sizeof(t_list));
 	memset(sa, 0, sizeof(t_general));
-	signal(SIGQUIT, SIG_IGN);
-	signal(SIGINT, ft_handler);
 	init_env_data(sa, env);
 	get_export_env(sa);
 	while (1)
@@ -84,6 +82,7 @@ int	main(int argc, char **argv, char **env)
 		g_sig = 0;
 		stdin = dup(STDIN_FILENO);
 		stdout = dup(STDOUT_FILENO);
+		handle_sig(1);
 		s = readline("minishell$>");
 		if (s && s[0])
 		{
@@ -98,7 +97,6 @@ int	main(int argc, char **argv, char **env)
 					cmds = create_node(str[0], i);
 				while (++i < count_cmds(str))
 					add_node_front(cmds, str[i], i);
-				// add_prev_list(cmds);
 				cmd_define(cmds);
 				final_struct(cmds, sa->env);
 				final_remove_quotes(cmds);
@@ -107,19 +105,10 @@ int	main(int argc, char **argv, char **env)
 				default_fds(cmds);
 				make_red(cmds, sa);
 				ex_test(cmds, sa);
-				// dup()
 			}
 		}
-		dup2(stdin, STDIN_FILENO);
-<<<<<<< HEAD
-		if(g_sig == -2)
-=======
-		if(g_sig)
->>>>>>> c7a55245eae99bb14271faadb323afaa974dd963
-			printf("\n");
-		dup2(stdout, STDOUT_FILENO);
-		close(stdin);
-		close(stdout);
+		else
+			handle_sig(3);
 	}
 	return (0);
 }
