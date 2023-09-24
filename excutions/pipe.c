@@ -130,6 +130,7 @@ void	ex_pipe(t_list *cmd, t_general *sa, int num_cmds)
 			}
 		}
 		pid = fork();
+		handle_sig(2);
 		if (pid == -1)
 		{
 			perror("fork");

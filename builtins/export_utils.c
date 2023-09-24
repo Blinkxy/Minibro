@@ -161,10 +161,8 @@ char	*only_name(char *name, char *arg)
 {
 	int		len;
 	char	*res;
-	int		i;
 	int		equal;
 
-	i = 0;
 	len = 0;
 	equal = 0;
 	if (ft_strchr(arg, '=') != NULL)

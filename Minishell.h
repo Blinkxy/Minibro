@@ -245,4 +245,4 @@ void pipex(t_list *cmds, t_general *sa);
 int numberof_cmd(t_list *cmds);
 
 // signals 
-void ft_handler(int sig);
+void	handle_sig(int mode);
