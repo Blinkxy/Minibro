@@ -6,30 +6,17 @@
 /*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 20:29:26 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/09/18 22:17:56 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/09/24 00:47:07 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Minishell.h"
 
-int	checkquotes(char *line)
+void	add_next_pipe_bis(char *new_str, t_index *index)
 {
-	int	singlequotes;
-	int	doublequotes;
-	int	i;
-
-	singlequotes = 0;
-	doublequotes = 0;
-	i = 0;
-	while (line[i] != '\0')
-	{
-		if (line[i] == '\'' && doublequotes % 2 == 0)
-			singlequotes++;
-		else if (line[i] == '"' && singlequotes % 2 == 0)
-			doublequotes++;
-		i++;
-	}
-	return (singlequotes % 2 == 0 && doublequotes % 2 == 0);
+	new_str[index->index++] = '\n';
+	new_str[index->index++] = '|';
+	new_str[index->index++] = '\n';
 }
 
 void	addnext_pipe_util(t_index *index, char *str, char *new_str)
@@ -41,7 +28,7 @@ void	addnext_pipe_util(t_index *index, char *str, char *new_str)
 		new_str[index->index++] = str[index->i];
 	}
 	else if (str[index->i] == '\"' && index->insinglequotes == 0
-			&& index->indoublequotes == 0)
+		&& index->indoublequotes == 0)
 	{
 		index->indoublequotes = 1;
 		new_str[index->index++] = str[index->i];
@@ -50,15 +37,11 @@ void	addnext_pipe_util(t_index *index, char *str, char *new_str)
 		&& index->indoublequotes == 0)
 		index->insinglequotes = 0;
 	else if (str[index->i] == '\"' && index->insinglequotes == 0
-			&& index->indoublequotes == 1)
+		&& index->indoublequotes == 1)
 		index->indoublequotes = 0;
 	else if (index->insinglequotes == 0 && index->indoublequotes == 0
-			&& str[index->i] == '|')
-	{
-		new_str[index->index++] = '\n';
-		new_str[index->index++] = '|';
-		new_str[index->index++] = '\n';
-	}
+		&& str[index->i] == '|')
+		add_next_pipe_bis(new_str, index);
 	else
 		new_str[index->index++] = str[index->i];
 }
@@ -78,6 +61,15 @@ char	*addnext_pipe(char *str)
 	}
 	free(str);
 	return (new_str);
+}
+
+void	remove_pipe_bis(char **result, char **str, int i, int *j)
+{
+	if (str[i][0] != '|')
+	{
+		result[*j] = str[i];
+		(*j)++;
+	}
 }
 
 char	**remove_pipe_pointers(char **str)
@@ -101,62 +93,10 @@ char	**remove_pipe_pointers(char **str)
 	j = 0;
 	while (str[i])
 	{
-		if (str[i][0] != '|')
-		{
-			result[j] = str[i];
-			j++;
-		}
+		remove_pipe_bis(result, str, i, &j);
 		i++;
 	}
 	result[j] = NULL;
 	free(str);
 	return (result);
-}
-
-char	*concatenate_char(char *str, char c)
-{
-	int		len;
-	char	*new_str;
-
-	len = ft_strlen(str);
-	new_str = (char *)malloc(len + 2);
-	if (!new_str)
-		return (NULL);
-	if (new_str)
-	{
-		ft_memcpy(new_str, str, len);
-		new_str[len] = c;
-		new_str[len + 1] = '\0';
-	}
-	return (new_str);
-}
-
-int	checkquote_index(char *str, int index)
-{
-	int	singlequotes;
-	int	doublequotes;
-	int	i;
-
-	singlequotes = 0;
-	doublequotes = 0;
-	i = 0;
-	while (str[i] != '\0')
-	{
-		if (str[i] == '\'' && (i == 0 || str[i - 1] != '\\') && doublequotes
-			% 2 == 0)
-		{
-			singlequotes++;
-			if (singlequotes % 2 == 1 && i <= index)
-				return (1);
-		}
-		else if (str[i] == '"' && (i == 0 || str[i - 1] != '\\') && singlequotes
-				% 2 == 0)
-		{
-			doublequotes++;
-			if (doublequotes % 2 == 1 && i <= index)
-				return (0);
-		}
-		i++;
-	}
-	return (0);
 }

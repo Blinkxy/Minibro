@@ -6,7 +6,7 @@
 /*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 15:54:45 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/09/18 20:02:45 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/09/24 01:44:36 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,17 +20,16 @@ void	free_define_and_cmd(t_list *cmds)
 	tmp = cmds;
 	while (tmp)
 	{
-		i = 0;
-		while (i < tmp->size_cmd)
+		i = -1;
+		while (++i < tmp->size_cmd)
 		{
 			if (cmds->define[i].content)
 				free(cmds->define[i].content);
-			i++;
 		}
 		if (tmp->define)
 			free(tmp->define);
 		i = 0;
-		if (cmds->cmd)
+		if (cmds->cmd && cmds->cmd[i])
 		{
 			while (cmds->cmd[i])
 			{
@@ -66,94 +65,106 @@ int	checker_line(char *line)
 	}
 	return (1);
 }
-
+void	initialize_checker(t_index_check *index)
+{
+	index->i = 0;
+	index->j = 0;
+	index->len = 0;
+	index->inquotes = 0;
+	index->copy = NULL;
+}
 int	checker_redir(char *line)
 {
-	int		i;
-	int		j;
-	int		len;
-	char	*copy;
-	int		withinquotes;
+	t_index_check	index;
 
-	withinquotes = 0;
-	copy = ft_strtrim(line, " ");
-	len = ft_strlen(copy);
-	if (copy[len - 1] == '>' || copy[len - 1] == '<')
+	initialize_checker(&index);
+	index.copy = ft_strtrim(line, " ");
+	index.len = ft_strlen(index.copy);
+	if (index.copy[index.len - 1] == '>' || index.copy[index.len - 1] == '<')
 	{
 		printf("syntax error near unexpected token `newline'\n");
 		return (0);
 	}
-	else if (copy[len - 1] == '|')
+	else if (index.copy[index.len - 1] == '|')
 	{
 		printf("syntax error near unexpected token '|'\n");
 		return (0);
 	}
-	i = 0;
-	while (copy[i])
+	while (index.copy[index.i])
 	{
-		if (copy[i] == '\'' || copy[i] == '"')
-			withinquotes = !withinquotes;
-		if (copy[i] == '|' && !withinquotes)
+		if (index.copy[index.i] == '\'' || index.copy[index.i] == '"')
+			index.inquotes = !index.inquotes;
+		if (index.copy[index.i] == '>' && index.copy[index.i + 1] == '<' && !index.inquotes)
 		{
-			if ((copy[i + 1] == '|' || copy[i - 1] == '|') && !withinquotes)
+			printf("syntax error near unexpected token `<'\n");
+			return (0);
+		}
+		else if (index.copy[index.i] == '<' && index.copy[index.i + 1] == '>' && !index.inquotes)
+		{
+			printf("syntax error near unexpected token `newline'\n");
+			return (0);
+		}
+		if (index.copy[index.i] == '|' && !index.inquotes)
+		{
+			if ((index.copy[index.i + 1] == '|' || index.copy[index.i - 1] == '|') && !index.inquotes)
 			{
 				printf("syntax error near unexpected token '|'\n");
 				return (0);
 			}
 		}
-		if (copy[i] == '<' && !withinquotes)
+		if (index.copy[index.i] == '<' && !index.inquotes)
 		{
-			j = i + 1;
-			while (copy[j] == ' ' || copy[j] == '\t')
-				j++;
-			if (copy[j] && (copy[j] == '>' || copy[j] == '|') && (j - 1) > i)
+			index.j = index.i + 1;
+			while (index.copy[index.j] == ' ' || index.copy[index.j] == '\t')
+				index.j++;
+			if (index.copy[index.j] && (index.copy[index.j] == '>' || index.copy[index.j] == '|') && (index.j - 1) > index.i)
 			{
 				printf("syntax error near unexpected token `<'\n");
 				return (0);
 			}
 		}
-		if (copy[i] == '>' && !withinquotes)
+		if (index.copy[index.i] == '>' && !index.inquotes)
 		{
-			j = i + 1;
-			while (copy[j] == ' ' || copy[j] == '\t')
-				j++;
-			if (copy[j] && (copy[j] == '<' || copy[j] == '|') && (j - 1) > i)
+			index.j = index.i + 1;
+			while (index.copy[index.j] == ' ' || index.copy[index.j] == '\t')
+				index.j++;
+			if (index.copy[index.j] && (index.copy[index.j] == '<' || index.copy[index.j] == '|') && (index.j - 1) > index.i)
 			{
 				printf("syntax error near unexpected token `>'\n");
 				return (0);
 			}
 		}
-		if (copy[i] == '>' && !withinquotes)
+		if (index.copy[index.i] == '>' && !index.inquotes)
 		{
-			if (copy[i + 1] && copy[i + 1] == '>' && !withinquotes)
+			if (index.copy[index.i + 1] && index.copy[index.i + 1] == '>' && !index.inquotes)
 			{
-				j = i + 2;
-				while ((copy[j] == ' ' || copy[j] == '\t') && copy[j]
-					&& !withinquotes)
-					j++;
-				if (copy[j] && copy[j] == '>' && !withinquotes)
+				index.j = index.i + 2;
+				while ((index.copy[index.j] == ' ' || index.copy[index.j] == '\t') && index.copy[index.j]
+					&& !index.inquotes)
+					index.j++;
+				if (index.copy[index.j] && index.copy[index.j] == '>' && !index.inquotes)
 				{
 					printf("syntax error near unexpected token `>'\n");
 					return (0);
 				}
-				else if (copy[j] && copy[j] == '<' && !withinquotes)
+				else if (index.copy[index.j] && index.copy[index.j] == '<' && !index.inquotes)
 				{
 					printf("syntax error near unexpected token `<'\n");
 					return (0);
 				}
 			}
 		}
-		if (copy[i] == '<' && !withinquotes)
+		if (index.copy[index.i] == '<' && !index.inquotes)
 		{
-			if (copy[i + 1] && copy[i + 1] == '<' && !withinquotes)
+			if (index.copy[index.i + 1] && index.copy[index.i + 1] == '<' && !index.inquotes)
 			{
-				if (copy[i + 2] && (copy[i + 2] == '>' || copy[i + 2] == '<'
-						|| copy[i + 2] == '|') && !withinquotes)
+				if (index.copy[index.i + 2] && (index.copy[index.i + 2] == '>' || index.copy[index.i + 2] == '<'
+					|| index.copy[index.i + 2] == '|') && !index.inquotes)
 					return (0);
 			}
 		}
-		i++;
+		index.i++;
 	}
-	free(copy);
+	free(index.copy);
 	return (1);
 }

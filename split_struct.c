@@ -6,7 +6,7 @@
 /*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 15:48:17 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/09/15 15:48:17 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/09/24 01:08:37 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 void	final_cmd(t_list *cmds)
 {
-	int		i;
-	int		j;
+	t_index index;
 	t_list	*tmp;
 
+	initialize_index(&index);
 	tmp = cmds;
 	while (tmp)
 	{
@@ -25,19 +25,17 @@ void	final_cmd(t_list *cmds)
 					- (tmp->red_nb * 2) + 1));
 		if (!tmp->final_cmd)
 			return ;
-		i = 0;
-		j = 0;
-		while (i < tmp->size_cmd)
+		index.i = -1;
+		while (++index.i < tmp->size_cmd)
 		{
-			if (tmp->define[i].state == WORD)
+			if (tmp->define[index.i].state == WORD)
 			{
-				tmp->final_cmd[j] = ft_strdup(tmp->define[i].content);
-				j++;
+				tmp->final_cmd[index.j] = ft_strdup(tmp->define[index.i].content);
+				index.j++;
 			}
-			i++;
 		}
-		tmp->final_cmd[j] = NULL;
-		if (j == 0)
+		tmp->final_cmd[index.j] = NULL;
+		if (index.j == 0)
 			tmp->final_cmd = NULL;
 		tmp = tmp->next;
 	}

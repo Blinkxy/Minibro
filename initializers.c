@@ -6,7 +6,7 @@
 /*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 15:44:58 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/09/15 22:14:49 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/09/23 06:20:38 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,12 +52,10 @@ void	initialize_counter(t_count *counter)
 {
 	counter->word_count = 0;
 	counter->insinglequotes = 0;
-	;
 	counter->indoublequotes = 0;
-	;
 	counter->wordstart = 0;
-	;
 }
+
 void	initialize_index(t_index *index)
 {
 	index->i = 0;
@@ -67,4 +65,14 @@ void	initialize_index(t_index *index)
 	index->len = 0;
 	index->index = 0;
 	index->inquotes = 0;
+}
+
+void	initialize_env(t_index_env *index)
+{
+	index->i = 0;
+	index->j = 0;
+	index->ex_status = NULL;
+	index->check_env = NULL;
+	index->extract = NULL;
+	index->result = NULL;
 }
