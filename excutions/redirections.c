@@ -95,7 +95,7 @@ int	ft_heredoc(t_list *cmds, t_general *sa)
 		else if (hrdc_expand(cmds->redir->delimiter) == 1)
 		{
 			tmp = ft_strdup(del);
-			tmp = expand_env(line, sa->env);
+			tmp = expand_env(line, sa->env, sa);
 			write(pipefd[1], tmp, ft_strlen(tmp));
 			free(tmp);
 		}

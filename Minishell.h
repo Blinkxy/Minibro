@@ -6,7 +6,7 @@
 /*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 20:20:00 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/09/25 00:07:56 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/09/25 22:51:17 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -226,7 +226,7 @@ void close_fds(t_list *cmds);
 
 // builtin export
 int 	var_export_check(char *env_var);
-void	init_env_data(t_general *sa, char **envp, int ac, char **av);
+void	init_env_data(t_general *sa, char **envp);
 void get_export_env(t_general *sa);
 void double_swap(int i, int j, t_general *sa);
 void solo_export(t_general *sa);
