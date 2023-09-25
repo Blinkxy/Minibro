@@ -19,17 +19,21 @@ void	split_redirections(char *newstr, t_index *index, char *str)
 {
 	if (str[index->i] == '\'' || str[index->i] == '\"')
 		index->inquotes = !index->inquotes;
-	if (!index->inquotes && index->insinglequotes == 0 && str[index->i] == '>' && str[index->i
+	if (!index->inquotes && index->insinglequotes == 0
+		&& str[index->i] == '>' && str[index->i
 			+ 1] == '>')
 		split_append(newstr, index);
-	else if (!index->inquotes && index->insinglequotes == 0 && str[index->i] == '<' && str[index->i
+	else if (!index->inquotes && index->insinglequotes == 0
+		&& str[index->i] == '<' && str[index->i
 			+ 1] == '<')
 		split_heredoc(newstr, index);
-	else if (!index->inquotes && index->insinglequotes == 0 && str[index->i] == '<' && str[index->i
+	else if (!index->inquotes && index->insinglequotes == 0
+		&& str[index->i] == '<' && str[index->i
 			+ 1] != '<' && str[index->i + 1])
 		split_red_out(newstr, index);
-	else if (!index->inquotes && index->insinglequotes == 0 && str[index->i] == '>' && str[index->i
-		+ 1] != '>' && str[index->i + 1])
+	else if (!index->inquotes && index->insinglequotes == 0
+		&& str[index->i] == '>' && str[index->i
+			+ 1] != '>' && str[index->i + 1])
 		split_red_in(newstr, index);
 	else if (iswhitespace(str[index->i]))
 		newstr[index->index++] = '\n';

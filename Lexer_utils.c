@@ -6,7 +6,7 @@
 /*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/24 00:40:09 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/09/24 01:24:59 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/09/25 21:29:09 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,8 @@ int	checkquote_index(char *str, int index)
 	initialize_index(&index_q);
 	while (str[index_q.i] != '\0')
 	{
-		if (str[index_q.i] == '\'' && (index_q.i == 0 || str[index_q.i - 1] != '\\')
+		if (str[index_q.i] == '\'' && (index_q.i == 0
+				|| str[index_q.i - 1] != '\\')
 			&& index_q.indoublequotes % 2 == 0)
 		{
 			index_q.insinglequotes++;
@@ -74,4 +75,13 @@ char	*concatenate_char(char *str, char c)
 		new_str[len + 1] = '\0';
 	}
 	return (new_str);
+}
+
+void	initialize_main(t_main *main, t_general *sa)
+{
+	main->i = 0;
+	main->str = NULL;
+	main->s = NULL;
+	main->st = NULL;
+	sa->ex_status = 0;
 }

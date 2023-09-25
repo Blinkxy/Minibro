@@ -6,7 +6,7 @@
 /*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 15:48:17 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/09/24 01:08:37 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/09/24 06:27:17 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	final_cmd(t_list *cmds)
 {
-	t_index index;
+	t_index	index;
 	t_list	*tmp;
 
 	initialize_index(&index);
@@ -30,7 +30,8 @@ void	final_cmd(t_list *cmds)
 		{
 			if (tmp->define[index.i].state == WORD)
 			{
-				tmp->final_cmd[index.j] = ft_strdup(tmp->define[index.i].content);
+				tmp->final_cmd[index.j]
+					= ft_strdup(tmp->define[index.i].content);
 				index.j++;
 			}
 		}
