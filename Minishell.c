@@ -6,7 +6,7 @@
 /*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/23 01:17:28 by mdouzi            #+#    #+#             */
-/*   Updated: 2023/09/25 22:51:37 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/09/25 23:04:35 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,8 +99,8 @@ int	main(int argc, char **argv, char **env)
 					add_node_front(cmds, str[i], i);
 				cmd_define(cmds);
 				final_struct(cmds, sa->env, sa);
-				final_remove_quotes(cmds);
 				redir_array(cmds);
+				final_remove_quotes(cmds);
 				final_cmd(cmds);
 				default_fds(cmds);
 				make_red(cmds, sa);
