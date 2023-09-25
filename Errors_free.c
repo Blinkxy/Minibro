@@ -6,52 +6,11 @@
 /*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 15:54:45 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/09/25 00:08:04 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/09/26 00:12:58 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Minishell.h"
-
-void	free_define_and_cmd(t_list *cmds)
-{
-	int		i;
-	t_list	*tmp;
-
-	tmp = cmds;
-	while (tmp)
-	{
-		i = -1;
-		while (++i < tmp->size_cmd)
-		{
-			if (cmds->define[i].content)
-				free(cmds->define[i].content);
-		}
-		if (tmp->define)
-			free(tmp->define);
-		i = -1;
-		if (cmds->cmd && cmds->cmd[i])
-		{
-			while (++i < tmp->size_cmd)
-				free(cmds->cmd[i]);
-			free(cmds->cmd);
-		}
-		tmp = tmp->next;
-	}
-}
-
-void	free_struct(t_define *define)
-{
-	int	i;
-
-	i = 0;
-	while (i < define->size_struct)
-	{
-		if (define[i].content)
-			free(define[i].content);
-		i++;
-	}
-	free(define);
-}
 
 int	checker_line(char *line)
 {

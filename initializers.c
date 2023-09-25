@@ -6,7 +6,7 @@
 /*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 15:44:58 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/09/23 06:20:38 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/09/25 23:49:26 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,8 @@ void	initialize_env(t_index_env *index)
 {
 	index->i = 0;
 	index->j = 0;
-	index->ex_status = NULL;
-	index->check_env = NULL;
-	index->extract = NULL;
-	index->result = NULL;
+	index->ex_status = 0;
+	index->check_env = 0;
+	index->extract = 0;
+	index->result = 0;
 }

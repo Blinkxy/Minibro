@@ -6,7 +6,7 @@
 /*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 15:48:17 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/09/24 06:27:17 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/09/25 23:20:54 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,6 @@ void	final_cmd(t_list *cmds)
 	{
 		tmp->final_cmd = (char **)malloc(sizeof(char *) * (tmp->size_cmd
 					- (tmp->red_nb * 2) + 1));
-		if (!tmp->final_cmd)
-			return ;
 		index.i = -1;
 		while (++index.i < tmp->size_cmd)
 		{

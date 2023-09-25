@@ -6,7 +6,7 @@
 /*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/23 01:17:28 by mdouzi            #+#    #+#             */
-/*   Updated: 2023/09/25 23:17:13 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/09/25 23:58:41 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ void	main_bis(t_list *cmds, t_general *sa, t_main *main_struct)
 	default_fds(cmds);
 	make_red(cmds, sa);
 	ex_test(cmds, sa);
+	free(main_struct->str);
 }
 
 int	main(int ac, char **av, char **env)
@@ -108,6 +109,7 @@ int	main(int ac, char **av, char **env)
 			else
 				handle_sig(3);
 		}
+		free_all(cmds);
 	}
 	return (0);
 }

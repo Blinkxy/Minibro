@@ -6,7 +6,7 @@
 /*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 20:20:00 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/09/25 23:17:41 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/09/26 00:15:23 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -209,9 +209,15 @@ void				redir_red_in(t_list *tmp, int *i, int *j);
 void				redir_red_out(t_list *tmp, int *i, int *j);
 void				redir_append(t_list *tmp, int *i, int *j);
 void				redir_heredoc(t_list *tmp, int *i, int *j);
-void				free_define_and_cmd(t_list *cmds);
-void				final_cmd(t_list *cmds);
 void				final_remove_quotes(t_list *cmds);
+
+// Frees
+
+void				free_redir(t_list *cmds);
+void				free_struct(t_define *define);
+void				free_final_cmd(t_list *cmds);
+void				free_all(t_list *cmds);
+void				final_cmd(t_list *cmds);
 void				free_words(char **words, int count);
 
 //general functions

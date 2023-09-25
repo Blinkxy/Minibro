@@ -6,7 +6,7 @@
 /*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 15:42:46 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/09/24 06:29:57 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/09/25 23:42:17 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ t_list	*create_node(char *cmd, int i)
 	newnode->index = i;
 	newnode->red_nb = 0;
 	newnode->fd_in = 0;
+	newnode->define = 0;
 	newnode->fd_out = 0;
 	newnode->redir = 0;
 	newnode->final_cmd = 0;
