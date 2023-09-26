@@ -6,7 +6,7 @@
 /*   By: mdouzi < mdouzi@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 04:11:13 by mdouzi            #+#    #+#             */
-/*   Updated: 2023/09/20 04:11:16 by mdouzi           ###   ########.fr       */
+/*   Updated: 2023/09/26 09:29:04 by mdouzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,39 +35,51 @@ char	*make_path(char *path)
 	return (res);
 }
 
+char	*search_executable(char **directories, char *cmd)
+{
+	int		i;
+	char	*res;
+	char	*path;
+
+	i = 0;
+	res = NULL;
+	while (directories[i])
+	{
+		path = ft_strjoin(directories[i], cmd);
+		if (access(path, F_OK) == 0)
+		{
+			res = ft_strdup(path);
+			free(path);
+			break ;
+		}
+		free(path);
+		i++;
+	}
+	return (res);
+}
+
 char	*get_path(char **env, char *cmd)
 {
 	char	*path;
 	char	**splited;
 	char	*fc;
 	char	*res;
-	int		i;
 
-	res = NULL;
+	if (get_env_var(env, "PATH") == -1)
+	{
+		ft_error("minishell: ", cmd, ": No such file or directory");
+		return (NULL);
+	}
 	path = make_path(env[get_env_var(env, "PATH")]);
 	splited = ft_split(path, ':');
 	fc = ft_strjoin("/", cmd);
-	i = 0;
-	while (splited[i])
-	{
-		splited[i] = ft_strjoin(splited[i], fc);
-		if (access(splited[i], F_OK) == 0)
-		{
-			res = ft_strdup(splited[i]);
-			free(splited);
-			//free(path);
-			break ;
-		}
-		i++;
-	}
+	res = search_executable(splited, fc);
 	if (res == NULL)
 	{
-		ft_putstr_fd("minishell : ", 2);
-		ft_putstr_fd("command not found: ", 2);
-		ft_putstr_fd(cmd, 2);
-		ft_putstr_fd("\n", 2);
-		exit(1);
+		ft_error("minishell : ", cmd, " : command not found");
+		exit(EXIT_FAILURE);
 	}
+	free(splited);
 	return (res);
 }
 
@@ -84,17 +96,11 @@ void	ex_cmd(t_general *sa, t_list *cmd)
 			exit(1);
 		}
 		else
-		{
-			//dup_fds(cmd);
 			execve(cmd->final_cmd[0], cmd->final_cmd, sa->env);
-			//close_fds(cmd);
-		}
 	}
 	else
 	{
 		cmd->final_cmd[0] = ft_strdup(get_path(sa->env, cmd->final_cmd[0]));
-		//dup_fds(cmd);
 		execve(cmd->final_cmd[0], cmd->final_cmd, sa->env);
-		//close_fds(cmd);
 	}
 }

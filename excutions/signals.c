@@ -23,7 +23,7 @@ void	restore_prompt(int sig)
 
 void	ctrl_c(int sig)
 {
-    g_sig = -2;
+	g_sig = -2;
 	write(1, "\n", 1);
 	(void)sig;
 }
@@ -52,5 +52,3 @@ void	handle_sig(int mode)
 		exit(0);
 	}
 }
-
-

@@ -6,7 +6,7 @@
 /*   By: mdouzi < mdouzi@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 03:18:58 by mdouzi            #+#    #+#             */
-/*   Updated: 2023/09/24 05:29:34 by mdouzi           ###   ########.fr       */
+/*   Updated: 2023/09/25 03:34:43 by mdouzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,56 +80,48 @@ int	check_or_update(char **new_var, char *var, t_general *sa)
 	return (1);
 }
 
-void export_with_var(t_general *sa, char **cmd, int *res)
+void	export_with_var(t_general *sa, char *cmd)
 {
-	int i;
-	char *var;
-	char **new_var;
+	char	*var;
+	char	**new_var;
 
-	i = 1;
-	while (cmd[i])
+	new_var = export_split_var(cmd);
+	if (new_var[1] == NULL)
 	{
-		if (var_export_check(cmd[i]) == 1)
-		{
-			ft_error("export: '", cmd[i], "' : not a valid identifier");
-			*res = 1;
-		}
-		else
-		{
-			new_var = export_split_var(cmd[i]);
-			if (new_var[1] == NULL)
-			{
-				var = only_name(new_var[0], cmd[i]);
-				check_or_update(new_var, var, sa);
-			}
-			else
-			{
-				var = with_value(new_var);
-				check_or_update(new_var, var, sa);
-			}
-			free(new_var);
-			free(var);
-		}
-		i++;
+		var = only_name(new_var[0], cmd);
+		check_or_update(new_var, var, sa);
 	}
+	else
+	{
+		var = with_value(new_var);
+		check_or_update(new_var, var, sa);
+	}
+	free(new_var);
+	free(var);
 }
 
 int	ft_export(t_general *sa, char **cmd)
 {
-	int		i;
-	int		res;
-	char	**new_var;
-	char	*var;
+	int	i;
+	int	res;
 
 	res = 0;
 	i = 1;
-	var = NULL;
-	new_var = NULL;
 	if (cmd[1] == NULL)
 	{
 		solo_export(sa);
 		res = 1;
 	}
-	export_with_var(sa, cmd, &res);
+	while (cmd[i])
+	{
+		if (var_export_check(cmd[i]) == 1)
+		{
+			ft_error("export: '", cmd[i], "' : not a valid identifier");
+			res = 1;
+		}
+		else
+			export_with_var(sa, cmd[i]);
+		i++;
+	}
 	return (res);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split_struct.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdouzi < mdouzi@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 15:48:17 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/09/26 00:40:03 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/09/26 16:44:29 by mdouzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,5 +37,6 @@ void	final_cmd(t_list *cmds)
 		if (index.j == 0)
 			tmp->final_cmd = NULL;
 		tmp = tmp->next;
+		index.j = 0;
 	}
 }

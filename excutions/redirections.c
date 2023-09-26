@@ -70,45 +70,6 @@ int	hrdc_expand(char *delimiter)
 		return (0);
 	return (1);
 }
-int	ft_heredoc(t_list *cmds, t_general *sa)
-{
-	char	*line;
-	char	*tmp;
-	char	*del;
-	int		pipefd[2];
-
-	tmp = NULL;
-	pipe(pipefd);
-	del = ft_strdup(cmds->redir->delimiter);
-	del = expand_quotes(del);
-	while (1)
-	{
-		line = readline("> ");
-		if (!line)
-			break;
-		if (ft_strcmp(line, del) == 0)
-		{
-			close(pipefd[1]);
-			free(line);
-			break ;
-		}
-		else if (hrdc_expand(cmds->redir->delimiter) == 1)
-		{
-			tmp = ft_strdup(del);
-			tmp = expand_env(line, sa->env, sa);
-			write(pipefd[1], tmp, ft_strlen(tmp));
-			free(tmp);
-		}
-		else
-		{
-			write(pipefd[1], line, ft_strlen(line));
-			free(line);
-		}
-		write(pipefd[1], "\n", 1);
-	}
-	free(del);
-	return (pipefd[0]);
-}
 
 int	make_red(t_list *cmd, t_general *sa)
 {
@@ -123,6 +84,11 @@ int	make_red(t_list *cmd, t_general *sa)
 		nb_red = head->red_nb;
 		while (nb_red > 0)
 		{
+			if (g_sig == -2)
+			{
+				close_fds(head);
+				return (-2);
+			}
 			if (head->redir->type == RED_IN)
 				head->fd_in = handle_redin(head, head->redir);
 			else if (head->redir->type == RED_OUT)
@@ -130,7 +96,11 @@ int	make_red(t_list *cmd, t_general *sa)
 			else if (head->redir->type == APPEND)
 				head->fd_out = handle_append(head, head->redir);
 			else if (head->redir->type == HEREDOC)
+			{
 				head->fd_in = ft_heredoc(head, sa);
+				if (head->fd_in == -2)
+					return (0);
+			}
 			head->redir++;
 			nb_red--;
 		}

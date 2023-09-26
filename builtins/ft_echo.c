@@ -6,7 +6,7 @@
 /*   By: mdouzi < mdouzi@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 03:59:54 by mdouzi            #+#    #+#             */
-/*   Updated: 2023/09/21 05:33:56 by mdouzi           ###   ########.fr       */
+/*   Updated: 2023/09/25 03:24:13 by mdouzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	ft_echo(char **cmd)
 		{
 			ft_putstr_fd(cmd[j], 1);
 			if (cmd[j + 1] != NULL)
-					ft_putstr_fd(" ", 1);
+				ft_putstr_fd(" ", 1);
 		}
 		j++;
 	}

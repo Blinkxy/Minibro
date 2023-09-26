@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdouzi < mdouzi@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 20:20:00 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/09/26 01:41:06 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/09/26 16:35:02 by mdouzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,12 +124,16 @@ typedef struct s_list
 
 typedef struct s_general
 {
-	int				ex_status;
-	char			**env;
-	char			**env_export;
-	t_list			*cmds;
+	int ex_status;
+	char **env;
+	pid_t pid;
+	int num_cmds;
+	int index;
+	char **env_export;
+	t_list *cmds;
 
-}					t_general;
+}	t_general;
+
 
 //   PARSING UTILS
 void				main_bis(t_list *cmds, t_general *sa, t_main *main_struct);
@@ -268,6 +272,7 @@ char				*env_join(char *s1, char *s2);
 int					remplace_env_var(char **str, int index, char *name);
 int					compare_env_var(char *str, char *var);
 int					get_env_var(char **env, char *var);
+char	*env_join(char *s1, char *s2);
 
 //exuction functions
 int					handle_builtins(t_list *cmds, t_general *sa);
@@ -283,6 +288,7 @@ int					check_herdoc(t_list *cmds, t_general *sa);
 void				heredoc(t_list *cmds, t_general *sa, int fd[2]);
 int					handle_herdoc(t_list *cmds, t_general *sa);
 int					hrdc_expand(char *delimiter);
+int	ft_heredoc(t_list *cmds, t_general *sa);
 
 // mak
 void				pipex(t_list *cmds, t_general *sa);

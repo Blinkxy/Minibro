@@ -6,7 +6,7 @@
 /*   By: mdouzi < mdouzi@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/21 05:48:21 by mdouzi            #+#    #+#             */
-/*   Updated: 2023/09/21 07:07:47 by mdouzi           ###   ########.fr       */
+/*   Updated: 2023/09/26 09:42:04 by mdouzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	handle_builtins(t_list *cmds, t_general *sa)
 		else if (ft_strcmp(cmds->final_cmd[0], "echo") == 0)
 			sa->ex_status = ft_echo(cmds->final_cmd);
 		else if (ft_strcmp(cmds->final_cmd[0], "env") == 0)
-			sa->ex_status= ft_env(sa);
+			sa->ex_status = ft_env(sa);
 		else if (ft_strcmp(cmds->final_cmd[0], "export") == 0)
 			sa->ex_status = ft_export(sa, cmds->final_cmd);
 		else if (ft_strcmp(cmds->final_cmd[0], "pwd") == 0)
@@ -63,16 +63,15 @@ int	ex_builtins(t_list *cmd, t_general *sa)
 void	ex_test(t_list *cmd, t_general *sa)
 {
 	t_list	*head;
-	int		num_cmds;
 
 	if (g_sig == -2)
 		return ;
 	head = cmd;
-	num_cmds = numberof_cmd(cmd);
+	sa->num_cmds = numberof_cmd(cmd);
 	if (cmd && !cmd->next && is_builtin(cmd->final_cmd) == 1 && cmd->final_cmd)
 		ex_builtins(cmd, sa);
 	else
-		ex_pipe(cmd, sa, num_cmds);
+		ex_pipe(cmd, sa, sa->num_cmds);
 	while (head)
 	{
 		close_fds(head);
@@ -80,4 +79,26 @@ void	ex_test(t_list *cmd, t_general *sa)
 			break ;
 		head = head->next;
 	}
+}
+
+int	is_builtin(char **args)
+{
+	if (args)
+	{
+		if (ft_strcmp(args[0], "echo") == 0)
+			return (1);
+		else if (ft_strcmp(args[0], "exit") == 0)
+			return (1);
+		else if (ft_strcmp(args[0], "unset") == 0)
+			return (1);
+		else if (ft_strcmp(args[0], "cd") == 0)
+			return (1);
+		else if (ft_strcmp(args[0], "export") == 0)
+			return (1);
+		else if (ft_strcmp(args[0], "env") == 0)
+			return (1);
+		else if (ft_strcmp(args[0], "pwd") == 0)
+			return (1);
+	}
+	return (0);
 }

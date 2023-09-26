@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Final_frees.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdouzi < mdouzi@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 00:12:35 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/09/26 01:07:32 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/09/26 16:54:53 by mdouzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,4 +94,5 @@ void	free_all(t_list *cmds)
 		free(tmp);
 		tmp = cmds;
 	}
+	free(cmds);
 }

@@ -6,7 +6,7 @@
 /*   By: mdouzi < mdouzi@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 03:56:08 by mdouzi            #+#    #+#             */
-/*   Updated: 2023/09/21 06:40:35 by mdouzi           ###   ########.fr       */
+/*   Updated: 2023/09/25 03:23:56 by mdouzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	ft_cd(t_general *sa, char **cmd)
 	if (!cmd[1])
 	{
 		res = cd_home(sa);
-		if(res != 1)
+		if (res != 1)
 			update_pwd(sa);
 	}
 	else
@@ -108,34 +108,6 @@ char	*get_path_env(char *env)
 	while (env[i])
 	{
 		res[j] = env[i];
-		i++;
-		j++;
-	}
-	res[j] = '\0';
-	return (res);
-}
-
-char	*env_join(char *s1, char *s2)
-{
-	int	len;
-	int	i;
-	int	j;
-	char	*res;
-
-	i = 0;
-	j = 0;
-	len = ft_strlen(s1) + ft_strlen(s2) + 1;
-	res = (char *)malloc(sizeof(char) * len + 1);
-	while (s1[i])
-	{
-		res[j] = s1[i];
-		i++;
-		j++;
-	}
-	i = 0;
-	while (s2[i])
-	{
-		res[j] = s2[i];
 		i++;
 		j++;
 	}

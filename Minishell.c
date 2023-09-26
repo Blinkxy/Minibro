@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdouzi < mdouzi@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/23 01:17:28 by mdouzi            #+#    #+#             */
-/*   Updated: 2023/09/26 01:42:23 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/09/26 16:58:07 by mdouzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,15 @@
 
 int		g_sig = 0;
 
-void	default_fds(t_list *cmds)
+void	default_fds(t_list *cmds, t_general *sa)
 {
 	t_list	*head;
 
 	head = cmds;
-	while (head)
+	sa->num_cmds = 0;
+	sa->index = 0;
+	sa->pid= 1;
+	while(head)
 	{
 		head->fd[0] = -1;
 		head->fd[1] = -1;
@@ -72,7 +75,15 @@ void	main_bis(t_list *cmds, t_general *sa, t_main *main_struct)
 	redir_array(cmds);
 	final_remove_quotes(cmds);
 	final_cmd(cmds);
-	default_fds(cmds);
+	default_fds(cmds, sa);
+	t_list *tmp;
+	tmp = cmds;
+	while (tmp)
+	{
+		printf("%s\n", tmp->final_cmd[0]);
+		tmp = tmp->next;
+	}
+	exit(1);
 	make_red(cmds, sa);
 	ex_test(cmds, sa);
 	free(main_struct->str);
