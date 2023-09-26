@@ -17,16 +17,16 @@ all: $(NAME)
 
 $(NAME): $(OBJ)
 	@make -C libft
-	@$(CC)  $(OBJ) -lreadline -o $(NAME) $(LIBFT_A) $(LRFLAG)
+	$(CC)  $(OBJ) -lreadline -o $(NAME) $(LIBFT_A) $(LRFLAG)
 
 %.o: %.c
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 clean:	
-	$(RM) $(OBJ) 
+	@$(RM) $(OBJ) 
 
 fclean: clean
-	$(RM) $(NAME) libft/*.o $(LIBFT_A)
+	@$(RM) $(NAME) libft/*.o $(LIBFT_A)
 
 re: fclean all
 

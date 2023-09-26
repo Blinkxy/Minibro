@@ -6,7 +6,7 @@
 /*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/23 01:17:28 by mdouzi            #+#    #+#             */
-/*   Updated: 2023/09/25 23:58:41 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/09/26 01:42:23 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,9 @@ void	init_env_data(t_general *sa, char **envp, int ac, char **av)
 {
 	int	i;
 
-	(void)av;
-	(void)ac;
 	i = 0;
+	(void)ac;
+	(void)av;
 	sa->env = malloc(sizeof(char *) * (ft_size(envp) + 1));
 	while (envp[i])
 	{
@@ -76,6 +76,7 @@ void	main_bis(t_list *cmds, t_general *sa, t_main *main_struct)
 	make_red(cmds, sa);
 	ex_test(cmds, sa);
 	free(main_struct->str);
+	free_all(cmds);
 }
 
 int	main(int ac, char **av, char **env)
@@ -109,7 +110,6 @@ int	main(int ac, char **av, char **env)
 			else
 				handle_sig(3);
 		}
-		free_all(cmds);
 	}
 	return (0);
 }
