@@ -6,44 +6,50 @@
 /*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 20:29:26 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/09/24 00:47:07 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/09/28 17:38:01 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Minishell.h"
 
-void	add_next_pipe_bis(char *new_str, t_index *index)
+int	checkquotes(char *line)
 {
-	new_str[index->index++] = '\n';
-	new_str[index->index++] = '|';
-	new_str[index->index++] = '\n';
+	int	singlequotes;
+	int	doublequotes;
+	int	i;
+
+	singlequotes = 0;
+	doublequotes = 0;
+	i = 0;
+	while (line[i] != '\0')
+	{
+		if (line[i] == '\'' && doublequotes % 2 == 0)
+			singlequotes++;
+		else if (line[i] == '"' && singlequotes % 2 == 0)
+			doublequotes++;
+		i++;
+	}
+	return (singlequotes % 2 == 0 && doublequotes % 2 == 0);
 }
 
-void	addnext_pipe_util(t_index *index, char *str, char *new_str)
+int	new_size(char *str)
 {
-	if (str[index->i] == '\'' && index->insinglequotes == 0
-		&& index->indoublequotes == 0)
+	int	i;
+	int	inquotes;
+	int	count;
+
+	i = 0;
+	inquotes = 0;
+	count = 0;
+	while (str[i])
 	{
-		index->insinglequotes = 1;
-		new_str[index->index++] = str[index->i];
+		if (str[i] == '\'' || str[i] == '"')
+			inquotes = !inquotes;
+		if (str[i] == '|' && !inquotes)
+			count += 2;
+		i++;
 	}
-	else if (str[index->i] == '\"' && index->insinglequotes == 0
-		&& index->indoublequotes == 0)
-	{
-		index->indoublequotes = 1;
-		new_str[index->index++] = str[index->i];
-	}
-	if (str[index->i] == '\'' && index->insinglequotes == 1
-		&& index->indoublequotes == 0)
-		index->insinglequotes = 0;
-	else if (str[index->i] == '\"' && index->insinglequotes == 0
-		&& index->indoublequotes == 1)
-		index->indoublequotes = 0;
-	else if (index->insinglequotes == 0 && index->indoublequotes == 0
-		&& str[index->i] == '|')
-		add_next_pipe_bis(new_str, index);
-	else
-		new_str[index->index++] = str[index->i];
+	return (count);
 }
 
 char	*addnext_pipe(char *str)
@@ -52,51 +58,79 @@ char	*addnext_pipe(char *str)
 	t_index	index;
 
 	initialize_index(&index);
-	index.len = ft_strlen(str);
-	new_str = (char *)ft_calloc((index.len * 2 + 1) * sizeof(char), 1);
-	index.i = -1;
-	while (++(index.i) < index.len)
+	index.len = ft_strlen(str) + new_size(str);
+	new_str = (char *)malloc((index.len + 1) * sizeof(char));
+	if (!new_str)
+		return (NULL);
+	while (str[index.i])
 	{
-		addnext_pipe_util(&index, str, new_str);
+		if ((str[index.i] == '"' || str[index.i] == '\'') && str[index.i])
+		{
+			index.inquotes = !(index.inquotes);
+			new_str[index.index] = str[index.i];
+			index.index++;
+		}
+		else if (str[index.i] == '|' && !index.inquotes && str[index.i])
+			addnext_pipe_bis(&index, new_str);
+		else
+			new_str[index.index++] = str[index.i];
+		index.i++;
 	}
-	free(str);
+	new_str[index.len] = '\0';
 	return (new_str);
-}
-
-void	remove_pipe_bis(char **result, char **str, int i, int *j)
-{
-	if (str[i][0] != '|')
-	{
-		result[*j] = str[i];
-		(*j)++;
-	}
 }
 
 char	**remove_pipe_pointers(char **str)
 {
-	char	**result;
-	int		count;
-	int		i;
-	int		j;
+	t_lexer	index;
 
-	i = -1;
-	count = 0;
-	while (str[++i])
+	initialize_lex(&index);
+	while (str[index.i])
 	{
-		if (str[i][0] != '|')
-			count++;
+		if (str[index.i][0] != '|')
+			index.count++;
+		index.i++;
 	}
-	result = (char **)malloc((count + 1) * sizeof(char *));
-	if (!result)
+	index.result = (char **)malloc((index.count + 1) * sizeof(char *));
+	if (!index.result)
 		return (NULL);
-	i = 0;
-	j = 0;
-	while (str[i])
+	index.i = 0;
+	while (str[index.i])
 	{
-		remove_pipe_bis(result, str, i, &j);
-		i++;
+		if (str[index.i][0] != '|')
+		{
+			index.result[index.j] = ft_strdup(str[index.i]);
+			index.j++;
+		}
+		index.i++;
 	}
-	result[j] = NULL;
-	free(str);
-	return (result);
+	index.result[index.j] = NULL;
+	free_double_array(str);
+	return (index.result);
+}
+
+int	checkquote_index(char *str, int index)
+{
+	t_index	index_q;
+
+	initialize_index(&index_q);
+	while (str[index_q.i] != '\0')
+	{
+		if (str[index_q.i] == '\'' && (index_q.i == 0 || str[index_q.i
+					- 1] != '\\') && index_q.indoublequotes % 2 == 0)
+		{
+			index_q.insinglequotes++;
+			if (index_q.insinglequotes % 2 == 1 && index_q.i <= index)
+				return (1);
+		}
+		else if (str[index_q.i] == '"' && (index_q.i == 0 || str[index_q.i
+					- 1] != '\\') && index_q.insinglequotes % 2 == 0)
+		{
+			index_q.indoublequotes++;
+			if (index_q.indoublequotes % 2 == 1 && index_q.i <= index)
+				return (0);
+		}
+		index_q.i++;
+	}
+	return (0);
 }

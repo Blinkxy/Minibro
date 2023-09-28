@@ -6,7 +6,7 @@
 /*   By: mdouzi < mdouzi@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 04:54:27 by mdouzi            #+#    #+#             */
-/*   Updated: 2023/09/26 15:43:29 by mdouzi           ###   ########.fr       */
+/*   Updated: 2023/09/25 07:49:34 by mdouzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,6 @@ void	ex_pipe(t_list *cmd, t_general *sa, int num_cmds)
 
 	fd = NULL;
 	tmp = cmd;
-	printf("nm cmd == %d\n", sa->num_cmds);
 	if (!init_pipe(num_cmds, &fd))
 		return ;
 	while (tmp != NULL)

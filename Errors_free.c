@@ -6,7 +6,7 @@
 /*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 15:54:45 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/09/26 00:12:58 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/09/28 17:45:43 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,6 @@ int	checker_line(char *line)
 		return (0);
 	}
 	return (1);
-}
-
-void	initialize_checker(t_index_check *index)
-{
-	index->i = 0;
-	index->j = 0;
-	index->len = 0;
-	index->inquotes = 0;
-	index->copy = NULL;
 }
 
 int	checker_redir(char *line)

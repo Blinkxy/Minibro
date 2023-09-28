@@ -17,8 +17,8 @@ static int	count_strings(char *s, char c)
 	int	i;
 	int	count;
 
-	count = 0;
 	i = 0;
+	count = 0;
 	while (s[i])
 	{
 		while (s[i] && s[i] == c)

@@ -71,16 +71,89 @@ int	hrdc_expand(char *delimiter)
 	return (1);
 }
 
+int	ft_heredoc(t_list *cmds, t_general *sa)
+{
+	char	*del;
+	int		pipefd[2];
+	int		child_pid;
+	char	*line;
+	char	*tmp;
+	int		status;
+
+	pipe(pipefd);
+	del = ft_strdup(cmds->redir->delimiter);
+	del = expand_quotes(del);
+	// Register the signal handler
+	if ((child_pid = fork()) == -1)
+	{
+		free(del);
+		perror("fork");
+		exit(EXIT_FAILURE);
+	}
+	if (child_pid == 0)
+	{
+		close(pipefd[0]); // Close the read end of the pipe
+		signal(SIGINT, SIG_DFL);
+		while (1)
+		{
+			line = readline("> ");
+			if (!line)
+			{
+				free(del);
+				close(pipefd[1]);
+				exit(EXIT_SUCCESS);
+			}
+			if (ft_strcmp(line, del) == 0)
+			{
+				free(del);
+				close(pipefd[1]);
+				free(line);
+				exit(EXIT_SUCCESS);
+			}
+			else if (hrdc_expand(cmds->redir->delimiter) == 1)
+			{
+				tmp = ft_strdup(del);
+				tmp = expand_env(line, sa->env, sa);
+				write(pipefd[1], tmp, ft_strlen(tmp));
+				free(tmp);
+			}
+			else
+			{
+				write(pipefd[1], line, ft_strlen(line));
+				free(line);
+			}
+			write(pipefd[1], "\n", 1);
+		}
+	}
+	else
+	{
+		close(pipefd[1]);
+		if (waitpid(child_pid, &status, 0) == child_pid)
+		{
+			if (WIFSIGNALED(status))
+			{
+				close(pipefd[0]);
+				g_sig = -2;
+				return (-2);
+			}
+		}
+	}
+	free(del);
+	return (pipefd[0]);
+}
+
 int	make_red(t_list *cmd, t_general *sa)
 {
 	t_list	*head;
 	int		nb_red;
+	int		i;
 
 	head = cmd;
 	nb_red = 0;
 	g_sig = -1;
 	while (head)
 	{
+		i = 0;
 		nb_red = head->red_nb;
 		while (nb_red > 0)
 		{
@@ -89,19 +162,19 @@ int	make_red(t_list *cmd, t_general *sa)
 				close_fds(head);
 				return (-2);
 			}
-			if (head->redir->type == RED_IN)
+			if (head->redir[i].type == RED_IN)
 				head->fd_in = handle_redin(head, head->redir);
-			else if (head->redir->type == RED_OUT)
+			else if (head->redir[i].type == RED_OUT)
 				head->fd_out = handle_redout(head, head->redir);
-			else if (head->redir->type == APPEND)
+			else if (head->redir[i].type == APPEND)
 				head->fd_out = handle_append(head, head->redir);
-			else if (head->redir->type == HEREDOC)
+			else if (head->redir[i].type == HEREDOC)
 			{
 				head->fd_in = ft_heredoc(head, sa);
 				if (head->fd_in == -2)
 					return (0);
 			}
-			head->redir++;
+			i++;
 			nb_red--;
 		}
 		if (head->next == NULL)

@@ -1,49 +1,49 @@
 #include "../Minishell.h"
 
-int ft_size(char **str)
+int	ft_size(char **str)
 {
-    int i;
+	int	i;
 
-    i = 0;
-    while(str[i])
-        i++;
-    return(i);
+	i = 0;
+	while (str[i])
+		i++;
+	return (i);
 }
 
-int ft_strcmp(char *s1, char *s2)
+int	ft_strcmp(char *s1, char *s2)
 {
-    int i;
+	int	i;
 
-    i = 0;
-    while(s1[i] && s2[i] && s1[i] == s2[i])
-        i++;
-    return(s1[i] - s2[i]);
+	i = 0;
+	while (s1[i] && s2[i] && s1[i] == s2[i])
+		i++;
+	return (s1[i] - s2[i]);
 }
 
-void free_tab(char **tab)
+void	free_tab(char **tab)
 {
-    int i;
+	int	i;
 
-    i = 0;
-    while(tab[i])
-        free(tab[i++]);
-    free(tab);
+	i = 0;
+	while (tab[i])
+		free(tab[i++]);
+	free(tab);
 }
 
-void ft_error(char *first, char *arg, char *last)
+void	ft_error(char *first, char *arg, char *last)
 {
-    ft_putstr_fd(first, 2);
-    ft_putstr_fd(arg, 2);
-    ft_putstr_fd(last, 2);
-    ft_putstr_fd("\n", 2);
+	ft_putstr_fd(first, 2);
+	ft_putstr_fd(arg, 2);
+	ft_putstr_fd(last, 2);
+	ft_putstr_fd("\n", 2);
 }
 
 char	*env_join(char *s1, char *s2)
 {
-	int	j;
-	int	i;
-	int	len;
-	char	*res;
+	int j;
+	int i;
+	int len;
+	char *res;
 
 	i = 0;
 	j = 0;

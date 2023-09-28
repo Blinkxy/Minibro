@@ -15,30 +15,27 @@
 
 #include "Minishell.h"
 
-void	split_redirections(char *newstr, t_index *index, char *str)
+int	count_redir(char *str, t_index *index)
 {
-	if (str[index->i] == '\'' || str[index->i] == '\"')
-		index->inquotes = !index->inquotes;
-	if (!index->inquotes && index->insinglequotes == 0
-		&& str[index->i] == '>' && str[index->i
-			+ 1] == '>')
-		split_append(newstr, index);
-	else if (!index->inquotes && index->insinglequotes == 0
-		&& str[index->i] == '<' && str[index->i
-			+ 1] == '<')
-		split_heredoc(newstr, index);
-	else if (!index->inquotes && index->insinglequotes == 0
-		&& str[index->i] == '<' && str[index->i
-			+ 1] != '<' && str[index->i + 1])
-		split_red_out(newstr, index);
-	else if (!index->inquotes && index->insinglequotes == 0
-		&& str[index->i] == '>' && str[index->i
-			+ 1] != '>' && str[index->i + 1])
-		split_red_in(newstr, index);
-	else if (iswhitespace(str[index->i]))
-		newstr[index->index++] = '\n';
-	else
-		newstr[index->index++] = str[index->i];
+	int	i;
+	int	count;
+
+	i = 0;
+	count = 0;
+	while (str[i])
+	{
+		if (str[i] == '\'' || str[i] == '\"')
+			index->inquotes = !index->inquotes;
+		if (i > 1 && !index->inquotes && (str[i] == '>' || str[i] == '<')
+			&& str[i + 1] != '>' && str[i - 1] != '<' && str[i - 1] != '>')
+			count += 2;
+		else if (!index->inquotes && str[i] == '<' && str[i + 1] == '<')
+			count += 2;
+		else if (!index->inquotes && str[i] == '>' && str[i + 1] == '>')
+			count += 2;
+		i++;
+	}
+	return (count);
 }
 
 char	**split_cmd(char *str)
@@ -47,14 +44,15 @@ char	**split_cmd(char *str)
 	char	*newstr;
 
 	initialize_index(&index);
-	index.len = ft_strlen(str);
-	newstr = (char *)ft_calloc((index.len * 2 + 1) * sizeof(char), 1);
+	index.len = ft_strlen(str) + count_redir(str, &index);
+	newstr = (char *)malloc((index.len + 1) * sizeof(char));
 	if (!newstr)
 		return (NULL);
 	index.i = -1;
-	while (++(index.i) < index.len)
+	index.inquotes = 0;
+	while (++(index.i) < ft_strlen(str))
 		split_redirections(newstr, &index, str);
-	free(str);
+	newstr[index.index] = '\0';
 	return (ft_split(newstr, '\n'));
 }
 
@@ -110,7 +108,7 @@ char	*expand_quotes(char *str)
 		expand_quotes_util(&index, str, result);
 		index.i++;
 	}
+	result[index.j] = '\0';
 	free(str);
-	result[index.j++] = '\0';
 	return (result);
 }

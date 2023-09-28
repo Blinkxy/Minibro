@@ -6,7 +6,7 @@
 /*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 21:47:45 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/09/17 02:46:04 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/09/28 17:35:04 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,4 +42,28 @@ void	split_heredoc(char *newstr, t_index *index)
 	newstr[index->index++] = '<';
 	newstr[index->index++] = '\n';
 	index->i++;
+}
+
+void	split_redirections(char *newstr, t_index *index, char *str)
+{
+	if (str[index->i] == '\'' || str[index->i] == '\"')
+	{
+		index->inquotes = !index->inquotes;
+		newstr[index->index++] = str[index->i];
+	}
+	if (!index->inquotes && str[index->i] == '>' && str[index->i + 1] != '>')
+		split_red_in(newstr, index);
+	else if (!index->inquotes && str[index->i] == '<' && str[index->i
+			+ 1] != '<')
+		split_red_out(newstr, index);
+	else if (!index->inquotes && str[index->i] == '>' && str[index->i
+			+ 1] == '>')
+		split_append(newstr, index);
+	else if (!index->inquotes && str[index->i] == '<' && str[index->i
+			+ 1] == '<')
+		split_heredoc(newstr, index);
+	else if (!index->inquotes && iswhitespace(str[index->i]))
+		newstr[index->index++] = '\n';
+	else
+		newstr[index->index++] = str[index->i];
 }

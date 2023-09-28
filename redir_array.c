@@ -6,7 +6,7 @@
 /*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 22:06:09 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/09/14 22:06:09 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/09/28 22:29:45 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,13 @@ int	redir_array_bis(t_list *tmp)
 	return (nb_red);
 }
 
+void	initialize_redir(t_list *tmp)
+{
+	tmp->redir->delimiter = NULL;
+	tmp->redir->file = NULL;
+	tmp->redir->type = 0;
+}
+
 void	redir_array(t_list *commands)
 {
 	int		i;
@@ -45,6 +52,9 @@ void	redir_array(t_list *commands)
 		{
 			tmp->red_nb = nb_red;
 			tmp->redir = malloc(sizeof(t_redir) * nb_red);
+			if (!tmp->redir)
+				return ;
+			initialize_redir(tmp);
 			i = -1;
 			j = 0;
 			while (++i < tmp->size_cmd && j < nb_red)
