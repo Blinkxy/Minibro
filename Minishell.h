@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdouzi < mdouzi@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 20:20:00 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/09/28 22:37:17 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/09/29 20:00:17 by mdouzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -235,6 +235,9 @@ void free_tab(char **tab);
 // redirections 
 void dup_fds(t_list *cmds);
 void close_fds(t_list *cmds);
+int	handle_append(t_list *cmd, t_redir *red);
+int	handle_redout(t_list *cmd, t_redir *red);
+int	handle_redin(t_list *cmd, t_redir *red);
 
 // builtin export
 int 	var_export_check(char *env_var);
@@ -285,9 +288,7 @@ int ex_builtins(t_list *cmd, t_general *sa);
 void ex_test(t_list *cmd, t_general *sa);
 void	ex_pipe(t_list *cmd, t_general *sa, int num_cmds);
 // heredocument
-int check_herdoc(t_list *cmds, t_general *sa);
-void heredoc(t_list *cmds, t_general *sa, int fd[2]);
-int handle_herdoc(t_list *cmds, t_general *sa);
+int	ft_heredoc(t_list *cmds, t_general *sa);
 int	hrdc_expand(char *delimiter);
 
 // mak

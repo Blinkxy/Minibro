@@ -78,6 +78,7 @@ void	free_pipe(int **fd, int numb_cmds)
 		free(fd[i]);
 		i++;
 	}
+	free(fd);
 }
 
 int	wait_and_close(int **fd, int num_cmds)

@@ -56,6 +56,7 @@ void	double_swap(int i, int j, t_general *sa)
 	tmp = ft_strdup(sa->env_export[i]);
 	sa->env_export[i] = ft_strdup(sa->env_export[j]);
 	sa->env_export[j] = ft_strdup(tmp);
+	free(tmp);
 }
 
 // print all the export when i get export cmd with no args

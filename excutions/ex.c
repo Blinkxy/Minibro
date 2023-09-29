@@ -6,7 +6,7 @@
 /*   By: mdouzi < mdouzi@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 04:11:13 by mdouzi            #+#    #+#             */
-/*   Updated: 2023/09/25 05:27:27 by mdouzi           ###   ########.fr       */
+/*   Updated: 2023/09/29 12:48:30 by mdouzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,33 +58,38 @@ char	*search_executable(char **directories, char *cmd)
 	return (res);
 }
 
-char	*get_path(char **env, char *cmd)
+char *get_path(char **env, char *cmd) 
 {
-	char	*path;
-	char	**splited;
-	char	*fc;
-	char	*res;
+    char *path;
+    char **splited;
+    char *fc;
+    char *res;
 
-	if (get_env_var(env, "PATH") == -1)
+    if (get_env_var(env, "PATH") == -1) {
+        ft_error("minishell: ", cmd, ": No such file or directory");
+        return (NULL);
+    }
+    path = make_path(env[get_env_var(env, "PATH")]);
+    splited = ft_split(path, ':');
+    fc = ft_strjoin("/", cmd);
+    res = search_executable(splited, fc);
+    if (res == NULL) 
 	{
-		ft_error("minishell: ", cmd, ": No such file or directory");
-		return (NULL);
-	}
-	path = make_path(env[get_env_var(env, "PATH")]);
-	splited = ft_split(path, ':');
-	fc = ft_strjoin("/", cmd);
-	res = search_executable(splited, fc);
-	if (res == NULL)
-	{
-		ft_error("minishell : ", cmd, " : command not found");
-		exit(EXIT_FAILURE);
-	}
-	free(splited);
-	return (res);
+        ft_error("minishell : ", cmd, " : command not found");
+        free(fc);
+        free(splited);
+        exit(EXIT_FAILURE);
+    }
+    free(splited);
+    return (res);
 }
+
 
 void	ex_cmd(t_general *sa, t_list *cmd)
 {
+	char *cm;
+
+	cm = NULL;
 	if (cmd->final_cmd[0][0] == '.' || cmd->final_cmd[0][0] == '/')
 	{
 		if (access(cmd->final_cmd[0], F_OK) != 0)
@@ -100,7 +105,8 @@ void	ex_cmd(t_general *sa, t_list *cmd)
 	}
 	else
 	{
-		cmd->final_cmd[0] = ft_strdup(get_path(sa->env, cmd->final_cmd[0]));
-		execve(cmd->final_cmd[0], cmd->final_cmd, sa->env);
+		cm = ft_strdup(get_path(sa->env, cmd->final_cmd[0]));
+		execve(cm, cmd->final_cmd, sa->env);
+		free(cm);
 	}
 }

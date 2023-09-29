@@ -25,6 +25,7 @@ int	update_pwd(t_general *sa)
 	if (index == -1)
 		return (1);
 	remplace_env_var(sa->env, index, res);
+	free(res);
 	return (0);
 }
 
@@ -71,6 +72,7 @@ int	cd_home(t_general *sa)
 	home_path = get_path_env(sa->env[index]);
 	update_oldpwd(sa);
 	res = chdir(home_path);
+	free(home_path);
 	return (res);
 }
 
@@ -87,6 +89,7 @@ int	update_oldpwd(t_general *sa)
 	if (!index)
 		return (1);
 	remplace_env_var(sa->env, index, oldpwd);
+	free(oldpwd);
 	return (0);
 }
 

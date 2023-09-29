@@ -79,6 +79,8 @@ int	main(int argc, char **argv, char **env)
 			free(s);
 		initialize_signals();
 		s = readline("minishell$>");
+		if(!s)
+			exit(0);
 		cmds = parse_commands(s);
 		execute_commands(sa, cmds);
 		free_all(cmds);
