@@ -6,7 +6,7 @@
 /*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 15:54:36 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/09/28 17:34:31 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/09/30 00:41:56 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,23 +48,25 @@ t_define	*insert_new_struct(t_define *define, t_define *inserted,
 	t_define	*final_define;
 
 	final_define = (t_define *)malloc(sizeof(t_define) * cmds->size_cmd);
-	i = 0;
-	while (i < index)
+	i = -1;
+	while (++i < index)
 	{
+		final_define[i].content = ft_strdup(define[i].content);
 		final_define[i] = define[i];
-		i++;
 	}
-	j = 0;
-	while (j < inserted->size_struct_inserted)
+	j = -1;
+	while (++j < inserted->size_struct_inserted)
 	{
+		final_define[i + j].content = ft_strdup(inserted[j].content);
 		final_define[i + j] = inserted[j];
-		j++;
 	}
-	while (i < (cmds->size_cmd) - (inserted->size_struct_inserted) + 1)
+	while (i + j < (cmds->size_cmd))
 	{
+		final_define[i + j].content = ft_strdup(define[i].content);
 		final_define[i + j] = define[i];
 		i++;
 	}
+	free_struct(inserted);
 	return (final_define);
 }
 
@@ -103,9 +105,9 @@ void	final_struct(t_list *cmds, char **env, t_general *sa)
 	while (tmp)
 	{
 		i = 0;
-		new_struct = NULL;
 		while (i < tmp->size_cmd)
 		{
+			new_struct = NULL;
 			if (tmp->define[i].dollar == 1)
 			{
 				tmp->define[i].content = expand_env(tmp->define[i].content,

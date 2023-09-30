@@ -28,7 +28,9 @@ void	free_redir(t_list *cmds)
 		{
 			if (tmp->redir[i].type == HEREDOC)
 				free(tmp->redir[i].delimiter);
-			else if (tmp->redir[i].type == FYLE)
+			else if (tmp->redir[i].type == RED_IN
+				|| tmp->redir[i].type == RED_OUT
+				|| tmp->redir[i].type == APPEND)
 				free(tmp->redir[i].file);
 		}
 		free(tmp->redir);

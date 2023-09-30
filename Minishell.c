@@ -6,7 +6,7 @@
 /*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/23 01:17:28 by mdouzi            #+#    #+#             */
-/*   Updated: 2023/09/28 22:41:06 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/09/30 00:57:38 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,11 +79,11 @@ int	main(int argc, char **argv, char **env)
 			free(s);
 		initialize_signals();
 		s = readline("minishell$>");
-		if(!s)
+		if (!s)
 			exit(0);
 		cmds = parse_commands(s);
 		execute_commands(sa, cmds);
-		free_all(cmds);
+		// free_all(cmds);
 	}
 	return (0);
 }

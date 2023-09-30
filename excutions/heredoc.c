@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdouzi < mdouzi@student.1337.ma>           +#+  +:+       +#+        */
+/*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 11:43:49 by mdouzi            #+#    #+#             */
-/*   Updated: 2023/09/29 11:54:39 by mdouzi           ###   ########.fr       */
+/*   Updated: 2023/09/30 00:59:12 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,8 @@ void child_heredoc(char *del, int pipefd[2], t_list *cmds, t_general *sa)
 		}
 		else
 		{
-				write(pipefd[1], line, ft_strlen(line));
-				free(line);
+			write(pipefd[1], line, ft_strlen(line));
+			free(line);
 		}
 		write(pipefd[1], "\n", 1);
 	}
