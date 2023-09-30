@@ -23,7 +23,7 @@ void	restore_prompt(int sig)
 
 void	ctrl_c(int sig)
 {
-    g_sig= -2;
+	g_sig = -2;
 	write(1, "\n", 1);
 	(void)sig;
 }
@@ -34,9 +34,9 @@ void	back_slash(int sig)
 	(void)sig;
 }
 
-void sig_kill(int sig)
+void	sig_kill(int sig)
 {
-	(void) sig;
+	(void)sig;
 	printf("exit\n");
 	exit(0);
 }
@@ -57,11 +57,9 @@ void	handle_sig(int mode)
 		printf("exit\n");
 		exit(0);
 	}
-	if(mode == 4)
+	if (mode == 4)
 	{
 		g_sig = -2;
 		signal(SIGINT, SIG_DFL);
 	}
 }
-
-

@@ -59,7 +59,7 @@ int	handle_redout(t_list *cmd, t_redir *red)
 
 int	handle_append(t_list *cmd, t_redir *red)
 {
-	int	fd;
+	int fd;
 
 	fd = open(red->file, O_CREAT | O_RDWR | O_APPEND, 0644);
 	if (access(red->file, W_OK) != 0)

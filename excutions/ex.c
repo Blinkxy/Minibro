@@ -58,36 +58,36 @@ char	*search_executable(char **directories, char *cmd)
 	return (res);
 }
 
-char *get_path(char **env, char *cmd) 
+char	*get_path(char **env, char *cmd)
 {
-    char *path;
-    char **splited;
-    char *fc;
-    char *res;
+	char	*path;
+	char	**splited;
+	char	*fc;
+	char	*res;
 
-    if (get_env_var(env, "PATH") == -1) {
-        ft_error("minishell: ", cmd, ": No such file or directory");
-        return (NULL);
-    }
-    path = make_path(env[get_env_var(env, "PATH")]);
-    splited = ft_split(path, ':');
-    fc = ft_strjoin("/", cmd);
-    res = search_executable(splited, fc);
-    if (res == NULL) 
+	if (get_env_var(env, "PATH") == -1)
 	{
-        ft_error("minishell : ", cmd, " : command not found");
-        free(fc);
-        free(splited);
-        exit(EXIT_FAILURE);
-    }
-    free(splited);
-    return (res);
+		ft_error("minishell: ", cmd, ": No such file or directory");
+		return (NULL);
+	}
+	path = make_path(env[get_env_var(env, "PATH")]);
+	splited = ft_split(path, ':');
+	fc = ft_strjoin("/", cmd);
+	res = search_executable(splited, fc);
+	if (res == NULL)
+	{
+		ft_error("minishell : ", cmd, " : command not found");
+		free(fc);
+		free(splited);
+		exit(EXIT_FAILURE);
+	}
+	free(splited);
+	return (res);
 }
-
 
 void	ex_cmd(t_general *sa, t_list *cmd)
 {
-	char *cm;
+	char	*cm;
 
 	cm = NULL;
 	if (cmd->final_cmd[0][0] == '.' || cmd->final_cmd[0][0] == '/')

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdouzi < mdouzi@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 11:43:49 by mdouzi            #+#    #+#             */
-/*   Updated: 2023/09/30 00:59:12 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/09/29 11:54:39 by mdouzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,19 +19,19 @@ int	hrdc_expand(char *delimiter)
 	return (1);
 }
 
-void child_heredoc(char *del, int pipefd[2], t_list *cmds, t_general *sa)
+void	child_heredoc(char *del, int pipefd[2], t_list *cmds, t_general *sa)
 {
-    char *line;
-    char *tmp;
-    
-    close(pipefd[0]);
-    signal(SIGINT, SIG_DFL);
-    while (1)
+	char	*line;
+	char	*tmp;
+
+	close(pipefd[0]);
+	signal(SIGINT, SIG_DFL);
+	while (1)
 	{
 		line = readline("> ");
 		if (!line)
 		{
-		    close(pipefd[1]);
+			close(pipefd[1]);
 			exit(EXIT_SUCCESS);
 		}
 		if (ft_strcmp(line, del) == 0)
@@ -58,10 +58,10 @@ void child_heredoc(char *del, int pipefd[2], t_list *cmds, t_general *sa)
 
 int	ft_heredoc(t_list *cmds, t_general *sa)
 {
-	char	*del;
-	int		pipefd[2];
-	int		child_pid;
-	int		status;
+	char *del;
+	int pipefd[2];
+	int child_pid;
+	int status;
 
 	pipe(pipefd);
 	del = ft_strdup(cmds->redir->delimiter);
@@ -72,7 +72,7 @@ int	ft_heredoc(t_list *cmds, t_general *sa)
 		exit(EXIT_FAILURE);
 	}
 	if (child_pid == 0)
-        child_heredoc(del, pipefd, cmds, sa);
+		child_heredoc(del, pipefd, cmds, sa);
 	else
 	{
 		close(pipefd[1]);
