@@ -6,7 +6,7 @@
 /*   By: mdouzi < mdouzi@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 05:00:49 by mdouzi            #+#    #+#             */
-/*   Updated: 2023/09/21 05:33:01 by mdouzi           ###   ########.fr       */
+/*   Updated: 2023/10/01 02:37:35 by mdouzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ void	sig_kill(int sig)
 	printf("exit\n");
 	exit(0);
 }
+
 void	handle_sig(int mode)
 {
 	if (mode == 1)

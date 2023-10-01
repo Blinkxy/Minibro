@@ -6,7 +6,7 @@
 /*   By: mdouzi < mdouzi@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/21 05:48:21 by mdouzi            #+#    #+#             */
-/*   Updated: 2023/09/30 22:59:30 by mdouzi           ###   ########.fr       */
+/*   Updated: 2023/10/01 02:18:32 by mdouzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,10 +68,10 @@ void	ex_test(t_list *cmd, t_general *sa)
 		return ;
 	head = cmd;
 	sa->num_cmds = numberof_cmd(cmd);
-	if(sa->num_cmds == 0)
+	if (sa->num_cmds == 0)
 	{
 		close_fds(cmd);
-		return;
+		return ;
 	}
 	if (cmd && !cmd->next && is_builtin(cmd->final_cmd) == 1 && cmd->final_cmd)
 		ex_builtins(cmd, sa);

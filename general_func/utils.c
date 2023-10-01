@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mdouzi < mdouzi@student.1337.ma>           +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/10/01 02:57:30 by mdouzi            #+#    #+#             */
+/*   Updated: 2023/10/01 03:00:29 by mdouzi           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../Minishell.h"
 
 int	ft_size(char **str)
@@ -40,10 +52,10 @@ void	ft_error(char *first, char *arg, char *last)
 
 char	*env_join(char *s1, char *s2)
 {
-	int j;
-	int i;
-	int len;
-	char *res;
+	int		j;
+	int		i;
+	char	*res;
+	int		len;
 
 	i = 0;
 	j = 0;

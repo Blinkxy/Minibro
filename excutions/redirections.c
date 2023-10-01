@@ -1,4 +1,37 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   redirections.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mdouzi < mdouzi@student.1337.ma>           +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/10/01 02:37:22 by mdouzi            #+#    #+#             */
+/*   Updated: 2023/10/01 02:39:07 by mdouzi           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../Minishell.h"
+
+void	handle_redirection(t_list *head, t_general *sa, int i)
+{
+	if (g_sig == -2)
+	{
+		close_fds(head);
+		return ;
+	}
+	if (head->redir[i].type == RED_IN)
+		head->fd_in = handle_redin(head, head->redir);
+	else if (head->redir[i].type == RED_OUT)
+		head->fd_out = handle_redout(head, head->redir);
+	else if (head->redir[i].type == APPEND)
+		head->fd_out = handle_append(head, head->redir);
+	else if (head->redir[i].type == HEREDOC)
+	{
+		head->fd_in = ft_heredoc(head, sa);
+		if (head->fd_in == -2)
+			return ;
+	}
+}
 
 int	make_red(t_list *cmd, t_general *sa)
 {
@@ -15,23 +48,7 @@ int	make_red(t_list *cmd, t_general *sa)
 		nb_red = head->red_nb;
 		while (nb_red > 0)
 		{
-			if (g_sig == -2)
-			{
-				close_fds(head);
-				return (-2);
-			}
-			if (head->redir[i].type == RED_IN)
-				head->fd_in = handle_redin(head, head->redir);
-			else if (head->redir[i].type == RED_OUT)
-				head->fd_out = handle_redout(head, head->redir);
-			else if (head->redir[i].type == APPEND)
-				head->fd_out = handle_append(head, head->redir);
-			else if (head->redir[i].type == HEREDOC)
-			{
-				head->fd_in = ft_heredoc(head, sa);
-				if (head->fd_in == -2)
-					return (0);
-			}
+			handle_redirection(head, sa, i);
 			i++;
 			nb_red--;
 		}

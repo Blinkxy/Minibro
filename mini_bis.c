@@ -6,7 +6,7 @@
 /*   By: mdouzi < mdouzi@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 22:34:03 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/09/30 22:54:54 by mdouzi           ###   ########.fr       */
+/*   Updated: 2023/10/01 01:14:49 by mdouzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void	default_fds(t_list *cmds, t_general *sa)
 	sa->num_cmds = 0;
 	sa->index = 0;
 	sa->pid = 1;
+	sa->del = NULL;
 	while (head)
 	{
 		head->fd[0] = -1;

@@ -6,7 +6,7 @@
 /*   By: mdouzi < mdouzi@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 19:58:38 by mdouzi            #+#    #+#             */
-/*   Updated: 2023/09/29 19:59:16 by mdouzi           ###   ########.fr       */
+/*   Updated: 2023/10/01 01:08:08 by mdouzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int	handle_redout(t_list *cmd, t_redir *red)
 
 int	handle_append(t_list *cmd, t_redir *red)
 {
-	int fd;
+	int	fd;
 
 	fd = open(red->file, O_CREAT | O_RDWR | O_APPEND, 0644);
 	if (access(red->file, W_OK) != 0)

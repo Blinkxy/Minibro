@@ -6,7 +6,7 @@
 /*   By: mdouzi < mdouzi@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 04:54:27 by mdouzi            #+#    #+#             */
-/*   Updated: 2023/09/30 22:56:12 by mdouzi           ###   ########.fr       */
+/*   Updated: 2023/10/01 02:30:28 by mdouzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,17 +19,17 @@ int	numberof_cmd(t_list *cmds)
 
 	tmp = cmds;
 	nb = 0;
-	if(!cmds->final_cmd[0])
-		return(0);
+	if (!cmds->final_cmd[0])
+		return (0);
 	else
 	{
 		while (tmp)
 		{
 			nb++;
 			tmp = tmp->next;
-		}	
+		}
 	}
-	return(nb);
+	return (nb);
 }
 
 void	child_job(int **fd, t_general *sa, t_list *tmp, int index)
@@ -73,19 +73,6 @@ void	parent_job(int **fd, int *index, t_list *tmp)
 	*index = *index + 1;
 }
 
-void	free_pipe(int **fd, int numb_cmds)
-{
-	int	i;
-
-	i = 0;
-	while (i < (numb_cmds - 1))
-	{
-		free(fd[i]);
-		i++;
-	}
-	free(fd);
-}
-
 int	wait_and_close(int **fd, int num_cmds)
 {
 	int	i;
@@ -107,25 +94,6 @@ int	wait_and_close(int **fd, int num_cmds)
 	}
 	free_pipe(fd, num_cmds);
 	return (WEXITSTATUS(exit_status));
-}
-
-int	init_pipe(int num_cmds, int ***fd)
-{
-	int	i;
-
-	*fd = malloc(sizeof(int *) * (num_cmds - 1));
-	if (!(*fd))
-		return (0);
-	else
-	{
-		i = 0;
-		while (i < (num_cmds - 1))
-		{
-			(*fd)[i] = malloc(sizeof(int) * 2);
-			i++;
-		}
-	}
-	return (1);
 }
 
 void	ex_pipe(t_list *cmd, t_general *sa, int num_cmds)

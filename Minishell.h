@@ -6,7 +6,7 @@
 /*   By: mdouzi < mdouzi@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 20:20:00 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/09/29 20:00:17 by mdouzi           ###   ########.fr       */
+/*   Updated: 2023/10/01 02:40:02 by mdouzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,6 +124,7 @@ typedef struct s_list
 typedef struct s_general
 {
 	int ex_status;
+	char *del;
 	char **env;
 	pid_t pid;
 	int num_cmds;
@@ -286,10 +287,18 @@ void ex_cmd(t_general *sa, t_list *cmd);
 int make_red(t_list *cmd, t_general *sa);
 int ex_builtins(t_list *cmd, t_general *sa);
 void ex_test(t_list *cmd, t_general *sa);
+//pipe
+int		init_pipe(int num_cmds, int ***fd);
 void	ex_pipe(t_list *cmd, t_general *sa, int num_cmds);
+void	free_pipe(int **fd, int numb_cmds);
+
 // heredocument
+int	hrdc_expand(char *delimiter);
 int	ft_heredoc(t_list *cmds, t_general *sa);
 int	hrdc_expand(char *delimiter);
+void	write_exp(t_general *sa, char *line, int pipefd[2]);
+void	error_fork(void);
+
 
 // mak
 void pipex(t_list *cmds, t_general *sa);
