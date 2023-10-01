@@ -6,7 +6,7 @@
 /*   By: mdouzi < mdouzi@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 03:21:32 by mdouzi            #+#    #+#             */
-/*   Updated: 2023/09/25 03:17:53 by mdouzi           ###   ########.fr       */
+/*   Updated: 2023/09/29 23:56:55 by mdouzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,9 @@ void	double_swap(int i, int j, t_general *sa)
 	char	*tmp;
 
 	tmp = ft_strdup(sa->env_export[i]);
+	free(sa->env_export[i]);
 	sa->env_export[i] = ft_strdup(sa->env_export[j]);
+	free(sa->env_export[j]);
 	sa->env_export[j] = ft_strdup(tmp);
 	free(tmp);
 }

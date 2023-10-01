@@ -6,7 +6,7 @@
 /*   By: mdouzi < mdouzi@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 03:18:58 by mdouzi            #+#    #+#             */
-/*   Updated: 2023/09/25 03:34:43 by mdouzi           ###   ########.fr       */
+/*   Updated: 2023/09/30 23:55:38 by mdouzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ void	export_with_var(t_general *sa, char *cmd)
 		var = with_value(new_var);
 		check_or_update(new_var, var, sa);
 	}
-	free(new_var);
+	free_tab(new_var);
 	free(var);
 }
 

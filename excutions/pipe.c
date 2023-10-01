@@ -6,7 +6,7 @@
 /*   By: mdouzi < mdouzi@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 04:54:27 by mdouzi            #+#    #+#             */
-/*   Updated: 2023/09/25 07:49:34 by mdouzi           ###   ########.fr       */
+/*   Updated: 2023/09/30 22:56:12 by mdouzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,17 @@ int	numberof_cmd(t_list *cmds)
 
 	tmp = cmds;
 	nb = 0;
-	while (tmp)
+	if(!cmds->final_cmd[0])
+		return(0);
+	else
 	{
-		nb++;
-		tmp = tmp->next;
+		while (tmp)
+		{
+			nb++;
+			tmp = tmp->next;
+		}	
 	}
-	return (nb);
+	return(nb);
 }
 
 void	child_job(int **fd, t_general *sa, t_list *tmp, int index)

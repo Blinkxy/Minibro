@@ -62,8 +62,8 @@ void	free_final_cmd(t_list *cmds)
 			free(tmp->final_cmd[i]);
 			i++;
 		}
-		free(tmp->final_cmd);
-		tmp = tmp->next;
+		free_tab(tmp->final_cmd);
+			tmp = tmp->next;
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: mdouzi < mdouzi@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 03:55:45 by mdouzi            #+#    #+#             */
-/*   Updated: 2023/09/20 03:55:46 by mdouzi           ###   ########.fr       */
+/*   Updated: 2023/09/29 23:48:46 by mdouzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ int	remplace_env_var(char **str, int index, char *name)
 	int	i;
 
 	len = (ft_strlen(name) + 1);
+	free(str[index]);
 	str[index] = (char *)malloc(sizeof(char) * len);
 	i = 0;
 	while (name[i])
