@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handler.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdouzi < mdouzi@student.1337.ma>           +#+  +:+       +#+        */
+/*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/21 05:48:21 by mdouzi            #+#    #+#             */
-/*   Updated: 2023/10/01 02:18:32 by mdouzi           ###   ########.fr       */
+/*   Updated: 2023/10/01 23:39:13 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ void	ex_test(t_list *cmd, t_general *sa)
 		return ;
 	head = cmd;
 	sa->num_cmds = numberof_cmd(cmd);
+	printf("%d\n", sa->num_cmds);
 	if (sa->num_cmds == 0)
 	{
 		close_fds(cmd);

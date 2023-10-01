@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdouzi < mdouzi@student.1337.ma>           +#+  +:+       +#+        */
+/*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 04:54:27 by mdouzi            #+#    #+#             */
-/*   Updated: 2023/10/01 05:37:17 by mdouzi           ###   ########.fr       */
+/*   Updated: 2023/10/01 23:40:26 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	numberof_cmd(t_list *cmds)
 
 	tmp = cmds;
 	nb = 0;
-	if (!cmds->final_cmd[0])
+	if (cmds->final_cmd == NULL)
 		return (0);
 	else
 	{

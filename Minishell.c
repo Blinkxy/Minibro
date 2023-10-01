@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdouzi < mdouzi@student.1337.ma>           +#+  +:+       +#+        */
+/*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/23 01:17:28 by mdouzi            #+#    #+#             */
-/*   Updated: 2023/10/01 05:07:33 by mdouzi           ###   ########.fr       */
+/*   Updated: 2023/10/02 00:43:13 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ t_list	*parse_commands(char *s)
 	int		i;
 	t_list	*cmds;
 
-	if (!s || s[0] == '\0')
+	if (s[0] == '\0')
 		return (NULL);
 	if (checker_line(s) != 1 || checker_redir(s) != 1)
 		return (NULL);
@@ -54,10 +54,14 @@ void	execute_commands(t_general *sa, t_list *cmds)
 	redir_array(cmds);
 	final_remove_quotes(cmds);
 	final_cmd(cmds);
+	if(cmds->final_cmd == NULL)
+		exit(1);
 	default_fds(cmds, sa);
 	make_red(cmds, sa);
 	signal(SIGINT, restore_pt);
 	ex_test(cmds, sa);
+	
+
 }
 
 int	main(int argc, char **argv, char **env)
@@ -77,12 +81,14 @@ int	main(int argc, char **argv, char **env)
 	{
 		if (s)
 			free(s);
+		s = readline("minishell$>"); 
 		initialize_signals();
-		s = readline("minishell$>");
 		if (!s)
 			exit(0);
 		cmds = parse_commands(s);
-		execute_commands(sa, cmds);
+		int i = 0;
+		if (cmds != NULL)
+			execute_commands(sa, cmds);
 		//free_all(cmds);
 	}
 	return (0);

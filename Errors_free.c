@@ -6,7 +6,7 @@
 /*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 15:54:45 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/09/28 17:45:43 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/10/02 00:16:27 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ int	checker_redir(char *line)
 
 	initialize_checker(&index);
 	index.copy = ft_strtrim(line, " ");
+	if (index.copy[0] =='\0')
+		return (0);
 	index.len = ft_strlen(index.copy);
 	if (error_line_end(&index) == 0)
 		return (0);

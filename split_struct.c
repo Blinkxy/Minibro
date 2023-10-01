@@ -6,7 +6,7 @@
 /*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 15:48:17 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/09/28 22:45:28 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/10/01 23:44:35 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,23 +21,32 @@ void	final_cmd(t_list *cmds)
 	tmp = cmds;
 	while (tmp)
 	{
-		tmp->final_cmd = (char **)ft_calloc(sizeof(char *) * (tmp->size_cmd
-					- (tmp->red_nb * 2) + 1), 1);
-		if (!tmp->final_cmd)
-			return ;
-		i = -1;
-		j = 0;
-		while (++i < tmp->size_cmd)
+		if (tmp->size_cmd - (tmp->red_nb * 2) > 0)
 		{
-			if (tmp->define[i].state == WORD)
+			tmp->final_cmd = (char **)malloc(sizeof(char *) * (tmp->size_cmd
+						- (tmp->red_nb * 2) + 1));
+		
+			if (!tmp->final_cmd)
+				return ;
+			i = -1;
+			j = 0;
+			while (++i < tmp->size_cmd)
 			{
-				tmp->final_cmd[j] = ft_strdup(tmp->define[i].content);
-				j++;
+				if (tmp->define[i].state == WORD)
+				{
+					tmp->final_cmd[j] = ft_strdup(tmp->define[i].content);
+					j++;
+				}
 			}
+			tmp->final_cmd[j] = NULL;
+			if (j == 0)
+				tmp->final_cmd = NULL;
 		}
-		tmp->final_cmd[tmp->size_cmd - (tmp->red_nb * 2)] = NULL;
-		if (j == 0)
+		else
+		{
+			
 			tmp->final_cmd = NULL;
+		}
 		tmp = tmp->next;
 	}
 }

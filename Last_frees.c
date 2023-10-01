@@ -26,14 +26,18 @@ void	free_redir(t_list *cmds)
 		i = -1;
 		while (++i < tmp->red_nb)
 		{
-			if (tmp->redir[i].type == HEREDOC)
-				free(tmp->redir[i].delimiter);
-			else if (tmp->redir[i].type == RED_IN
-				|| tmp->redir[i].type == RED_OUT
-				|| tmp->redir[i].type == APPEND)
-				free(tmp->redir[i].file);
+			if (tmp->redir)
+			{
+				if (tmp->redir[i].type == HEREDOC)
+					free(tmp->redir[i].delimiter);
+				else if (tmp->redir[i].type == RED_IN
+					|| tmp->redir[i].type == RED_OUT
+					|| tmp->redir[i].type == APPEND)
+					free(tmp->redir[i].file);
+			}
 		}
-		free(tmp->redir);
+		if (tmp->redir)
+			free(tmp->redir);
 		tmp = tmp->next;
 	}
 }
@@ -45,7 +49,8 @@ void	free_struct(t_define *define)
 	i = -1;
 	while (++i < define->size_struct)
 		free(define[i].content);
-	free(define);
+	if (define)
+		free(define);
 }
 
 void	free_final_cmd(t_list *cmds)
@@ -101,5 +106,6 @@ void	free_all(t_list *cmds)
 		free(tmp);
 		tmp = cmds;
 	}
-	free(cmds);
+	if (cmds)
+		free(cmds);
 }
