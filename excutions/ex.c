@@ -6,7 +6,7 @@
 /*   By: mdouzi < mdouzi@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 04:11:13 by mdouzi            #+#    #+#             */
-/*   Updated: 2023/09/29 12:48:30 by mdouzi           ###   ########.fr       */
+/*   Updated: 2023/10/01 05:39:02 by mdouzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ char	*get_path(char **env, char *cmd)
 	return (res);
 }
 
+
 void	ex_cmd(t_general *sa, t_list *cmd)
 {
 	char	*cm;
@@ -94,10 +95,8 @@ void	ex_cmd(t_general *sa, t_list *cmd)
 	{
 		if (access(cmd->final_cmd[0], F_OK) != 0)
 		{
-			ft_putstr_fd("minishell: ", 2);
-			ft_putstr_fd("command not found: ", 2);
-			ft_putstr_fd(cmd->final_cmd[0], 2);
-			ft_putstr_fd("\n", 2);
+			ft_error("minishell : ", cmd->final_cmd[0], " : command not found");
+			sa->ex_status = 127;
 			exit(1);
 		}
 		else

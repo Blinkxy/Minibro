@@ -6,7 +6,7 @@
 /*   By: mdouzi < mdouzi@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 04:54:27 by mdouzi            #+#    #+#             */
-/*   Updated: 2023/10/01 02:30:28 by mdouzi           ###   ########.fr       */
+/*   Updated: 2023/10/01 05:37:17 by mdouzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,4 +122,6 @@ void	ex_pipe(t_list *cmd, t_general *sa, int num_cmds)
 		}
 	}
 	sa->ex_status = wait_and_close(fd, num_cmds);
+	if(sa->ex_status == 1)
+		sa->ex_status = 127;
 }
