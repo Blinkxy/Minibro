@@ -26,7 +26,8 @@ void	final_struct(t_list *cmds, char **env, t_general *sa)
 			if (tmp->define[i].dollar == 1)
 			{
 				tmp->define[i].content = expand_env(tmp->define[i].content,
-						env, sa);
+													env,
+													sa);
 			}
 		}
 		tmp = tmp->next;
@@ -85,8 +86,8 @@ void	fill_new_split(char *str, t_define *new_struct, int *index, int k)
 
 int	new_struct_size(t_list *tmp)
 {
-	int		i;
-	int		k;
+	int	i;
+	int	k;
 
 	i = -1;
 	k = 0;
@@ -115,10 +116,12 @@ void	update_struct(t_list *cmds, t_general *sa)
 		{
 			if (tmp->define[i].content[0] != '\0')
 			{
-				if (countwords(tmp->define[i].content) > 1 && tmp->define[i].type != FYLE)
-					fill_new_split(tmp->define[i].content, final_struct,
-						&index, k);
-				else if (countwords(tmp->define[i].content) > 1 && tmp->define[i].type == FYLE)
+				if (countwords(tmp->define[i].content) > 1
+					&& tmp->define[i].type != FYLE)
+					fill_new_split(tmp->define[i].content, final_struct, &index,
+							k);
+				else if (countwords(tmp->define[i].content) > 1
+						&& tmp->define[i].type == FYLE)
 				{
 					printf("ambiguous redirect\n");
 					sa->ex_status = 1;
@@ -127,8 +130,7 @@ void	update_struct(t_list *cmds, t_general *sa)
 				}
 				else if (countwords(tmp->define[i].content) == 1)
 				{
-					final_struct[index].content
-						= ft_strdup(tmp->define[i].content);
+					final_struct[index].content = ft_strdup(tmp->define[i].content);
 					final_struct[index].type = tmp->define[i].type;
 					final_struct[index].state = tmp->define[i].state;
 					final_struct[index].index = index;

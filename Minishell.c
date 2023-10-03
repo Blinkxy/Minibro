@@ -40,7 +40,6 @@ t_list	*parse_commands(char *s, t_general *sa)
 	st = addnext_pipe(s);
 	stt = ft_split(st, '\n');
 	str = remove_pipe_pointers(stt);
-	
 	if (!str || !str[0])
 		return (NULL);
 	i = 0;

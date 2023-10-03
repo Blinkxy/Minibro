@@ -62,7 +62,7 @@ int	error_line_out(t_index_check *index)
 				return (0);
 			}
 			else if (index->copy[index->j] && index->copy[index->j] == '<'
-				&& !index->inquotes)
+					&& !index->inquotes)
 			{
 				printf("syntax error near unexpected token `<'\n");
 				return (0);
@@ -119,7 +119,7 @@ int	error_bis(t_index_check *index)
 int	error_line_end(t_index_check *index)
 {
 	if (index->copy[index->len - 1] == '>' || index->copy[index->len
-			- 1] == '<')
+		- 1] == '<')
 	{
 		printf("syntax error near unexpected token `newline'\n");
 		return (0);

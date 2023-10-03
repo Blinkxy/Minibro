@@ -29,7 +29,7 @@ void	count_word_bis(char *str, t_count *count_words, int *i)
 			count_words->wordstart = 1;
 	}
 	else if (str[*i] == ' ' && !count_words->insinglequotes
-		&& !count_words->indoublequotes)
+			&& !count_words->indoublequotes)
 	{
 		if (count_words->wordstart == 1)
 		{

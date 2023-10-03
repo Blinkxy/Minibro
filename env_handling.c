@@ -53,7 +53,7 @@ void	expand_env_util(t_index_env *index, char *str, char **env)
 		else if (get_env_var(env, index->check_env) != -1)
 		{
 			index->extract = extract_env(env[get_env_var(env,
-						index->check_env)]);
+															index->check_env)]);
 			index->result = ft_strjoin(index->result, index->extract);
 			index->i += ft_strlen(index->check_env);
 			free(index->extract);

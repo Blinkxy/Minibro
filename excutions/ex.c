@@ -6,7 +6,7 @@
 /*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 04:11:13 by mdouzi            #+#    #+#             */
-/*   Updated: 2023/10/02 04:13:44 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/10/03 06:47:25 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ char	*make_path(char *path)
 		i++;
 	if (path[i] == '=')
 		i++;
-	res = (char *)malloc(sizeof(char) * (ft_strlen(path) - i));
+	res = (char *)malloc(sizeof(char) * (ft_strlen(path) - i + 1));
 	while (path[i])
 	{
 		res[j] = path[i];

@@ -1,7 +1,6 @@
 
 NAME = Minishell
-CFLAGS =
-#  -Wall -Wextra -Werror -g 
+CFLAGS = -Wall -Wextra -Werror
 LRFLAG = -lreadline
 RM = rm -rf
 LIBFT_A = libft/libft.a
@@ -18,7 +17,7 @@ all: $(NAME)
 
 $(NAME): $(OBJ)
 	@make -C libft
-	@$(CC)  $(OBJ) -o $(NAME) $(LIBFT_A) $(LRFLAG) -L/Users/mzoheir/goinfre/homebrew/opt/readline/lib -I/Users/mzoheir/goinfre/homebrew/opt/readline/include -lreadline 
+	@$(CC)  $(OBJ) -o $(NAME) $(LIBFT_A) $(LRFLAG) -L/Users/mzoheir/goinfre/homebrew/opt/readline/lib -I/Users/mzoheir/goinfre/homebrew/opt/readline/include -lreadline
 
 %.o: %.c
 	@$(CC) $(CFLAGS) -c $< -o $@

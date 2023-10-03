@@ -37,8 +37,7 @@ void	final_cmd(t_list *cmds)
 					j++;
 				}
 			}
-			tmp->final_cmd[tmp->size_cmd
-				- (tmp->red_nb * 2)] = NULL;
+			tmp->final_cmd[tmp->size_cmd - (tmp->red_nb * 2)] = NULL;
 		}
 		else if (tmp->size_cmd - (tmp->red_nb * 2) == 0)
 			tmp->final_cmd = NULL;
