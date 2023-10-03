@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdouzi < mdouzi@student.1337.ma>           +#+  +:+       +#+        */
+/*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 03:18:58 by mdouzi            #+#    #+#             */
-/*   Updated: 2023/09/30 23:55:38 by mdouzi           ###   ########.fr       */
+/*   Updated: 2023/10/02 01:57:39 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ char	*with_value(char **new_var)
 	ft_strlcat(res, "\"", len_res + 1);
 	ft_strlcat(res, new_var[1], len_res + 1);
 	ft_strlcat(res, "\"", len_res + 1);
+	printf("adress of res:%p\n", res);
 	return (res);
 }
 

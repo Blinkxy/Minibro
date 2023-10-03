@@ -6,7 +6,7 @@
 /*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 20:04:27 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/09/28 17:37:22 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/10/03 02:38:58 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,20 +30,15 @@ void	define_word(t_list *tmp, int i)
 
 void	define_all(t_list *tmp, int i)
 {
-	if (ft_strncmp("<<", tmp->cmd[i], 2) == 0)
-		define_hrdc(tmp, i);
-	else if (ft_strncmp(">>", tmp->cmd[i], 2) == 0)
-		define_append(tmp, i);
+	if (ft_strcmp("<<", tmp->cmd[i]) == 0)
+		define_hrdc(tmp, &i);
+	else if (ft_strcmp(">>", tmp->cmd[i]) == 0)
+		define_append(tmp, &i);
 	else if (ft_strncmp("<", tmp->cmd[i], 1) == 0)
-		define_red_in(tmp, i);
+		define_red_in(tmp, &i);
 	else if (ft_strncmp(">", tmp->cmd[i], 1) == 0)
-		define_red_out(tmp, i);
-	else if (tmp->define[i].state == RED_IN || tmp->define[i].state == APPEND
-		|| tmp->define[i].state == RED_OUT)
-		define_file(tmp, i + 1);
-	else if (tmp->define[i].state == HEREDOC)
-		define_delim(tmp, i + 1);
-	else
+		define_red_out(tmp, &i);
+	else if (tmp->define[i].state == 0 && tmp->define[i].type == 0)
 		define_word(tmp, i);
 }
 
@@ -63,8 +58,8 @@ void	cmd_define(t_list *cmds)
 		while (tmp->cmd[i])
 		{
 			define_all(tmp, i);
-			if (ft_strchr(tmp->cmd[i], '$') && tmp->define[i].state != DELIMITER
-				&& tmp->define[i].state)
+			if (ft_strchr(tmp->cmd[i], '$')
+				&& tmp->define[i].state != DELIMITER)
 				tmp->define[i].dollar = 1;
 			i++;
 		}

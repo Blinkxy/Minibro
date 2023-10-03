@@ -42,15 +42,19 @@ void	free_redir(t_list *cmds)
 	}
 }
 
-void	free_struct(t_define *define)
+void	free_struct(t_list *tmp)
 {
 	int	i;
 
 	i = -1;
-	while (++i < define->size_struct)
-		free(define[i].content);
-	if (define)
-		free(define);
+	while (++i < tmp->define->size_struct)
+	{
+		if (tmp->define[i].content[0] == '\0')
+			i++;
+		else
+			free(tmp->define[i].content);
+	}
+	free(tmp->define);
 }
 
 void	free_final_cmd(t_list *cmds)
@@ -58,17 +62,20 @@ void	free_final_cmd(t_list *cmds)
 	int				i;
 	t_list			*tmp;
 
-	i = 0;
 	tmp = cmds;
 	while (tmp)
 	{
-		while (tmp->final_cmd[i])
+		i = 0;
+		if (tmp->final_cmd != NULL)
 		{
-			free(tmp->final_cmd[i]);
-			i++;
+			while (tmp->final_cmd[i])
+			{
+				free(tmp->final_cmd[i]);
+				i++;
+			}
+			free(tmp->final_cmd);
 		}
-		free_tab(tmp->final_cmd);
-			tmp = tmp->next;
+		tmp = tmp->next;
 	}
 }
 
@@ -95,13 +102,13 @@ void	free_all(t_list *cmds)
 {
 	t_list	*tmp;
 
-	free_redir(cmds);
 	free_final_cmd(cmds);
 	free_cmd(cmds);
+	free_redir(cmds);
 	tmp = cmds;
 	while (tmp)
 	{
-		free_struct(tmp->define);
+		free_struct(tmp);
 		cmds = tmp->next;
 		free(tmp);
 		tmp = cmds;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_handling.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdouzi < mdouzi@student.1337.ma>           +#+  +:+       +#+        */
+/*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 21:30:26 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/10/01 03:17:39 by mdouzi           ###   ########.fr       */
+/*   Updated: 2023/10/03 02:33:17 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,16 @@ int	count_cmds(char **str)
 
 char	*extract_env(char *str)
 {
-	int	i;
+	int		i;
+	char	*extract;
 
 	i = 0;
 	while (str[i] && str[i] != '=')
 		i++;
 	if (str[i] == '=')
 		i++;
-	return (ft_substr(str, i, ft_strlen(str) - i));
+	extract = ft_substr(str, i, ft_strlen(str) - i);
+	return (extract);
 }
 
 void	expand_env_util(t_index_env *index, char *str, char **env)
@@ -43,9 +45,12 @@ void	expand_env_util(t_index_env *index, char *str, char **env)
 	{
 		index->check_env = ft_substr(str, index->i + 1, index->j - index->i
 				- 1);
-		if (get_env_var(env, index->check_env) == -1 && index->check_env)
+		if (get_env_var(env, index->check_env) == -1)
+		{
 			index->i += ft_strlen(index->check_env);
-		else if (get_env_var(env, index->check_env) != -1 && index->check_env)
+			free(index->check_env);
+		}
+		else if (get_env_var(env, index->check_env) != -1)
 		{
 			index->extract = extract_env(env[get_env_var(env,
 						index->check_env)]);
@@ -54,6 +59,8 @@ void	expand_env_util(t_index_env *index, char *str, char **env)
 			free(index->extract);
 			free(index->check_env);
 		}
+		else
+			free(index->check_env);
 	}
 }
 

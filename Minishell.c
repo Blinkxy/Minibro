@@ -6,7 +6,7 @@
 /*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/23 01:17:28 by mdouzi            #+#    #+#             */
-/*   Updated: 2023/10/02 00:43:13 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/10/03 02:06:03 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,17 +51,14 @@ void	execute_commands(t_general *sa, t_list *cmds)
 {
 	cmd_define(cmds);
 	final_struct(cmds, sa->env, sa);
+	update_struct(cmds);
 	redir_array(cmds);
 	final_remove_quotes(cmds);
 	final_cmd(cmds);
-	if(cmds->final_cmd == NULL)
-		exit(1);
 	default_fds(cmds, sa);
 	make_red(cmds, sa);
 	signal(SIGINT, restore_pt);
 	ex_test(cmds, sa);
-	
-
 }
 
 int	main(int argc, char **argv, char **env)
@@ -81,15 +78,14 @@ int	main(int argc, char **argv, char **env)
 	{
 		if (s)
 			free(s);
-		s = readline("minishell$>"); 
+		s = readline("minishell$>");
 		initialize_signals();
 		if (!s)
 			exit(0);
 		cmds = parse_commands(s);
-		int i = 0;
 		if (cmds != NULL)
 			execute_commands(sa, cmds);
-		//free_all(cmds);
+		free_all(cmds);
 	}
 	return (0);
 }

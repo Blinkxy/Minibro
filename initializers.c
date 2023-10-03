@@ -6,7 +6,7 @@
 /*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 15:44:58 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/09/28 14:18:18 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/10/02 05:43:54 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,5 +74,4 @@ void	initialize_env(t_index_env *index)
 	index->ex_status = 0;
 	index->check_env = 0;
 	index->extract = 0;
-	index->result = 0;
 }

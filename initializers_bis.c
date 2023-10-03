@@ -6,7 +6,7 @@
 /*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 14:13:53 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/09/28 22:29:35 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/10/03 02:26:46 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ char	*concatenate_char(char *str, char c)
 		new_str[len] = c;
 		new_str[len + 1] = '\0';
 	}
+	free(str);
 	return (new_str);
 }
 

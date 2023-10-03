@@ -3,27 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   Minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdouzi < mdouzi@student.1337.ma>           +#+  +:+       +#+        */
+/*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 20:20:00 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/10/01 03:49:34 by mdouzi           ###   ########.fr       */
+/*   Updated: 2023/10/03 02:03:49 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <signal.h>
-#include <stdlib.h>
-#include <string.h>
 #include "libft/libft.h"
+#include <fcntl.h>
+#include <limits.h>
 #include <readline/history.h>
 #include <readline/readline.h>
-#include <sys/wait.h>
+#include <signal.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <sys/types.h>
-#include <limits.h>
-#include <fcntl.h>
+#include <sys/wait.h>
 
-extern int g_sig;
-void	rl_replace_line (const char *text, int clear_undo);
+extern int			g_sig;
+void				rl_replace_line(const char *text, int clear_undo);
 
 typedef enum e_type
 {
@@ -81,7 +81,7 @@ typedef struct s_lexer
 	int				i;
 	int				j;
 	int				count;
-	char 			**result;
+	char			**result;
 }					t_lexer;
 
 typedef struct s_index_check
@@ -106,33 +106,33 @@ typedef struct s_env
 
 typedef struct s_list
 {
-    char** cmd;     //  double array of EACH command
-	pid_t id;
-	int fd_in; // fd_out for ouput redirection 
-	int fd_out; // fd_in for input redirection
-	int fd[2];  // fd_for herdoc;
-    int index;		// index of the command
-	int size_cmd;	// how many pointers in each command
+	char **cmd; //  double array of EACH command
+	pid_t			id;
+	int fd_in;        // fd_out for ouput redirection
+	int fd_out;       // fd_in for input redirection
+	int fd[2];        // fd_for herdoc;
+	int index;        // index of the command
+	int size_cmd;     // how many pointers in each command
 	t_define *define; // each pointer of cmd is in a struct for define/expand
-	int red_nb;		// number of total redirection in this command
-	t_redir *redir;	// array of all the redir in this command to send to exec
-	char** final_cmd;	// command + arg(if existent) to send to exec
-	struct s_list *prev;
-    struct s_list *next;
-}           t_list;
+	int red_nb;       // number of total redirection in this command
+	t_redir *redir;   // array of all the redir in this command to send to exec
+	char **final_cmd; // command + arg(if existent) to send to exec
+	struct s_list	*prev;
+	struct s_list	*next;
+}					t_list;
 
 typedef struct s_general
 {
-	int ex_status;
-	char *del;
-	char **env;
-	pid_t pid;
-	int num_cmds;
-	int index;
-	char **env_export;
-	t_list *cmds;
+	int				ex_status;
+	char			*del;
+	char			**env;
+	pid_t			pid;
+	int				num_cmds;
+	int				index;
+	char			**env_export;
+	t_list			*cmds;
 
-}	t_general;
+}					t_general;
 
 //   PARSING UTILS
 
@@ -163,27 +163,28 @@ void				split_quotes(char *newstr, t_index *index, char *str);
 void				split_redirections(char *newstr, t_index *index, char *str);
 int					count_cmds(char **str);
 int					sizeof_cmd(t_list *cmds);
+void				update_struct(t_list *cmds);
+
 void				add_prev_list(t_list *cmds);
 
 // LINE ERRORS
 
-int	error_line_in(t_index_check *index);
-int	error_line_out(t_index_check *index);
-int	error_line_bis(t_index_check *index);
-int	error_bis(t_index_check *index);
-int	error_line_end(t_index_check *index);
-int	error_line_util(t_index_check *index);
+int					error_line_in(t_index_check *index);
+int					error_line_out(t_index_check *index);
+int					error_line_bis(t_index_check *index);
+int					error_bis(t_index_check *index);
+int					error_line_end(t_index_check *index);
+int					error_line_util(t_index_check *index);
 
 // DEFINES
-void				define_delim(t_list *tmp, int i);
+
 void				define_word(t_list *tmp, int i);
 void				define_all(t_list *tmp, int i);
 void				cmd_define(t_list *cmds);
-void				define_hrdc(t_list *tmp, int i);
-void				define_append(t_list *tmp, int i);
-void				define_red_in(t_list *tmp, int i);
-void				define_red_out(t_list *tmp, int i);
-void				define_file(t_list *tmp, int i);
+void				define_hrdc(t_list *tmp, int *i);
+void				define_append(t_list *tmp, int *i);
+void				define_red_in(t_list *tmp, int *i);
+void				define_red_out(t_list *tmp, int *i);
 
 //  ENV Expand
 char				*extract_env(char *str);
@@ -205,8 +206,6 @@ void				free_double_array(char **str);
 // Expand
 
 void				fill_new_struct(char *str, t_define *new_struct);
-t_define			*insert_new_struct(t_define *define, t_define *inserted,
-						t_list *cmds, int index);
 void				final_struct(t_list *cmds, char **env, t_general *sa);
 void				redir_array(t_list *commands);
 void				redir_arrayx(t_list *tmp, int *i, int *j);
@@ -216,101 +215,103 @@ void				redir_append(t_list *tmp, int *i, int *j);
 void				redir_heredoc(t_list *tmp, int *i, int *j);
 void				final_cmd(t_list *cmds);
 void				final_remove_quotes(t_list *cmds);
-
+char				*filler_split(char *str);
+void				fill_new_split(char *str, t_define *new_struct,
+						int *index);
+int					new_struct_size(t_list *cmds);
+void				update_struct(t_list *cmds);
 
 // FREE !
 
 void				free_words(char **words, int count);
-void				free_struct(t_define *define);
 void				free_redir(t_list *cmds);
-void				free_struct(t_define *define);
+void				free_struct(t_list *tmp);
 void				free_final_cmd(t_list *cmds);
+void				free_inserted(t_define *define);
 void				free_cmd(t_list *cmds);
 void				free_all(t_list *cmds);
 
 //general functions
-int ft_size(char **str);
-int ft_strcmp(char *s1, char *s2);
-void free_tab(char **tab);
+int					ft_size(char **str);
+int					ft_strcmp(char *s1, char *s2);
+void				free_tab(char **tab);
 
-// redirections 
-void dup_fds(t_list *cmds);
-void close_fds(t_list *cmds);
-int	handle_append(t_list *cmd, t_redir *red);
-int	handle_redout(t_list *cmd, t_redir *red);
-int	handle_redin(t_list *cmd, t_redir *red);
+// redirections
+void				dup_fds(t_list *cmds);
+void				close_fds(t_list *cmds);
+int					handle_append(t_list *cmd, t_redir *red);
+int					handle_redout(t_list *cmd, t_redir *red);
+int					handle_redin(t_list *cmd, t_redir *red);
 
 // builtin export
-int 	var_export_check(char *env_var);
-void get_export_env(t_general *sa);
-void double_swap(int i, int j, t_general *sa);
-void solo_export(t_general *sa);
-int ft_export(t_general *sa, char **cmd);
-char	**export_split_var(char *arg);
-int check_number_of_wr(char *str, char c);
-char *only_name(char *name, char *arg);
-char *with_value(char **new_var);
-int double_qchek(char *str);
+int					var_export_check(char *env_var);
+void				get_export_env(t_general *sa);
+void				double_swap(int i, int j, t_general *sa);
+void				solo_export(t_general *sa);
+int					ft_export(t_general *sa, char **cmd);
+char				**export_split_var(char *arg);
+int					check_number_of_wr(char *str, char c);
+char				*only_name(char *name, char *arg);
+char				*with_value(char **new_var);
+int					double_qchek(char *str);
 
 // builtin echo
-int	check_n_line(char *line);
-int	ft_echo(char **cmd);
+int					check_n_line(char *line);
+int					ft_echo(char **cmd);
 
 // builtin exit
-int	ft_exit(char **cmd, t_general *sa);
+int					ft_exit(char **cmd, t_general *sa);
 
 // builtin unset
-int ft_unset(t_general *sa, char **cmd);
+int					ft_unset(t_general *sa, char **cmd);
 
 // builtin env
-int ft_env(t_general *sa);
+int					ft_env(t_general *sa);
 
 // builtin pwd
-int ft_pwd(void);
+int					ft_pwd(void);
 
 //builtin cd
-int ft_cd(t_general *sa, char **cmd);
-int cd_home(t_general *sa);
-int update_oldpwd(t_general *sa);
-char *get_path_env(char *env);
-char *env_join(char *s1, char *s2);
-int remplace_env_var(char **str, int index, char *name);
-int compare_env_var(char *str, char *var);
-int get_env_var(char **env, char *var);
-
+int					ft_cd(t_general *sa, char **cmd);
+int					cd_home(t_general *sa);
+int					update_oldpwd(t_general *sa);
+char				*get_path_env(char *env);
+char				*env_join(char *s1, char *s2);
+int					remplace_env_var(char **str, int index, char *name);
+int					compare_env_var(char *str, char *var);
+int					get_env_var(char **env, char *var);
 
 //exuction functions
-int handle_builtins(t_list *cmds, t_general *sa);
-int ex_minishell(t_list *cmd, t_general *sa);
-int is_builtin(char **args);
-void ex_cmd(t_general *sa, t_list *cmd);
-int make_red(t_list *cmd, t_general *sa);
-int ex_builtins(t_list *cmd, t_general *sa);
-void ex_test(t_list *cmd, t_general *sa);
+int					handle_builtins(t_list *cmds, t_general *sa);
+int					ex_minishell(t_list *cmd, t_general *sa);
+int					is_builtin(char **args);
+void				ex_cmd(t_general *sa, t_list *cmd);
+int					make_red(t_list *cmd, t_general *sa);
+int					ex_builtins(t_list *cmd, t_general *sa);
+void				ex_test(t_list *cmd, t_general *sa);
 //pipe
-int		init_pipe(int num_cmds, int ***fd);
-void	ex_pipe(t_list *cmd, t_general *sa, int num_cmds);
-void	free_pipe(int **fd, int numb_cmds);
+int					init_pipe(int num_cmds, int ***fd);
+void				ex_pipe(t_list *cmd, t_general *sa, int num_cmds);
+void				free_pipe(int **fd, int numb_cmds);
 
 // heredocument
-int	hrdc_expand(char *delimiter);
-int	ft_heredoc(t_list *cmds, t_general *sa);
-int	hrdc_expand(char *delimiter);
-void	write_exp(t_general *sa, char *line, int pipefd[2]);
-void	error_fork(void);
-
+int					hrdc_expand(char *delimiter);
+int					ft_heredoc(t_list *cmds, t_general *sa);
+int					hrdc_expand(char *delimiter);
+void				write_exp(t_general *sa, char *line, int pipefd[2]);
+void				error_fork(void);
 
 // mak
-void pipex(t_list *cmds, t_general *sa);
-int numberof_cmd(t_list *cmds);
+void				pipex(t_list *cmds, t_general *sa);
+int					numberof_cmd(t_list *cmds);
 
-// signals 
-void	handle_sig(int mode);
+// signals
+void				handle_sig(int mode);
 
-void ft_error(char *first, char *arg, char *last);
+void				ft_error(char *first, char *arg, char *last);
 
-void	default_fds(t_list *cmds, t_general *sa);
-void	ft_handler(int sig);
-void	restore_pt(int sig);
-void	killo(int sig);
-void	init_env_data(t_general *sa, char **envp);
+void				default_fds(t_list *cmds, t_general *sa);
+void				ft_handler(int sig);
+void				restore_pt(int sig);
+void				killo(int sig);
+void				init_env_data(t_general *sa, char **envp);

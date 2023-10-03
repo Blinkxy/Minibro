@@ -6,7 +6,7 @@
 /*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 15:48:17 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/10/01 23:44:35 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/10/03 02:40:48 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ void	final_cmd(t_list *cmds)
 		{
 			tmp->final_cmd = (char **)malloc(sizeof(char *) * (tmp->size_cmd
 						- (tmp->red_nb * 2) + 1));
-		
 			if (!tmp->final_cmd)
 				return ;
 			i = -1;
@@ -38,15 +37,11 @@ void	final_cmd(t_list *cmds)
 					j++;
 				}
 			}
-			tmp->final_cmd[j] = NULL;
-			if (j == 0)
-				tmp->final_cmd = NULL;
+			tmp->final_cmd[tmp->size_cmd
+				- (tmp->red_nb * 2)] = NULL;
 		}
-		else
-		{
-			
+		else if (tmp->size_cmd - (tmp->red_nb * 2) == 0)
 			tmp->final_cmd = NULL;
-		}
 		tmp = tmp->next;
 	}
 }

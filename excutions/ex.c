@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ex.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdouzi < mdouzi@student.1337.ma>           +#+  +:+       +#+        */
+/*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 04:11:13 by mdouzi            #+#    #+#             */
-/*   Updated: 2023/10/01 05:39:02 by mdouzi           ###   ########.fr       */
+/*   Updated: 2023/10/02 04:13:44 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,10 +78,10 @@ char	*get_path(char **env, char *cmd)
 	{
 		ft_error("minishell : ", cmd, " : command not found");
 		free(fc);
-		free(splited);
+		free_tab(splited);
 		exit(EXIT_FAILURE);
 	}
-	free(splited);
+	free_tab(splited);
 	return (res);
 }
 
