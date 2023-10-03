@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_struct.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdouzi < mdouzi@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 15:54:36 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/10/03 02:39:13 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/10/03 03:18:41 by mdouzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,21 +82,15 @@ void	fill_new_split(char *str, t_define *new_struct, int *index)
 	free_tab(split_words);
 }
 
-int	new_struct_size(t_list *cmds)
+int	new_struct_size(t_list *tmp)
 {
 	int		i;
 	int		k;
-	t_list	*tmp;
-
-	tmp = cmds;
-	while (tmp)
-	{
+	
 		i = -1;
 		k = 0;
 		while (++i < tmp->size_cmd)
 			k += countwords(tmp->define[i].content);
-		tmp = tmp->next;
-	}
 	return (k);
 }
 
@@ -113,9 +107,10 @@ void	update_struct(t_list *cmds)
 	{
 		k = new_struct_size(tmp);
 		final_struct = (t_define *)malloc(sizeof(t_define) * k);
+		initialize_define(final_struct, k);
 		i = -1;
 		index = 0;
-		while (++i < tmp->define->size_struct && index < k)
+		while (++i < tmp->define->size_struct)
 		{
 			if (tmp->define[i].content[0] != '\0')
 			{
@@ -123,7 +118,7 @@ void	update_struct(t_list *cmds)
 				if (countwords(tmp->define[i].content) > 1)
 					fill_new_split(tmp->define[i].content, final_struct,
 						&index);
-				if (countwords(tmp->define[i].content) == 1)
+				else if (countwords(tmp->define[i].content) == 1)
 				{
 					final_struct[index].content
 						= ft_strdup(tmp->define[i].content);

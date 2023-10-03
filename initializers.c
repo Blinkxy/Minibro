@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   initializers.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdouzi < mdouzi@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 15:44:58 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/10/02 05:43:54 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/10/03 03:13:38 by mdouzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ void	initialize_define(t_define *define, int size)
 		define[j].content = 0;
 		define[j].dollar = 0;
 		define[j].size_struct = size;
-		define[j].size_struct_inserted = 0;
 		j++;
 	}
 }

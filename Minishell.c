@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdouzi < mdouzi@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/23 01:17:28 by mdouzi            #+#    #+#             */
-/*   Updated: 2023/10/03 02:06:03 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/10/03 03:23:13 by mdouzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,22 @@ void	execute_commands(t_general *sa, t_list *cmds)
 	redir_array(cmds);
 	final_remove_quotes(cmds);
 	final_cmd(cmds);
+	// t_list *tmp;
+	// tmp = cmds;
+	// while(tmp)
+	// {
+	// 	int i =0;
+	// 	if (tmp->final_cmd != NULL)
+	// 	{
+	// 	while(tmp->final_cmd[i])
+	// 	{
+	// 		printf("%d\n", tmp->index);
+	// 		printf("%s\n", tmp->final_cmd[i]);		
+	// 		i++;
+	// 	}
+	// 	}
+	// 	tmp=tmp->next;
+	// }
 	default_fds(cmds, sa);
 	make_red(cmds, sa);
 	signal(SIGINT, restore_pt);

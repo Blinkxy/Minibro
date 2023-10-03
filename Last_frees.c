@@ -84,12 +84,13 @@ void	free_cmd(t_list *cmds)
 	int		i;
 	t_list	*tmp;
 
-	i = 0;
 	tmp = cmds;
 	while (tmp)
 	{
+		i = 0;
 		while (tmp->cmd[i])
 		{
+			
 			free(tmp->cmd[i]);
 			i++;
 		}
