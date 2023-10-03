@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdouzi < mdouzi@student.1337.ma>           +#+  +:+       +#+        */
+/*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 11:43:49 by mdouzi            #+#    #+#             */
-/*   Updated: 2023/10/01 03:15:17 by mdouzi           ###   ########.fr       */
+/*   Updated: 2023/10/03 06:30:49 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ int	ft_heredoc(t_list *cmds, t_general *sa)
 		close(pipefd[1]);
 		if (waitpid(child_pid, &status, 0) == child_pid && WIFSIGNALED(status))
 		{
+			free(sa->del);
 			close(pipefd[0]);
 			return (-2);
 		}

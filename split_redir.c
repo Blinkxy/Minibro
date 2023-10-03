@@ -53,7 +53,9 @@ char	**split_cmd(char *str)
 	while (++(index.i) < ft_strlen(str))
 		split_redirections(newstr, &index, str);
 	newstr[index.index] = '\0';
-	return (ft_split(newstr, '\n'));
+		int i = 0;
+	char **splitted = ft_split(newstr, '\n');
+	return (splitted);
 }
 
 void	final_remove_quotes(t_list *cmds)
@@ -65,7 +67,7 @@ void	final_remove_quotes(t_list *cmds)
 	while (tmp)
 	{
 		i = -1;
-		while (++i < tmp->size_cmd)
+		while (++i < tmp->define->size_struct)
 		{
 			if (tmp->define[i].type != DELIMITER)
 				tmp->define[i].content = expand_quotes(tmp->define[i].content);

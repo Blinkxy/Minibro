@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_struct.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdouzi < mdouzi@student.1337.ma>           +#+  +:+       +#+        */
+/*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 15:54:36 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/10/03 03:18:41 by mdouzi           ###   ########.fr       */
+/*   Updated: 2023/10/03 06:07:43 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ char	*filler_split(char *str)
 	return (res);
 }
 
-void	fill_new_split(char *str, t_define *new_struct, int *index)
+void	fill_new_split(char *str, t_define *new_struct, int *index, int k)
 {
 	int		i;
 	char	**split_words;
@@ -76,6 +76,7 @@ void	fill_new_split(char *str, t_define *new_struct, int *index)
 		new_struct[*index].state = WORD;
 		new_struct[*index].index = *index;
 		new_struct[*index].type = new_struct[i].state;
+		new_struct[*index].size_struct = k;
 		(*index)++;
 		i++;
 	}
@@ -86,15 +87,15 @@ int	new_struct_size(t_list *tmp)
 {
 	int		i;
 	int		k;
-	
-		i = -1;
-		k = 0;
-		while (++i < tmp->size_cmd)
-			k += countwords(tmp->define[i].content);
+
+	i = -1;
+	k = 0;
+	while (++i < tmp->size_cmd)
+		k += countwords(tmp->define[i].content);
 	return (k);
 }
 
-void	update_struct(t_list *cmds)
+void	update_struct(t_list *cmds, t_general *sa)
 {
 	int			k;
 	int			i;
@@ -114,10 +115,16 @@ void	update_struct(t_list *cmds)
 		{
 			if (tmp->define[i].content[0] != '\0')
 			{
-				final_struct[index].size_struct = k;
-				if (countwords(tmp->define[i].content) > 1)
+				if (countwords(tmp->define[i].content) > 1 && tmp->define[i].type != FYLE)
 					fill_new_split(tmp->define[i].content, final_struct,
-						&index);
+						&index, k);
+				else if (countwords(tmp->define[i].content) > 1 && tmp->define[i].type == FYLE)
+				{
+					printf("ambiguous redirect\n");
+					sa->ex_status = 1;
+					tmp->size_cmd = i;
+					break ;
+				}
 				else if (countwords(tmp->define[i].content) == 1)
 				{
 					final_struct[index].content
@@ -125,13 +132,13 @@ void	update_struct(t_list *cmds)
 					final_struct[index].type = tmp->define[i].type;
 					final_struct[index].state = tmp->define[i].state;
 					final_struct[index].index = index;
+					final_struct[index].size_struct = k;
 					index++;
 				}
 			}
 		}
 		free_struct(tmp);
 		tmp->define = final_struct;
-		tmp->size_cmd = k;
 		tmp = tmp->next;
 	}
 }

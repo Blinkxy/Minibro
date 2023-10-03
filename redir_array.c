@@ -6,7 +6,7 @@
 /*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 22:06:09 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/09/28 22:29:45 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/10/03 05:50:25 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,8 @@ int	redir_array_bis(t_list *tmp)
 	nb_red = 0;
 	while (++i < tmp->size_cmd)
 	{
-		if (ft_strncmp("<<", tmp->define[i].content, 2) == 0 || ft_strncmp(">>",
-				tmp->define[i].content, 2) == 0 || ft_strncmp("<",
-				tmp->define[i].content, 1) == 0 || ft_strncmp(">",
-				tmp->define[i].content, 1) == 0)
+		if (tmp->define[i].type == HEREDOC || tmp->define[i].type == RED_IN
+			|| tmp->define[i].type == RED_OUT || tmp->define[i].type == APPEND)
 			nb_red++;
 	}
 	return (nb_red);

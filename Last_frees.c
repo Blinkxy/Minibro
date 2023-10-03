@@ -90,7 +90,6 @@ void	free_cmd(t_list *cmds)
 		i = 0;
 		while (tmp->cmd[i])
 		{
-			
 			free(tmp->cmd[i]);
 			i++;
 		}

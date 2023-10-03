@@ -6,7 +6,7 @@
 /*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 20:20:00 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/10/03 02:03:49 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/10/03 05:46:09 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,7 +163,6 @@ void				split_quotes(char *newstr, t_index *index, char *str);
 void				split_redirections(char *newstr, t_index *index, char *str);
 int					count_cmds(char **str);
 int					sizeof_cmd(t_list *cmds);
-void				update_struct(t_list *cmds);
 
 void				add_prev_list(t_list *cmds);
 
@@ -217,9 +216,9 @@ void				final_cmd(t_list *cmds);
 void				final_remove_quotes(t_list *cmds);
 char				*filler_split(char *str);
 void				fill_new_split(char *str, t_define *new_struct,
-						int *index);
+						int *index, int k);
 int					new_struct_size(t_list *cmds);
-void				update_struct(t_list *cmds);
+void				update_struct(t_list *cmds , t_general *sa);
 
 // FREE !
 

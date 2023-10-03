@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdouzi < mdouzi@student.1337.ma>           +#+  +:+       +#+        */
+/*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/23 01:17:28 by mdouzi            #+#    #+#             */
-/*   Updated: 2023/10/03 03:23:13 by mdouzi           ###   ########.fr       */
+/*   Updated: 2023/10/03 06:28:02 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	initialize_signals(void)
 	signal(SIGQUIT, SIG_IGN);
 }
 
-t_list	*parse_commands(char *s)
+t_list	*parse_commands(char *s, t_general *sa)
 {
 	char	*st;
 	char	**stt;
@@ -32,11 +32,15 @@ t_list	*parse_commands(char *s)
 	if (s[0] == '\0')
 		return (NULL);
 	if (checker_line(s) != 1 || checker_redir(s) != 1)
+	{
+		sa->ex_status = 258;
 		return (NULL);
+	}
 	add_history(s);
 	st = addnext_pipe(s);
 	stt = ft_split(st, '\n');
 	str = remove_pipe_pointers(stt);
+	
 	if (!str || !str[0])
 		return (NULL);
 	i = 0;
@@ -51,26 +55,10 @@ void	execute_commands(t_general *sa, t_list *cmds)
 {
 	cmd_define(cmds);
 	final_struct(cmds, sa->env, sa);
-	update_struct(cmds);
+	update_struct(cmds, sa);
 	redir_array(cmds);
 	final_remove_quotes(cmds);
 	final_cmd(cmds);
-	// t_list *tmp;
-	// tmp = cmds;
-	// while(tmp)
-	// {
-	// 	int i =0;
-	// 	if (tmp->final_cmd != NULL)
-	// 	{
-	// 	while(tmp->final_cmd[i])
-	// 	{
-	// 		printf("%d\n", tmp->index);
-	// 		printf("%s\n", tmp->final_cmd[i]);		
-	// 		i++;
-	// 	}
-	// 	}
-	// 	tmp=tmp->next;
-	// }
 	default_fds(cmds, sa);
 	make_red(cmds, sa);
 	signal(SIGINT, restore_pt);
@@ -98,7 +86,7 @@ int	main(int argc, char **argv, char **env)
 		initialize_signals();
 		if (!s)
 			exit(0);
-		cmds = parse_commands(s);
+		cmds = parse_commands(s, sa);
 		if (cmds != NULL)
 			execute_commands(sa, cmds);
 		free_all(cmds);

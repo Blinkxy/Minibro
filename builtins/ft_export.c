@@ -6,7 +6,7 @@
 /*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 03:18:58 by mdouzi            #+#    #+#             */
-/*   Updated: 2023/10/02 01:57:39 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/10/03 06:23:35 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ char	*with_value(char **new_var)
 	ft_strlcat(res, "\"", len_res + 1);
 	ft_strlcat(res, new_var[1], len_res + 1);
 	ft_strlcat(res, "\"", len_res + 1);
-	printf("adress of res:%p\n", res);
 	return (res);
 }
 
@@ -64,10 +63,12 @@ int	check_or_update(char **new_var, char *var, t_general *sa)
 	index = get_env_var(sa->env_export, new_var[0]);
 	if (index != -1 && ft_strchr(var, '=') != NULL)
 	{
+		var_fr_env = expand_quotes(ft_strdup(var));
 		free(sa->env_export[index]);
 		free(sa->env[index]);
-		sa->env[index] = ft_strdup(var);
+		sa->env[index] = ft_strdup(var_fr_env);
 		sa->env_export[index] = ft_strdup(var);
+		free(var_fr_env);
 	}
 	else if (index != -1 && ft_strchr(var, '=') == NULL)
 		return (0);
