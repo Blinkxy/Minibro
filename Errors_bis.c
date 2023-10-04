@@ -24,7 +24,7 @@ int	error_line_util(t_index_check *index)
 		return (0);
 	}
 	else if (index->copy[index->i] == '<' && index->copy[index->i + 1] == '>'
-		&& !index->inquotes)
+			&& !index->inquotes)
 	{
 		printf("syntax error near unexpected token `newline'\n");
 		return (0);
@@ -32,7 +32,7 @@ int	error_line_util(t_index_check *index)
 	if (index->copy[index->i] == '|' && !index->inquotes)
 	{
 		if ((index->copy[index->i + 1] == '|' || index->copy[index->i
-					- 1] == '|') && !index->inquotes)
+				- 1] == '|') && !index->inquotes)
 		{
 			printf("syntax error near unexpected token '|'\n");
 			return (0);

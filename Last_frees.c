@@ -17,8 +17,8 @@
 
 void	free_redir(t_list *cmds)
 {
-	int			i;
-	t_list		*tmp;
+	int i;
+	t_list *tmp;
 
 	tmp = cmds;
 	while (tmp)
@@ -31,8 +31,8 @@ void	free_redir(t_list *cmds)
 				if (tmp->redir[i].type == HEREDOC)
 					free(tmp->redir[i].delimiter);
 				else if (tmp->redir[i].type == RED_IN
-					|| tmp->redir[i].type == RED_OUT
-					|| tmp->redir[i].type == APPEND)
+						|| tmp->redir[i].type == RED_OUT
+						|| tmp->redir[i].type == APPEND)
 					free(tmp->redir[i].file);
 			}
 		}
@@ -44,7 +44,7 @@ void	free_redir(t_list *cmds)
 
 void	free_struct(t_define *define)
 {
-	int	i;
+	int i;
 
 	if (define)
 	{
@@ -65,8 +65,8 @@ void	free_struct(t_define *define)
 
 void	free_final_cmd(t_list *cmds)
 {
-	int			i;
-	t_list		*tmp;
+	int i;
+	t_list *tmp;
 
 	tmp = cmds;
 	while (tmp)
@@ -87,8 +87,8 @@ void	free_final_cmd(t_list *cmds)
 
 void	free_cmd(t_list *cmds)
 {
-	int			i;
-	t_list		*tmp;
+	int i;
+	t_list *tmp;
 
 	tmp = cmds;
 	while (tmp)
@@ -109,7 +109,7 @@ void	free_cmd(t_list *cmds)
 
 void	free_all(t_list *cmds)
 {
-	t_list	*tmp;
+	t_list *tmp;
 
 	free_final_cmd(cmds);
 	free_cmd(cmds);

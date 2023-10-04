@@ -6,7 +6,7 @@
 /*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/23 06:34:15 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/10/04 04:21:14 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/10/04 07:19:20 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	count_word_bis(char *str, t_count *count_words, int *i)
 			count_words->wordstart = 1;
 	}
 	else if (str[*i] == ' ' && !count_words->insinglequotes
-		&& !count_words->indoublequotes)
+			&& !count_words->indoublequotes)
 	{
 		if (count_words->wordstart == 1)
 		{
@@ -48,6 +48,8 @@ int	countwords(char *str)
 
 	i = 0;
 	initialize_counter(&count);
+	if (!str)
+		return (0);
 	while (str[i])
 	{
 		count_word_bis(str, &count, &i);
@@ -74,7 +76,7 @@ void	bis_update_struct(t_list *tmp, t_define *final_struct, t_general *sa)
 	index = 0;
 	while (++i < tmp->define->size_struct)
 	{
-		if (tmp->define[i].content[0])
+		if (tmp->define[i].content)
 		{
 			if (countwords(tmp->define[i].content) > 1
 				&& tmp->define[i].type != FYLE)
@@ -82,7 +84,7 @@ void	bis_update_struct(t_list *tmp, t_define *final_struct, t_general *sa)
 			else if (countwords(tmp->define[i].content) == 1)
 				update_struct_util(tmp, final_struct, &index, i);
 			else if (countwords(tmp->define[i].content) > 1
-				&& tmp->define[i].type == FYLE)
+					&& tmp->define[i].type == FYLE)
 			{
 				update_struct_bis(tmp, sa, i);
 				break ;

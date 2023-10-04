@@ -117,14 +117,14 @@ int	checkquote_index(char *str, int index)
 	while (str[index_q.i] != '\0')
 	{
 		if (str[index_q.i] == '\'' && (index_q.i == 0 || str[index_q.i
-					- 1] != '\\') && index_q.indoublequotes % 2 == 0)
+			- 1] != '\\') && index_q.indoublequotes % 2 == 0)
 		{
 			index_q.insinglequotes++;
 			if (index_q.insinglequotes % 2 == 1 && index_q.i <= index)
 				return (1);
 		}
 		else if (str[index_q.i] == '"' && (index_q.i == 0 || str[index_q.i
-					- 1] != '\\') && index_q.insinglequotes % 2 == 0)
+				- 1] != '\\') && index_q.insinglequotes % 2 == 0)
 		{
 			index_q.indoublequotes++;
 			if (index_q.indoublequotes % 2 == 1 && index_q.i <= index)

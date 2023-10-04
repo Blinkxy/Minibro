@@ -6,7 +6,7 @@
 /*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 12:02:25 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/10/02 02:09:10 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/10/04 07:16:23 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,5 +67,7 @@ int		ft_putnbrhex(long b, char *base);
 int		ft_putnbr(long n);
 int		ft_unsigned(unsigned int k);
 int		ft_printf(char *s, ...);
+
+char	*ft_strjoin2(char *s1, char *s2);
 
 #endif

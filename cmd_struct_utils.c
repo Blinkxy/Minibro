@@ -66,13 +66,13 @@ void	check_dollar_bis(t_index *utils, char *str)
 		&& utils->indoublequotes == 0 && utils->insinglequotes == 0)
 		utils->insinglequotes = 1;
 	else if (str[utils->i] == '\"' && str[utils->i - 1] != '\\'
-		&& utils->indoublequotes == 0 && utils->insinglequotes == 0)
+			&& utils->indoublequotes == 0 && utils->insinglequotes == 0)
 		utils->indoublequotes = 1;
 	else if (str[utils->i] == '\'' && str[utils->i - 1] != '\\'
-		&& utils->indoublequotes == 0 && utils->insinglequotes == 1)
+			&& utils->indoublequotes == 0 && utils->insinglequotes == 1)
 		utils->insinglequotes = 0;
 	else if (str[utils->i] == '\"' && str[utils->i - 1] != '\\'
-		&& utils->indoublequotes == 1 && utils->insinglequotes == 0)
+			&& utils->indoublequotes == 1 && utils->insinglequotes == 0)
 		utils->indoublequotes = 0;
 }
 
@@ -90,10 +90,10 @@ int	check_dollar(char *str, int index)
 		&& utils.insinglequotes == 0)
 		return (0);
 	else if (utils.i == index && utils.indoublequotes == 0
-		&& utils.insinglequotes == 0)
+			&& utils.insinglequotes == 0)
 		return (0);
 	else if (utils.i == index && utils.indoublequotes == 0
-		&& utils.insinglequotes == 1)
+			&& utils.insinglequotes == 1)
 		return (1);
 	return (0);
 }

@@ -54,7 +54,7 @@ char	**split_cmd(char *str)
 	index.inquotes = 0;
 	while (++(index.i) < ft_strlen(str))
 		split_redirections(newstr, &index, str);
-	newstr[index.index] = '\0';
+	newstr[index.len] = '\0';
 	i = 0;
 	splitted = ft_split(newstr, '\n');
 	return (splitted);
@@ -71,8 +71,11 @@ void	final_remove_quotes(t_list *cmds)
 		i = -1;
 		while (++i < tmp->define->size_struct)
 		{
-			if (tmp->define[i].type != DELIMITER)
-				tmp->define[i].content = expand_quotes(tmp->define[i].content);
+			if (tmp->define)
+			{
+				if (tmp->define[i].content && tmp->define[i].type != DELIMITER)
+					tmp->define[i].content = expand_quotes(tmp->define[i].content);
+			}
 		}
 		tmp = tmp->next;
 	}
@@ -84,12 +87,12 @@ void	expand_quotes_util(t_index *index, char *str, char *result)
 		&& index->indoublequotes % 2 == 0)
 		index->insinglequotes = (index->insinglequotes + 1) % 2;
 	else if (str[index->i] == '"' && (index->i == 0 || str[index->i
-				- 1] != '\\') && index->insinglequotes % 2 == 0)
+			- 1] != '\\') && index->insinglequotes % 2 == 0)
 		index->indoublequotes = (index->indoublequotes + 1) % 2;
 	else
 	{
 		if (!(str[index->i] == '\'' && index->insinglequotes)
-			&& !(str[index->i] == '"' && index->indoublequotes))
+				&& !(str[index->i] == '"' && index->indoublequotes))
 		{
 			result[index->j] = str[index->i];
 			index->j++;
