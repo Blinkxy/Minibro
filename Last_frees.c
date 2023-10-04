@@ -46,18 +46,21 @@ void	free_struct(t_define *define)
 {
 	int	i;
 
-	i = -1;
-	while (++i < define->size_struct)
+	if (define)
 	{
-		if(define[i].content)
-			free(define[i].content);
-		else
+		i = -1;
+		while (++i < define->size_struct)
 		{
-			define[i].content = ft_strdup("");
-			free(define[i].content);
+			if (define[i].content)
+				free(define[i].content);
+			else
+			{
+				define[i].content = ft_strdup("");
+				free(define[i].content);
+			}
 		}
+		free(define);
 	}
-	free(define);
 }
 
 void	free_final_cmd(t_list *cmds)
@@ -68,9 +71,9 @@ void	free_final_cmd(t_list *cmds)
 	tmp = cmds;
 	while (tmp)
 	{
-		i = 0;
-		if (tmp->final_cmd != NULL)
+		if (tmp->final_cmd)
 		{
+			i = 0;
 			while (tmp->final_cmd[i])
 			{
 				free(tmp->final_cmd[i]);
@@ -90,13 +93,16 @@ void	free_cmd(t_list *cmds)
 	tmp = cmds;
 	while (tmp)
 	{
-		i = 0;
-		while (tmp->cmd[i])
+		if (tmp->cmd)
 		{
-			free(tmp->cmd[i]);
-			i++;
+			i = 0;
+			while (tmp->cmd[i])
+			{
+				free(tmp->cmd[i]);
+				i++;
+			}
+			free(tmp->cmd);
 		}
-		free(tmp->cmd);
 		tmp = tmp->next;
 	}
 }

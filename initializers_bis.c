@@ -6,7 +6,7 @@
 /*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 14:13:53 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/10/04 01:02:31 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/10/04 04:44:30 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,16 @@
 
 char	*concatenate_char(char *str, char c)
 {
-	int 	i;
+	int		i;
 	int		len;
 	char	*new_str;
-	
+
 	i = 0;
 	len = ft_strlen(str);
 	new_str = (char *)malloc(len + 2);
 	if (!new_str)
 		return (NULL);
-	while(str[i])
+	while (str[i])
 	{
 		new_str[i] = str[i];
 		i++;

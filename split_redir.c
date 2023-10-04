@@ -69,7 +69,6 @@ void	final_remove_quotes(t_list *cmds)
 	while (tmp)
 	{
 		i = -1;
-
 		while (++i < tmp->define->size_struct)
 		{
 			if (tmp->define[i].type != DELIMITER)
