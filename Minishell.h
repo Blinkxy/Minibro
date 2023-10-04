@@ -6,7 +6,7 @@
 /*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 20:20:00 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/10/04 07:44:02 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/10/04 22:21:54 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -221,6 +221,10 @@ void				update_struct(t_list *cmds, t_general *sa);
 void				update_struct_util(t_list *tmp, t_define *final_struct,
 						int *index, int i);
 void				update_struct_bis(t_list *tmp, t_general *sa, int i);
+char				*ft_strjoin2(char *s1, char *s2);
+void				cp_st(char *src, char *dst, int *i);
+
+
 
 // FREE !
 

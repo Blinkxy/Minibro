@@ -6,7 +6,7 @@
 /*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 07:38:43 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/10/04 07:43:46 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/10/04 22:19:18 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ char	*ft_strjoin2(char *s1, char *s2)
 		return (NULL);
 	i = 0;
 	cp_st(s1, str, &i);
+	j = 0;
 	while (s2[j])
 	{
 		str[i + j] = s2[j];
