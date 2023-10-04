@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mini_bis.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdouzi < mdouzi@student.1337.ma>           +#+  +:+       +#+        */
+/*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 22:34:03 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/10/01 01:14:49 by mdouzi           ###   ########.fr       */
+/*   Updated: 2023/10/04 01:43:22 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,15 +56,6 @@ void	ft_handler(int sig)
 	rl_replace_line("", 0);
 	rl_on_new_line();
 	rl_redisplay();
-}
-
-void	restore_pt(int sig)
-{
-	write(1, "\n", 1);
-	rl_replace_line("", 0);
-	rl_on_new_line();
-	rl_redisplay();
-	(void)sig;
 }
 
 void	killo(int sig)

@@ -6,7 +6,7 @@
 /*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 15:25:14 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/10/03 22:00:05 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/10/04 04:02:02 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ char	*ft_strjoin(char *s1, char *s2)
 		return (NULL);
 	len1 = ft_strlen(s1);
 	len2 = ft_strlen(s2);
-	str = ft_calloc(len1 + len2 + 1, 1);
+	str = malloc(len1 + len2 + 1);
 	if (!str)
 		return (NULL);
 	i = 0;
@@ -39,6 +39,7 @@ char	*ft_strjoin(char *s1, char *s2)
 		str[i + j] = s2[j];
 		j++;
 	}
+	str[len1 + len2] = '\0';
 	return (str);
 }
 

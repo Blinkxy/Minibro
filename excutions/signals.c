@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdouzi < mdouzi@student.1337.ma>           +#+  +:+       +#+        */
+/*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 05:00:49 by mdouzi            #+#    #+#             */
-/*   Updated: 2023/10/01 02:37:35 by mdouzi           ###   ########.fr       */
+/*   Updated: 2023/10/04 01:42:45 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../Minishell.h"
 
-void	restore_prompt(int sig)
+void	restore_pt(int sig)
 {
 	write(1, "\n", 1);
 	rl_replace_line("", 0);
@@ -45,7 +45,7 @@ void	handle_sig(int mode)
 {
 	if (mode == 1)
 	{
-		signal(SIGINT, restore_prompt);
+		signal(SIGINT, restore_pt);
 		signal(SIGQUIT, sig_kill);
 	}
 	if (mode == 2)

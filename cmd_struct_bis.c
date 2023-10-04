@@ -6,7 +6,7 @@
 /*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/23 06:34:15 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/10/04 00:42:54 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/10/04 04:21:14 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,6 @@ void	bis_update_struct(t_list *tmp, t_define *final_struct, t_general *sa)
 	{
 		if (tmp->define[i].content[0])
 		{
-			
 			if (countwords(tmp->define[i].content) > 1
 				&& tmp->define[i].type != FYLE)
 				fill_new_split(tmp->define[i].content, final_struct, &index);
@@ -105,8 +104,9 @@ void	update_struct(t_list *cmds, t_general *sa)
 		final_struct = (t_define *)malloc(sizeof(t_define) * k);
 		initialize_define(final_struct, k);
 		bis_update_struct(tmp, final_struct, sa);
-		free_struct(tmp);
+		free_struct(tmp->define);
 		tmp->define = final_struct;
+		tmp->size_cmd = k;
 		tmp = tmp->next;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 20:20:00 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/10/04 00:26:13 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/10/04 03:39:27 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -226,7 +226,7 @@ void				update_struct_bis(t_list *tmp, t_general *sa, int i);
 
 void				free_words(char **words, int count);
 void				free_redir(t_list *cmds);
-void				free_struct(t_list *tmp);
+void				free_struct(t_define *define);
 void				free_final_cmd(t_list *cmds);
 void				free_inserted(t_define *define);
 void				free_cmd(t_list *cmds);

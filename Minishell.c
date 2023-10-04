@@ -6,7 +6,7 @@
 /*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/23 01:17:28 by mdouzi            #+#    #+#             */
-/*   Updated: 2023/10/04 00:43:13 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/10/04 01:41:28 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	initialize_signals(void)
 {
 	g_sig = 0;
 	signal(SIGINT, restore_pt);
-	signal(SIGQUIT, SIG_IGN);
+	signal(SIGQUIT, SIG_DFL);
 }
 
 t_list	*parse_commands(char *s, t_general *sa)
