@@ -6,11 +6,20 @@
 /*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 15:48:17 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/10/03 02:40:48 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/10/04 00:45:35 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Minishell.h"
+
+void	final_cmd_bis(t_list *tmp, int i, int *j)
+{
+	if (tmp->define[i].state == WORD)
+	{
+		tmp->final_cmd[*j] = ft_strdup(tmp->define[i].content);
+		(*j)++;
+	}
+}
 
 void	final_cmd(t_list *cmds)
 {
@@ -21,6 +30,7 @@ void	final_cmd(t_list *cmds)
 	tmp = cmds;
 	while (tmp)
 	{
+		tmp->size_cmd = tmp->define->size_struct;
 		if (tmp->size_cmd - (tmp->red_nb * 2) > 0)
 		{
 			tmp->final_cmd = (char **)malloc(sizeof(char *) * (tmp->size_cmd
@@ -29,15 +39,10 @@ void	final_cmd(t_list *cmds)
 				return ;
 			i = -1;
 			j = 0;
-			while (++i < tmp->size_cmd)
-			{
-				if (tmp->define[i].state == WORD)
-				{
-					tmp->final_cmd[j] = ft_strdup(tmp->define[i].content);
-					j++;
-				}
-			}
-			tmp->final_cmd[tmp->size_cmd - (tmp->red_nb * 2)] = NULL;
+			while (++i < tmp->define->size_struct)
+				final_cmd_bis(tmp, i, &j);
+			if (tmp->final_cmd)
+				tmp->final_cmd[j] = NULL;
 		}
 		else if (tmp->size_cmd - (tmp->red_nb * 2) == 0)
 			tmp->final_cmd = NULL;

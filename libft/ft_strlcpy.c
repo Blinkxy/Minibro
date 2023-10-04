@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strlcpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 20:22:23 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/08/01 20:09:46 by marvin           ###   ########.fr       */
+/*   Updated: 2023/10/03 21:56:47 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	ft_strlcpy(char *dst, const char *src, int dstsize)
 {
-	int	i;
+	int		i;
 	int		sorc;
 
 	sorc = ft_strlen(src);

@@ -6,7 +6,7 @@
 /*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 04:54:27 by mdouzi            #+#    #+#             */
-/*   Updated: 2023/10/01 23:40:26 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/10/03 22:02:56 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,6 +122,6 @@ void	ex_pipe(t_list *cmd, t_general *sa, int num_cmds)
 		}
 	}
 	sa->ex_status = wait_and_close(fd, num_cmds);
-	if(sa->ex_status == 1)
+	if (sa->ex_status == 1)
 		sa->ex_status = 127;
 }

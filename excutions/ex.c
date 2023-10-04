@@ -6,7 +6,7 @@
 /*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 04:11:13 by mdouzi            #+#    #+#             */
-/*   Updated: 2023/10/03 06:47:25 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/10/03 22:03:17 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,6 @@ char	*get_path(char **env, char *cmd)
 	free_tab(splited);
 	return (res);
 }
-
 
 void	ex_cmd(t_general *sa, t_list *cmd)
 {

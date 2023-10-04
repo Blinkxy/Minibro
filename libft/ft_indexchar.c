@@ -14,7 +14,6 @@
 
 int	ft_indexchr(char *s, char c)
 {
-
 	int		i;
 	int		len;
 

@@ -6,37 +6,42 @@
 /*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 15:25:14 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/10/02 16:57:49 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/10/03 22:00:05 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-char *ft_strjoin(char *s1, char *s2)
+
+char	*ft_strjoin(char *s1, char *s2)
 {
-    if (!s1 || !s2)
-        return NULL;
+	int		i;
+	int		j;
+	int		len1;
+	int		len2;
+	char	*str;
 
-    int len1 = ft_strlen(s1);
-    int len2 = ft_strlen(s2);
-    char *str = ft_calloc(len1 + len2 + 1, 1);
-    if (!str)
-        return NULL;
-    int i = 0;
-    while (s1[i]) 
-    {
-        str[i] = s1[i];
-        i++;
-    }
-    int j = 0;
-    while (s2[j]) 
-    {
-        str[i + j] = s2[j];
-        j++;
-    }
-    // free(s1);
-
-    return str;
+	if (!s1 || !s2)
+		return (NULL);
+	len1 = ft_strlen(s1);
+	len2 = ft_strlen(s2);
+	str = ft_calloc(len1 + len2 + 1, 1);
+	if (!str)
+		return (NULL);
+	i = 0;
+	while (s1[i])
+	{
+		str[i] = s1[i];
+		i++;
+	}
+	j = 0;
+	while (s2[j])
+	{
+		str[i + j] = s2[j];
+		j++;
+	}
+	return (str);
 }
+
 // char	*ft_strjoin(char *s1, char *s2)
 // {
 // 	char	*str;

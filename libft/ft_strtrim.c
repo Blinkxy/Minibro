@@ -6,7 +6,7 @@
 /*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 16:02:01 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/10/01 23:58:17 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/10/03 21:56:28 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ char	*ft_strtrim(char *s1, char *set)
 	int	i;
 
 	i = 0;
-	
 	if (s1 == 0 || set == 0)
 		return (NULL);
 	while (ft_strchr(set, s1[i]) && s1[i])

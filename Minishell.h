@@ -6,7 +6,7 @@
 /*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 20:20:00 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/10/03 05:46:09 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/10/04 00:26:13 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,17 +106,17 @@ typedef struct s_env
 
 typedef struct s_list
 {
-	char **cmd; //  double array of EACH command
+	char			**cmd;
 	pid_t			id;
-	int fd_in;        // fd_out for ouput redirection
-	int fd_out;       // fd_in for input redirection
-	int fd[2];        // fd_for herdoc;
-	int index;        // index of the command
-	int size_cmd;     // how many pointers in each command
-	t_define *define; // each pointer of cmd is in a struct for define/expand
-	int red_nb;       // number of total redirection in this command
-	t_redir *redir;   // array of all the redir in this command to send to exec
-	char **final_cmd; // command + arg(if existent) to send to exec
+	int				fd_in;
+	int				fd_out;
+	int				fd[2];
+	int				index;
+	int				size_cmd;
+	t_define		*define;
+	int				red_nb;
+	t_redir			*redir;
+	char			**final_cmd;
 	struct s_list	*prev;
 	struct s_list	*next;
 }					t_list;
@@ -215,10 +215,12 @@ void				redir_heredoc(t_list *tmp, int *i, int *j);
 void				final_cmd(t_list *cmds);
 void				final_remove_quotes(t_list *cmds);
 char				*filler_split(char *str);
-void				fill_new_split(char *str, t_define *new_struct,
-						int *index, int k);
+void				fill_new_split(char *str, t_define *new_struct, int *index);
 int					new_struct_size(t_list *cmds);
-void				update_struct(t_list *cmds , t_general *sa);
+void				update_struct(t_list *cmds, t_general *sa);
+void				update_struct_util(t_list *tmp, t_define *final_struct,
+						int *index, int i);
+void				update_struct_bis(t_list *tmp, t_general *sa, int i);
 
 // FREE !
 
