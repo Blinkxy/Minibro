@@ -6,7 +6,7 @@
 /*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 21:30:26 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/10/04 07:30:49 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/10/04 22:30:08 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	expand_env_util(t_index_env *index, char *str, char **env)
 void	expand_env_norm(t_index_env *index, t_general *sa)
 {
 	index->ex_status = ft_itoa(sa->ex_status);
-	index->result = ft_strjoin(index->result, index->ex_status);
+	index->result = ft_strjoin2(index->result, index->ex_status);
 	free(index->ex_status);
 	index->i += 2;
 }

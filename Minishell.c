@@ -6,7 +6,7 @@
 /*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/23 01:17:28 by mdouzi            #+#    #+#             */
-/*   Updated: 2023/10/04 05:20:14 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/10/04 22:35:49 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	execute_commands(t_general *sa, t_list *cmds)
 {
 	cmd_define(cmds);
 	final_struct(cmds, sa->env, sa);
-	update_struct(cmds, sa);
+	update_struct(cmds);
 	redir_array(cmds);
 	final_remove_quotes(cmds);
 	final_cmd(cmds);

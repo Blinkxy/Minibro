@@ -6,7 +6,7 @@
 /*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 15:54:36 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/10/04 07:28:22 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/10/04 23:27:02 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,30 @@ char	*filler_split(char *str)
 	return (res);
 }
 
+void	fill_new_split_file(char *str, t_define *new_struct, int *index)
+{
+	int		i;
+	char	**split_words;
+	char	*copy;
+
+	copy = filler_split(str);
+	split_words = ft_split(copy, '\n');
+	i = 0;
+	while (split_words[i])
+	{
+		new_struct[*index].content = ft_strdup(split_words[i]);
+		if (i == 0)
+			new_struct[*index].state = FYLE;
+		else
+			new_struct[*index].state = WORD;
+		new_struct[*index].index = *index;
+		new_struct[*index].type = new_struct[i].state;
+		(*index)++;
+		i++;
+	}
+	free_tab(split_words);
+}
+
 void	fill_new_split(char *str, t_define *new_struct, int *index)
 {
 	int		i;
@@ -92,15 +116,4 @@ int	new_struct_size(t_list *tmp)
 	while (++i < tmp->size_cmd)
 		k += countwords(tmp->define[i].content);
 	return (k);
-}
-
-void	update_struct_util(t_list *tmp, t_define *final_struct, int *index,
-		int i)
-{
-	final_struct[*index].content = ft_strdup(tmp->define[i].content);
-	final_struct[*index].type = tmp->define[i].type;
-	final_struct[*index].state = tmp->define[i].state;
-	final_struct[*index].index = *index;
-	final_struct[*index].size_struct = new_struct_size(tmp);
-	(*index)++;
 }

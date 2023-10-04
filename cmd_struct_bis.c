@@ -6,7 +6,7 @@
 /*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/23 06:34:15 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/10/04 07:30:11 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/10/04 23:28:04 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,14 +60,7 @@ int	countwords(char *str)
 	return (count.word_count);
 }
 
-void	update_struct_bis(t_list *tmp, t_general *sa, int i)
-{
-	printf("ambiguous redirect\n");
-	sa->ex_status = 1;
-	tmp->size_cmd = i;
-}
-
-void	bis_update_struct(t_list *tmp, t_define *final_struct, t_general *sa)
+void	bis_update_struct(t_list *tmp, t_define *final_struct)
 {
 	int	i;
 	int	index;
@@ -85,15 +78,13 @@ void	bis_update_struct(t_list *tmp, t_define *final_struct, t_general *sa)
 				update_struct_util(tmp, final_struct, &index, i);
 			else if (countwords(tmp->define[i].content) > 1
 				&& tmp->define[i].type == FYLE)
-			{
-				update_struct_bis(tmp, sa, i);
-				break ;
-			}
+				fill_new_split_file(tmp->define[i].content,
+					final_struct, &index);
 		}
 	}
 }
 
-void	update_struct(t_list *cmds, t_general *sa)
+void	update_struct(t_list *cmds)
 {
 	int			k;
 	t_list		*tmp;
@@ -105,7 +96,7 @@ void	update_struct(t_list *cmds, t_general *sa)
 		k = new_struct_size(tmp);
 		final_struct = (t_define *)malloc(sizeof(t_define) * k);
 		initialize_define(final_struct, k);
-		bis_update_struct(tmp, final_struct, sa);
+		bis_update_struct(tmp, final_struct);
 		free_struct(tmp->define);
 		tmp->define = final_struct;
 		tmp->size_cmd = k;
