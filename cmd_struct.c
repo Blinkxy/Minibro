@@ -6,7 +6,7 @@
 /*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 15:54:36 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/10/04 05:23:25 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/10/04 07:28:22 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,7 @@ void	final_struct(t_list *cmds, char **env, t_general *sa)
 			if (tmp->define[i].dollar == 1)
 			{
 				tmp->define[i].content = expand_env(tmp->define[i].content,
-													env,
-													sa);
+						env, sa);
 			}
 		}
 		tmp = tmp->next;

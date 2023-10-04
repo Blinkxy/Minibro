@@ -6,7 +6,7 @@
 /*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 21:30:26 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/10/04 07:19:30 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/10/04 07:30:49 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	expand_env_util(t_index_env *index, char *str, char **env)
 		else if (get_env_var(env, index->check_env) != -1)
 		{
 			index->extract = extract_env(env[get_env_var(env,
-															index->check_env)]);
+						index->check_env)]);
 			index->result = ft_strjoin2(index->result, index->extract);
 			index->i += ft_strlen(index->check_env);
 			free(index->extract);

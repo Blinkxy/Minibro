@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strjoin.c                                       :+:      :+:    :+:   */
+/*   utils_bis.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/10 15:25:14 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/10/04 07:41:24 by mzoheir          ###   ########.fr       */
+/*   Created: 2023/10/04 07:38:43 by mzoheir           #+#    #+#             */
+/*   Updated: 2023/10/04 07:43:46 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../Minishell.h"
 
-void	cp_str(char *src, char *dst, int *i)
+void	cp_st(char *src, char *dst, int *i)
 {
 	while (src[*i])
 	{
@@ -21,7 +21,7 @@ void	cp_str(char *src, char *dst, int *i)
 	}
 }
 
-char	*ft_strjoin(char *s1, char *s2)
+char	*ft_strjoin2(char *s1, char *s2)
 {
 	int		i;
 	int		j;
@@ -37,13 +37,13 @@ char	*ft_strjoin(char *s1, char *s2)
 	if (!str)
 		return (NULL);
 	i = 0;
-	cp_str(s1, str, &i);
-	j = 0;
+	cp_st(s1, str, &i);
 	while (s2[j])
 	{
 		str[i + j] = s2[j];
 		j++;
 	}
 	str[len1 + len2] = '\0';
+	free(s1);
 	return (str);
 }
