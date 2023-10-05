@@ -6,7 +6,7 @@
 /*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/23 01:17:28 by mdouzi            #+#    #+#             */
-/*   Updated: 2023/10/04 22:35:49 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/10/05 05:33:33 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ t_list	*parse_commands(char *s, t_general *sa)
 		sa->ex_status = 258;
 		return (NULL);
 	}
-	add_history(s);
 	st = addnext_pipe(s);
 	stt = ft_split(st, '\n');
 	str = remove_pipe_pointers(stt);
@@ -52,6 +51,7 @@ t_list	*parse_commands(char *s, t_general *sa)
 
 void	execute_commands(t_general *sa, t_list *cmds)
 {
+	initialize_signals();
 	cmd_define(cmds);
 	final_struct(cmds, sa->env, sa);
 	update_struct(cmds);
@@ -60,8 +60,14 @@ void	execute_commands(t_general *sa, t_list *cmds)
 	final_cmd(cmds);
 	default_fds(cmds, sa);
 	make_red(cmds, sa);
-	signal(SIGINT, restore_pt);
 	ex_test(cmds, sa);
+}
+
+void	init_sa(t_general *sa, char **env)
+{
+	init_env_data(sa, env);
+	get_export_env(sa);
+	initialize_signals();
 }
 
 int	main(int argc, char **argv, char **env)
@@ -74,15 +80,15 @@ int	main(int argc, char **argv, char **env)
 	(void)argv;
 	sa = malloc(sizeof(t_general));
 	memset(sa, 0, sizeof(t_general));
-	init_env_data(sa, env);
-	get_export_env(sa);
+	init_sa(sa, env);
 	s = NULL;
 	while (1)
 	{
+		g_sig = 0;
 		if (s)
 			free(s);
 		s = readline("minishell$>");
-		initialize_signals();
+		add_history(s);
 		if (!s)
 			exit(0);
 		cmds = parse_commands(s, sa);

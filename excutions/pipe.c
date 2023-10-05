@@ -6,7 +6,7 @@
 /*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 04:54:27 by mdouzi            #+#    #+#             */
-/*   Updated: 2023/10/03 22:02:56 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/10/05 04:49:36 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void	parent_job(int **fd, int *index, t_list *tmp)
 	*index = *index + 1;
 }
 
-int	wait_and_close(int **fd, int num_cmds)
+int	wait_and_close(int **fd, int num_cmds, t_general *sa)
 {
 	int	i;
 	int	exit_status;
@@ -93,7 +93,7 @@ int	wait_and_close(int **fd, int num_cmds)
 		i++;
 	}
 	free_pipe(fd, num_cmds);
-	return (WEXITSTATUS(exit_status));
+	return (sa->ex_status = WEXITSTATUS(exit_status));
 }
 
 void	ex_pipe(t_list *cmd, t_general *sa, int num_cmds)
@@ -105,11 +105,11 @@ void	ex_pipe(t_list *cmd, t_general *sa, int num_cmds)
 	tmp = cmd;
 	if (!init_pipe(num_cmds, &fd))
 		return ;
+	g_sig = 1;
 	while (tmp != NULL)
 	{
 		if (sa->index < num_cmds - 1 && pipe(fd[sa->index]) == -1)
 			return (ft_putendl_fd("pipe !\n", 2));
-		handle_sig(2);
 		sa->pid = fork();
 		if (sa->pid == -1)
 			return (ft_putendl_fd("fork !\n", 2));
@@ -121,7 +121,5 @@ void	ex_pipe(t_list *cmd, t_general *sa, int num_cmds)
 			tmp = tmp->next;
 		}
 	}
-	sa->ex_status = wait_and_close(fd, num_cmds);
-	if (sa->ex_status == 1)
-		sa->ex_status = 127;
+	wait_and_close(fd, num_cmds, sa);
 }

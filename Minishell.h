@@ -6,7 +6,7 @@
 /*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 20:20:00 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/10/04 23:25:35 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/10/05 05:32:12 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,6 +174,7 @@ int					error_line_bis(t_index_check *index);
 int					error_bis(t_index_check *index);
 int					error_line_end(t_index_check *index);
 int					error_line_util(t_index_check *index);
+int					error_line_util_pipe(t_index_check *index);
 
 // DEFINES
 

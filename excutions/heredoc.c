@@ -6,7 +6,7 @@
 /*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 11:43:49 by mdouzi            #+#    #+#             */
-/*   Updated: 2023/10/03 06:30:49 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/10/05 05:33:18 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,12 @@ void	handle_heredoc_line(char *line, int pipefd[2], t_general *sa,
 		free(line);
 	}
 	write(pipefd[1], "\n", 1);
+}
+
+void	sig_hero(int sig)
+{
+	exit(1);
+	(void)sig;
 }
 
 void	child_heredoc(int pipefd[2], t_list *cmds, t_general *sa)

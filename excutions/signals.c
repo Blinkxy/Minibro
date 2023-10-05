@@ -6,7 +6,7 @@
 /*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 05:00:49 by mdouzi            #+#    #+#             */
-/*   Updated: 2023/10/04 01:42:45 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/10/05 04:49:10 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 void	restore_pt(int sig)
 {
+	if (g_sig == 1)
+		kill (0, SIGINT);
 	write(1, "\n", 1);
 	rl_replace_line("", 0);
 	rl_on_new_line();
