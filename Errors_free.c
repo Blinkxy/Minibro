@@ -6,7 +6,7 @@
 /*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 15:54:45 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/10/05 03:01:02 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/10/06 00:31:12 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ int	error_handler(t_index_check *index)
 	if (error_line_in(index) == 0)
 		return (0);
 	if (error_line_util_pipe(index) == 0)
+		return (0);
+	if (error_line_util_red(index) == 0)
 		return (0);
 	return (1);
 }

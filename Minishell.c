@@ -6,7 +6,7 @@
 /*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/23 01:17:28 by mdouzi            #+#    #+#             */
-/*   Updated: 2023/10/05 05:33:33 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/10/06 00:37:18 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ void	execute_commands(t_general *sa, t_list *cmds)
 {
 	initialize_signals();
 	cmd_define(cmds);
+	printf("HELLO!\n");
 	final_struct(cmds, sa->env, sa);
 	update_struct(cmds);
 	redir_array(cmds);
