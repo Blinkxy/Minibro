@@ -1,6 +1,6 @@
 
 NAME = Minishell
-CFLAGS = -Wall -Wextra -Werror 
+CFLAGS =
 LRFLAG = -lreadline
 RM = rm -rf
 LIBFT_A = libft/libft.a

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdouzi < mdouzi@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 04:54:27 by mdouzi            #+#    #+#             */
-/*   Updated: 2023/10/05 04:49:36 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/10/06 02:12:36 by mdouzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,7 @@ void	ex_pipe(t_list *cmd, t_general *sa, int num_cmds)
 		sa->pid = fork();
 		if (sa->pid == -1)
 			return (ft_putendl_fd("fork !\n", 2));
+		handle_sig(2);
 		if (sa->pid == 0)
 			child_job(fd, sa, tmp, sa->index);
 		else
