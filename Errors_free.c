@@ -6,7 +6,7 @@
 /*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 15:54:45 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/10/06 00:31:12 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/10/06 01:57:56 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,23 @@
 
 int	checker_line(char *line)
 {
+	char	*copy;
+
+	copy = ft_strdup(line);
+	copy = ft_strtrim(copy, " \t");
+	if (copy[0] == '|')
+	{
+		printf("syntax error near unexpected token `|'\n");
+		return (0);
+	}
+	if (!copy && copy[0] == '\0')
+		return (0);
 	if (checkquotes(line) == 0)
 	{
 		printf("Invalid command: quotes not closed\n");
 		return (0);
 	}
+	free(copy);
 	return (1);
 }
 

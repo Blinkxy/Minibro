@@ -6,7 +6,7 @@
 /*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/23 06:34:15 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/10/04 23:28:04 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/10/06 01:58:20 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	count_word_bis(char *str, t_count *count_words, int *i)
 		else
 			count_words->wordstart = 1;
 	}
-	else if (str[*i] == ' ' && !count_words->insinglequotes
+	else if ((str[*i] == ' ' || str[*i] == '\t') && !count_words->insinglequotes
 		&& !count_words->indoublequotes)
 	{
 		if (count_words->wordstart == 1)
