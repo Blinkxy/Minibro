@@ -26,12 +26,15 @@ int	count_redir(char *str, t_index *index)
 	{
 		if (str[i] == '\'' || str[i] == '\"')
 			index->inquotes = !index->inquotes;
-		if (!index->inquotes && (str[i] == '>' || str[i] == '<') && str[i - 1]
-			&& str[i + 1] != '>' && str[i - 1] != '<' && str[i - 1] != '>')
+		if (i > 1 && !index->inquotes && (str[i] == '>' || str[i] == '<')
+			&& str[i + 1] != '>' && str[i - 1] && str[i - 1] != '<' && str[i - 1] != '>')
 			count += 2;
 		else if (!index->inquotes && str[i] == '<' && str[i + 1] == '<')
 			count += 2;
 		else if (!index->inquotes && str[i] == '>' && str[i + 1] == '>')
+			count += 2;
+		else if (!index->inquotes && i == 0 && (str[i] == '<' || str[i] == '>') && str[i + 1]
+			&& str[i + 1] != '<' && str[i + 1] != '>')
 			count += 2;
 		i++;
 	}
