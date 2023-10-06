@@ -6,28 +6,54 @@
 /*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 15:54:45 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/10/06 01:57:56 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/10/06 03:55:32 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Minishell.h"
 
+char	*ft_strtrim2(char *s1, char *set)
+{
+	int	len;
+	int	i;
+
+	i = 0;
+	if (s1 == 0 || set == 0)
+		return (NULL);
+	while (ft_strchr(set, s1[i]) && s1[i])
+		i++;
+	if (!s1[i])
+	{
+		free(s1);
+		return (ft_substr(s1, 0, 0));
+	}
+	len = ft_strlen(s1);
+	while (ft_strchr(set, s1[len - 1]) && len > i)
+		len--;
+	free(s1);
+	return (ft_substr(s1, i, len - i));
+}
+
 int	checker_line(char *line)
 {
 	char	*copy;
 
-	copy = ft_strdup(line);
-	copy = ft_strtrim(copy, " \t");
-	if (copy[0] == '|')
-	{
-		printf("syntax error near unexpected token `|'\n");
-		return (0);
-	}
-	if (!copy && copy[0] == '\0')
-		return (0);
 	if (checkquotes(line) == 0)
 	{
 		printf("Invalid command: quotes not closed\n");
+		return (0);
+	}
+	copy = ft_strdup(line);
+	copy = ft_strtrim2(copy, " \t");
+	if (copy[0] == '|')
+	{
+		printf("syntax error near unexpected token `|'\n");
+		free(copy);
+		return (0);
+	}
+	if (!copy || copy[0] == '\0')
+	{
+		free(copy);
 		return (0);
 	}
 	free(copy);
