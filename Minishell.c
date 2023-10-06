@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdouzi < mdouzi@student.1337.ma>           +#+  +:+       +#+        */
+/*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/23 01:17:28 by mdouzi            #+#    #+#             */
-/*   Updated: 2023/10/06 07:10:19 by mdouzi           ###   ########.fr       */
+/*   Updated: 2023/10/06 07:33:08 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,13 +69,13 @@ void	init_sa(t_general *sa, char **env)
 	get_export_env(sa);
 }
 
-int	main()
+int	main(void)
 {
 	char		*s;
 	t_general	*sa;
 	t_list		*cmds;
+	extern char	**environ;
 
-	extern char **environ;
 	sa = malloc(sizeof(t_general));
 	memset(sa, 0, sizeof(t_general));
 	init_sa(sa, environ);
@@ -84,8 +84,6 @@ int	main()
 	while (1)
 	{
 		g_sig = 0;
-		// if (s)
-		// 	free(s);
 		s = readline("minishell$>");
 		add_history(s);
 		if (!s)
@@ -94,7 +92,8 @@ int	main()
 		if (cmds != NULL)
 			execute_commands(sa, cmds);
 		free_all(cmds);
-		free(s);
+		if (s)
+			free(s);
 	}
 	return (0);
 }

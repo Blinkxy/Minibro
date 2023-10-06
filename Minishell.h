@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdouzi < mdouzi@student.1337.ma>           +#+  +:+       +#+        */
+/*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 20:20:00 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/10/06 06:57:52 by mdouzi           ###   ########.fr       */
+/*   Updated: 2023/10/06 07:32:55 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -217,8 +217,8 @@ void				final_cmd(t_list *cmds);
 void				final_remove_quotes(t_list *cmds);
 char				*filler_split(char *str);
 void				fill_new_split(char *str, t_define *new_struct, int *index);
-void				fill_new_split_file(char *str,
-						t_define *new_struct, int *index);
+void				fill_new_split_file(char *str, t_define *new_struct,
+						int *index);
 int					new_struct_size(t_list *cmds);
 void				update_struct(t_list *cmds);
 void				update_struct_util(t_list *tmp, t_define *final_struct,
@@ -245,9 +245,9 @@ void				free_tab(char **tab);
 // redirections
 void				dup_fds(t_list *cmds);
 void				close_fds(t_list *cmds);
-int	handle_append(t_list *cmd, t_redir red);
-int	handle_redout(t_list *cmd, t_redir red);
-int	handle_redin(t_list *cmd, t_redir red);
+int					handle_append(t_list *cmd, t_redir red);
+int					handle_redout(t_list *cmd, t_redir red);
+int					handle_redin(t_list *cmd, t_redir red);
 // builtin export
 int					var_export_check(char *env_var);
 void				get_export_env(t_general *sa);
@@ -298,7 +298,7 @@ void				ex_test(t_list *cmd, t_general *sa);
 int					init_pipe(int num_cmds, int ***fd);
 void				ex_pipe(t_list *cmd, t_general *sa, int num_cmds);
 void				free_pipe(int **fd, int numb_cmds);
-void st_ex_pipe(t_general *sa);
+void				st_ex_pipe(t_general *sa);
 
 // heredocument
 int					hrdc_expand(char *delimiter);

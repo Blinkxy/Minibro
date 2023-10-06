@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdouzi < mdouzi@student.1337.ma>           +#+  +:+       +#+        */
+/*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/01 02:29:42 by mdouzi            #+#    #+#             */
-/*   Updated: 2023/10/06 06:56:45 by mdouzi           ###   ########.fr       */
+/*   Updated: 2023/10/06 07:28:52 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,8 @@ void	free_pipe(int **fd, int numb_cmds)
 	free(fd);
 }
 
-void st_ex_pipe(t_general *sa)
+void	st_ex_pipe(t_general *sa)
 {
-	if(sa->ex_status == 1)
+	if (sa->ex_status == 1)
 		sa->ex_status = 127;
 }

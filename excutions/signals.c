@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdouzi < mdouzi@student.1337.ma>           +#+  +:+       +#+        */
+/*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 05:00:49 by mdouzi            #+#    #+#             */
-/*   Updated: 2023/10/06 05:54:11 by mdouzi           ###   ########.fr       */
+/*   Updated: 2023/10/06 07:29:43 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,4 +20,3 @@ void	restore_pt(int sig)
 	rl_redisplay();
 	(void)sig;
 }
-

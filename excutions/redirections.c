@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdouzi < mdouzi@student.1337.ma>           +#+  +:+       +#+        */
+/*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/01 02:37:22 by mdouzi            #+#    #+#             */
-/*   Updated: 2023/10/06 06:49:49 by mdouzi           ###   ########.fr       */
+/*   Updated: 2023/10/06 07:29:35 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../Minishell.h"
 
 void	handle_redirection(t_list *head, t_general *sa, int i)
-{	
+{
 	if (g_sig == -2)
 	{
 		close_fds(head);
@@ -47,8 +47,8 @@ int	make_red(t_list *cmd, t_general *sa)
 		nb_red = head->red_nb;
 		while (nb_red > 0)
 		{
-			if(g_sig == -2)
-				return(1);
+			if (g_sig == -2)
+				return (1);
 			handle_redirection(head, sa, i);
 			i++;
 			nb_red--;
