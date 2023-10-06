@@ -6,7 +6,7 @@
 /*   By: mdouzi < mdouzi@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/21 05:48:21 by mdouzi            #+#    #+#             */
-/*   Updated: 2023/10/03 03:20:52 by mdouzi           ###   ########.fr       */
+/*   Updated: 2023/10/06 06:58:01 by mdouzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,31 @@ void	reset_fds(int in, int out)
 	close(out);
 }
 
+int	red_built(t_list *cmds)
+{
+	if (cmds->fd_in != 0)
+	{
+		if (cmds->fd_in < 0)
+		{
+			close_fds(cmds);
+			return (-1);
+		}
+		else
+			dup2(cmds->fd_in, STDIN_FILENO);
+	}
+	if (cmds->fd_out != 1)
+	{
+		if (cmds->fd_out < 1)
+		{
+			close_fds(cmds);
+			return (-1);
+		}
+		else
+			dup2(cmds->fd_out, STDOUT_FILENO);
+	}
+	return (1);
+}
+
 int	ex_builtins(t_list *cmd, t_general *sa)
 {
 	int	in;
@@ -49,11 +74,8 @@ int	ex_builtins(t_list *cmd, t_general *sa)
 
 	in = dup(0);
 	out = dup(1);
-	if (cmd->fd_in > 0)
-		dup2(cmd->fd_in, STDIN_FILENO);
-	if (cmd->fd_out > 1)
-		dup2(cmd->fd_out, STDOUT_FILENO);
-	handle_builtins(cmd, sa);
+	if (red_built(cmd) == 1)
+		handle_builtins(cmd, sa);
 	close(cmd->fd_in);
 	close(cmd->fd_out);
 	reset_fds(in, out);
@@ -76,7 +98,10 @@ void	ex_test(t_list *cmd, t_general *sa)
 	if (cmd && !cmd->next && is_builtin(cmd->final_cmd) == 1 && cmd->final_cmd)
 		ex_builtins(cmd, sa);
 	else
+	{
 		ex_pipe(cmd, sa, sa->num_cmds);
+		st_ex_pipe(sa);
+	}
 	while (head)
 	{
 		close_fds(head);
@@ -84,26 +109,4 @@ void	ex_test(t_list *cmd, t_general *sa)
 			break ;
 		head = head->next;
 	}
-}
-
-int	is_builtin(char **args)
-{
-	if (args)
-	{
-		if (ft_strcmp(args[0], "echo") == 0)
-			return (1);
-		else if (ft_strcmp(args[0], "exit") == 0)
-			return (1);
-		else if (ft_strcmp(args[0], "unset") == 0)
-			return (1);
-		else if (ft_strcmp(args[0], "cd") == 0)
-			return (1);
-		else if (ft_strcmp(args[0], "export") == 0)
-			return (1);
-		else if (ft_strcmp(args[0], "env") == 0)
-			return (1);
-		else if (ft_strcmp(args[0], "pwd") == 0)
-			return (1);
-	}
-	return (0);
 }

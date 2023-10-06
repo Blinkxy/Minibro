@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Errors_free.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdouzi < mdouzi@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 15:54:45 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/10/06 03:55:32 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/10/06 07:19:39 by mdouzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,18 +84,24 @@ int	checker_redir(char *line)
 	t_index_check	index;
 
 	initialize_checker(&index);
-	index.copy = ft_strtrim(line, " ");
+	index.copy = ft_strtrim(line, " \t");
 	if (index.copy[0] == '\0')
 		return (0);
 	index.len = ft_strlen(index.copy);
 	if (error_line_end(&index) == 0)
+	{
+		free(index.copy);
 		return (0);
+	}
 	while (index.copy[index.i])
 	{
 		if (index.copy[index.i] == '\'' || index.copy[index.i] == '"')
 			index.inquotes = !index.inquotes;
 		if (error_handler(&index) == 0)
+		{
+			free(index.copy);
 			return (0);
+		}
 		index.i++;
 	}
 	free(index.copy);

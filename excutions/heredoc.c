@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdouzi < mdouzi@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 11:43:49 by mdouzi            #+#    #+#             */
-/*   Updated: 2023/10/05 05:33:18 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/10/06 06:48:48 by mdouzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,14 +55,14 @@ void	child_heredoc(int pipefd[2], t_list *cmds, t_general *sa)
 	}
 }
 
-int	ft_heredoc(t_list *cmds, t_general *sa)
+int	ft_heredoc(t_list *cmds, t_general *sa, t_redir red)
 {
 	int	pipefd[2];
 	int	child_pid;
 	int	status;
 
 	pipe(pipefd);
-	sa->del = ft_strdup(cmds->redir->delimiter);
+	sa->del = ft_strdup(red.delimiter);
 	sa->del = expand_quotes(sa->del);
 	child_pid = fork();
 	if (child_pid == -1)
@@ -75,10 +75,33 @@ int	ft_heredoc(t_list *cmds, t_general *sa)
 		if (waitpid(child_pid, &status, 0) == child_pid && WIFSIGNALED(status))
 		{
 			free(sa->del);
+			g_sig = -2;
 			close(pipefd[0]);
 			return (-2);
 		}
 	}
 	free(sa->del);
 	return (pipefd[0]);
+}
+
+int	is_builtin(char **args)
+{
+	if (args)
+	{
+		if (ft_strcmp(args[0], "echo") == 0)
+			return (1);
+		else if (ft_strcmp(args[0], "exit") == 0)
+			return (1);
+		else if (ft_strcmp(args[0], "unset") == 0)
+			return (1);
+		else if (ft_strcmp(args[0], "cd") == 0)
+			return (1);
+		else if (ft_strcmp(args[0], "export") == 0)
+			return (1);
+		else if (ft_strcmp(args[0], "env") == 0)
+			return (1);
+		else if (ft_strcmp(args[0], "pwd") == 0)
+			return (1);
+	}
+	return (0);
 }

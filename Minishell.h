@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdouzi < mdouzi@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 20:20:00 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/10/06 00:30:06 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/10/06 06:57:52 by mdouzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,6 @@ typedef struct s_list
 	pid_t			id;
 	int				fd_in;
 	int				fd_out;
-	int				fd[2];
 	int				index;
 	int				size_cmd;
 	t_define		*define;
@@ -246,10 +245,9 @@ void				free_tab(char **tab);
 // redirections
 void				dup_fds(t_list *cmds);
 void				close_fds(t_list *cmds);
-int					handle_append(t_list *cmd, t_redir *red);
-int					handle_redout(t_list *cmd, t_redir *red);
-int					handle_redin(t_list *cmd, t_redir *red);
-
+int	handle_append(t_list *cmd, t_redir red);
+int	handle_redout(t_list *cmd, t_redir red);
+int	handle_redin(t_list *cmd, t_redir red);
 // builtin export
 int					var_export_check(char *env_var);
 void				get_export_env(t_general *sa);
@@ -300,10 +298,11 @@ void				ex_test(t_list *cmd, t_general *sa);
 int					init_pipe(int num_cmds, int ***fd);
 void				ex_pipe(t_list *cmd, t_general *sa, int num_cmds);
 void				free_pipe(int **fd, int numb_cmds);
+void st_ex_pipe(t_general *sa);
 
 // heredocument
 int					hrdc_expand(char *delimiter);
-int					ft_heredoc(t_list *cmds, t_general *sa);
+int					ft_heredoc(t_list *cmds, t_general *sa, t_redir red);
 int					hrdc_expand(char *delimiter);
 void				write_exp(t_general *sa, char *line, int pipefd[2]);
 void				error_fork(void);

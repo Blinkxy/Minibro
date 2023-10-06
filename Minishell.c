@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdouzi < mdouzi@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/23 01:17:28 by mdouzi            #+#    #+#             */
-/*   Updated: 2023/10/06 01:42:04 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/10/06 07:10:19 by mdouzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,26 +67,25 @@ void	init_sa(t_general *sa, char **env)
 {
 	init_env_data(sa, env);
 	get_export_env(sa);
-	initialize_signals();
 }
 
-int	main(int argc, char **argv, char **env)
+int	main()
 {
 	char		*s;
 	t_general	*sa;
 	t_list		*cmds;
 
-	(void)argc;
-	(void)argv;
+	extern char **environ;
 	sa = malloc(sizeof(t_general));
 	memset(sa, 0, sizeof(t_general));
-	init_sa(sa, env);
+	init_sa(sa, environ);
+	initialize_signals(); 
 	s = NULL;
 	while (1)
 	{
 		g_sig = 0;
-		if (s)
-			free(s);
+		// if (s)
+		// 	free(s);
 		s = readline("minishell$>");
 		add_history(s);
 		if (!s)
@@ -95,6 +94,7 @@ int	main(int argc, char **argv, char **env)
 		if (cmds != NULL)
 			execute_commands(sa, cmds);
 		free_all(cmds);
+		free(s);
 	}
 	return (0);
 }
