@@ -78,7 +78,8 @@ void	final_remove_quotes(t_list *cmds)
 		{
 			if (tmp->define)
 			{
-				if (tmp->define[i].content && tmp->define[i].type != DELIMITER)
+				if (tmp->define[i].content && tmp->define[i].type != DELIMITER
+					&& tmp->define[i].content != NULL)
 					tmp->define[i].content
 						= expand_quotes(tmp->define[i].content);
 			}

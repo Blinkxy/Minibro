@@ -6,7 +6,7 @@
 /*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/23 06:34:15 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/10/06 01:58:20 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/10/07 02:37:14 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,11 +94,14 @@ void	update_struct(t_list *cmds)
 	while (tmp)
 	{
 		k = new_struct_size(tmp);
-		final_struct = (t_define *)malloc(sizeof(t_define) * k);
-		initialize_define(final_struct, k);
-		bis_update_struct(tmp, final_struct);
-		free_struct(tmp->define);
-		tmp->define = final_struct;
+		if (k > 0)
+		{
+			final_struct = (t_define *)malloc(sizeof(t_define) * k);
+			initialize_define(final_struct, k);
+			bis_update_struct(tmp, final_struct);
+			free_struct(tmp->define);
+			tmp->define = final_struct;
+		}
 		tmp->size_cmd = k;
 		tmp = tmp->next;
 	}

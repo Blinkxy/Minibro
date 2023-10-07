@@ -6,7 +6,7 @@
 /*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 21:30:26 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/10/05 04:56:41 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/10/07 02:36:44 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,10 @@ char	*extract_env(char *str)
 		i++;
 	if (str[i] == '=')
 		i++;
-	extract = ft_substr(str, i, ft_strlen(str) - i);
+	if (!str[i])
+		return (NULL);
+	else
+		extract = ft_substr(str, i, ft_strlen(str) - i);
 	return (extract);
 }
 
@@ -49,11 +52,17 @@ void	expand_env_util(t_index_env *index, char *str, char **env)
 			index->i += ft_strlen(index->check_env);
 		else if (get_env_var(env, index->check_env) != -1)
 		{
-			index->extract = extract_env(env[get_env_var(env,
-						index->check_env)]);
-			index->result = ft_strjoin2(index->result, index->extract);
-			index->i += ft_strlen(index->check_env);
-			free(index->extract);
+			if (extract_env(env[get_env_var(env, index->check_env)]) != NULL)
+			{
+				index->extract = extract_env(env[get_env_var(env,
+							index->check_env)]);
+				index->result = ft_strjoin2(index->result, index->extract);
+				index->i += ft_strlen(index->check_env);
+				free(index->extract);
+			}
+			else if (extract_env(env[get_env_var(env, index->check_env)])
+				== NULL)
+				index->i += ft_strlen(index->check_env);
 		}
 		free(index->check_env);
 	}
