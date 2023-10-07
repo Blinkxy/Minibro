@@ -6,7 +6,7 @@
 /*   By: mdouzi < mdouzi@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 03:56:08 by mdouzi            #+#    #+#             */
-/*   Updated: 2023/09/29 23:47:50 by mdouzi           ###   ########.fr       */
+/*   Updated: 2023/10/07 03:48:04 by mdouzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ char	*get_path_env(char *env)
 	while (env[i] != '=')
 		i++;
 	i++;
-	path_length = strlen(env) - i;
+	path_length = ft_strlen(env) - i;
 	res = (char *)malloc(sizeof(char) * (path_length + 1));
 	while (env[i])
 	{

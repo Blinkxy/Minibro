@@ -6,7 +6,7 @@
 /*   By: mdouzi < mdouzi@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 04:01:03 by mdouzi            #+#    #+#             */
-/*   Updated: 2023/09/21 05:47:39 by mdouzi           ###   ########.fr       */
+/*   Updated: 2023/10/07 03:48:52 by mdouzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,10 @@ long long	ft_ex_atoi(char *str)
 
 int	is_greater_than_llong(char *str)
 {
-	if (str[0] == '-' && strlen(str) >= 20 && strcmp(&str[1],
+	if (str[0] == '-' && ft_strlen(str) >= 20 && ft_strcmp(&str[1],
 			"9223372036854775808") > 0)
 		return (1);
-	else if (strlen(str) >= 19 && strcmp(str, "9223372036854775807") > 0)
+	else if (ft_strlen(str) >= 19 && ft_strcmp(str, "9223372036854775807") > 0)
 		return (1);
 	return (0);
 }

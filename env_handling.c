@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_handling.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdouzi < mdouzi@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 21:30:26 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/10/07 02:36:44 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/10/07 05:00:09 by mdouzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ char	*extract_env(char *str)
 void	expand_env_util(t_index_env *index, char *str, char **env)
 {
 	index->j = index->i + 1;
-	while (str[index->j] && (ft_isalnum(str[index->j]) || str[index->j] == '_'))
+	while (str[index->j] && (ft_isalnum(str[index->j]) || str[index->j] == ' '))
 		index->j++;
 	if (index->j > index->i + 1)
 	{
@@ -52,18 +52,14 @@ void	expand_env_util(t_index_env *index, char *str, char **env)
 			index->i += ft_strlen(index->check_env);
 		else if (get_env_var(env, index->check_env) != -1)
 		{
-			if (extract_env(env[get_env_var(env, index->check_env)]) != NULL)
-			{
-				index->extract = extract_env(env[get_env_var(env,
-							index->check_env)]);
-				index->result = ft_strjoin2(index->result, index->extract);
-				index->i += ft_strlen(index->check_env);
-				free(index->extract);
-			}
-			else if (extract_env(env[get_env_var(env, index->check_env)])
-				== NULL)
-				index->i += ft_strlen(index->check_env);
+			index->extract = extract_env(env[get_env_var(env,
+						index->check_env)]);
+			index->result = ft_strjoin2(index->result, index->extract);
+			index->i += ft_strlen(index->check_env);
+			free(index->extract);
 		}
+		else if (!extract_env(env[get_env_var(env, index->check_env)]))
+			index->i += ft_strlen(index->check_env);
 		free(index->check_env);
 	}
 }
