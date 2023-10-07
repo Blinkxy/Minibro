@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdouzi < mdouzi@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 20:20:00 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/10/06 07:32:55 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/10/07 03:39:01 by mdouzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -249,6 +249,9 @@ int					handle_append(t_list *cmd, t_redir red);
 int					handle_redout(t_list *cmd, t_redir red);
 int					handle_redin(t_list *cmd, t_redir red);
 // builtin export
+void				check_in_var(char *var, char **new_var,
+						t_general *sa, int index);
+char				**export_update(char **env, char *var);
 int					var_export_check(char *env_var);
 void				get_export_env(t_general *sa);
 void				double_swap(int i, int j, t_general *sa);

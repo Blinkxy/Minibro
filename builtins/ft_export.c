@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdouzi < mdouzi@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 03:18:58 by mdouzi            #+#    #+#             */
-/*   Updated: 2023/10/07 02:14:37 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/10/07 03:36:41 by mdouzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,26 +58,26 @@ int	check_or_update(char **new_var, char *var, t_general *sa)
 {
 	int		index;
 	char	*var_fr_env;
+	int		index_env;
 
 	index = -1;
+	index_env = -1;
 	index = get_env_var(sa->env_export, new_var[0]);
 	if (index != -1 && ft_strchr(var, '=') != NULL)
-	{
-		var_fr_env = expand_quotes(ft_strdup(var));
-		free(sa->env_export[index]);
-		free(sa->env[index]);
-		sa->env[index] = ft_strdup(var_fr_env);
-		sa->env_export[index] = ft_strdup(var);
-		free(var_fr_env);
-	}
+		check_in_var(var, new_var, sa, index);
 	else if (index != -1 && ft_strchr(var, '=') == NULL)
 		return (0);
 	else
 	{
-		var_fr_env = expand_quotes(ft_strdup(var));
-		sa->env_export = export_update(sa->env_export, var);
-		sa->env = export_update(sa->env, var_fr_env);
-		free(var_fr_env);
+		if (ft_strchr(var, '=') != NULL)
+		{
+			var_fr_env = expand_quotes(ft_strdup(var));
+			sa->env_export = export_update(sa->env_export, var);
+			sa->env = export_update(sa->env, var_fr_env);
+			free(var_fr_env);
+		}
+		else
+			sa->env_export = export_update(sa->env_export, var);
 	}
 	return (1);
 }

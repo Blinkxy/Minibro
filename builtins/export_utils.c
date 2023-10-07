@@ -6,7 +6,7 @@
 /*   By: mdouzi < mdouzi@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 03:21:32 by mdouzi            #+#    #+#             */
-/*   Updated: 2023/09/29 23:56:55 by mdouzi           ###   ########.fr       */
+/*   Updated: 2023/10/07 03:39:46 by mdouzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,13 +88,24 @@ void	solo_export(t_general *sa)
 	}
 }
 
-int	double_qchek(char *str)
+void	check_in_var(char *var, char **new_var, t_general *sa, int index)
 {
-	if (!str)
-		return (0);
-	else if (str[0] == '"' && str[1] == '"' && str[2] == '\0')
-		return (1);
-	else if (str[0] == '"' && str[strlen(str) - 1] == '"')
-		return (1);
-	return (0);
+	char	*vr_env;
+	int		index_env;
+
+	index_env = get_env_var(sa->env, new_var[0]);
+	vr_env = expand_quotes(ft_strdup(var));
+	free(sa->env_export[index]);
+	sa->env_export[index] = ft_strdup(var);
+	index_env = get_env_var(sa->env, new_var[0]);
+	if (index_env != -1)
+	{
+		free(sa->env[index_env]);
+		sa->env[index_env] = ft_strdup(vr_env);
+	}
+	else if (index_env == -1 && ft_strchr(var, '='))
+	{
+		sa->env = export_update(sa->env, vr_env);
+	}
+	free(vr_env);
 }

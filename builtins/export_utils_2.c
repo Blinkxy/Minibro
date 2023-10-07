@@ -6,7 +6,7 @@
 /*   By: mdouzi < mdouzi@student.1337.ma>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 03:16:21 by mdouzi            #+#    #+#             */
-/*   Updated: 2023/09/25 04:48:55 by mdouzi           ###   ########.fr       */
+/*   Updated: 2023/10/07 03:39:41 by mdouzi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,4 +90,15 @@ int	check_number_of_wr(char *str, char c)
 		i++;
 	}
 	return (1);
+}
+
+int	double_qchek(char *str)
+{
+	if (!str)
+		return (0);
+	else if (str[0] == '"' && str[1] == '"' && str[2] == '\0')
+		return (1);
+	else if (str[0] == '"' && str[strlen(str) - 1] == '"')
+		return (1);
+	return (0);
 }
